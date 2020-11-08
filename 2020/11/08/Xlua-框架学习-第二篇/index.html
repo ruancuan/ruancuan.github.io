@@ -10,7 +10,7 @@
     
     
     
-    <title>Md 语法 | Avalon</title>
+    <title>Xlua 框架学习 第二篇 | Avalon</title>
     <link href="https://ruancuan.github.io" rel="prefetch" />
 
     
@@ -215,13 +215,13 @@
         <i class="fa fa-home"></i>
         <a href="https://ruancuan.github.io">Avalon</a>
         >
-        <span>Md 语法</span>
+        <span>Xlua 框架学习 第二篇</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
+                <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
             </h1>
         </div>
         <div class="tag-article">
@@ -229,7 +229,9 @@
             <span class="label label-gal">
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Markdown/">Markdown</a>
+                <a href="/tags/Xlua/">Xlua</a>, 
+                
+                <a href="/tags/Unity/">Unity</a>
                 
             </span>
             
@@ -244,7 +246,7 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
                 </h4>
             </div>
             <p>
@@ -254,7 +256,9 @@
                 
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Markdown/">Markdown</a>
+                <a href="/tags/Xlua/">Xlua</a>, 
+                
+                <a href="/tags/Unity/">Unity</a>
                 
                 
                 
@@ -262,60 +266,76 @@
         </center>
     </div>
     <div class="content-article">
-        <pre><code>标题</code></pre>
-<ul>
-<li><p>大标题</p>
-</li>
-<li><p>文本下一行加上 =</p>
-</li>
-<li><p>中标题</p>
-</li>
-<li><p>文本下一行加上 -</p>
-</li>
-<li><p>其余</p>
-</li>
-<li><p>#号的个数代表标题等级,数量越多,等级越小</p>
-</li>
-<li><p>备注</p>
-</li>
-<li><p>需要写 = 的时候需要行与行之间间隔一个空行</p>
+        <h2 id="数据表和常量表"><a href="#数据表和常量表" class="headerlink" title="数据表和常量表"></a>数据表和常量表</h2><ul>
+<li>存在原因,Lua中对于数据名拼写错误进行读写不会报错</li>
+<li>数据表:用于对读写不存在的域时报错;主要用于自定义类型</li>
+<li>常量表:拥有数据表特性,限制只读,主要用于配置表</li>
+</ul>
+<h2 id="UI管理模块"><a href="#UI管理模块" class="headerlink" title="UI管理模块"></a>UI管理模块</h2><ul>
+<li>逻辑代码:<ul>
+<li>Base:基类</li>
+<li>Component:UI组件</li>
+<li>Message:UI消息定义</li>
+<li>Util:UI工具类</li>
+<li>Config:窗口配置</li>
+<li>UIxxx:UI逻辑模块,MVC,Config为模块配置脚本</li>
+</ul>
 </li>
 </ul>
-<pre><code>强调</code></pre>
-<ul>
-<li> *斜体*  _斜体_  <strong><em>斜体</em></strong></li>
-<li> **加粗**   __加粗__ <strong>加粗</strong></li>
-<li> ***粗斜体***  ___粗斜体___ <strong><em>粗斜体</em></strong></li>
+<h2 id="UI模块添加流程"><a href="#UI模块添加流程" class="headerlink" title="UI模块添加流程"></a>UI模块添加流程</h2><ul>
+<li>拼预设    xxx.prefab</li>
+<li>UI名配置  UIWindowNames</li>
+<li>导入配置  UIConfig</li>
+<li>脚本配置  UIxxxConfig,如果MVC层存在没有实现脚本,直接填写nil</li>
 </ul>
-<pre><code>代码</code></pre>
-<p><code>&lt;hello  world&gt;</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Hello</span><br><span class="line">World</span><br></pre></td></tr></table></figure>
-<ul>
-<li>首尾各多行  ```</li>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><ul>
+<li>请求UI管理器打开窗口时,UI管理器会根据UI配置找到MVC各层脚本文件并实例化对象,生成一个UIWindow的数据结构标识一个窗口.</li>
+<li>调度Model层OnEnable(首次打开先调用OnCreate),如果有传入参数,需要在此处保存下来</li>
+<li>UI资源异步加载完毕后,调度View层的OnEnable(首次打开先调用OnCreate),View层随后实现类似Mono脚本的调度流程</li>
+<li>View层可以随时读取Model层数据,写入数据需要通过Controller层</li>
 </ul>
-<pre><code>引用</code></pre>
-<ul>
-<li>符号&gt;<blockquote>
-<p>1级</p>
-<blockquote>
-<p>2级</p>
-<blockquote>
-<p>3级</p>
+<h2 id="脚本调度顺序"><a href="#脚本调度顺序" class="headerlink" title="脚本调度顺序"></a>脚本调度顺序</h2><ul>
+<li>OnCreate</li>
+<li>OnEnable</li>
+<li>Update</li>
+<li>LateUpdate</li>
+<li>OnDisable</li>
+<li>OnDestroy</li>
+</ul>
+<pre><code>注意:Update相关函数添加上以后就会被调度,尽量不用,节省性能</code></pre>
+<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2><ul>
+<li>打开窗口时传入数据: OnEnable 中传入Model层保存</li>
+<li>Model层在OnEnable中从其他管理类或者数据类取数据并处理</li>
+<li>View层可以存放自身控制数据,直接读\间接写Model层数据</li>
+<li>模块与模块之间数据交换使用消息系统</li>
+</ul>
+<h2 id="组件系统"><a href="#组件系统" class="headerlink" title="组件系统"></a>组件系统</h2><ul>
+<li>为了实现类似Mono脚本的函数调度,所存在的组件系统</li>
+<li>组件分为两种:基础组件和容器组件<h3 id="基础组件"><a href="#基础组件" class="headerlink" title="基础组件"></a>基础组件</h3><blockquote>
+<p>UIButton:   按钮</p>
 </blockquote>
+<ul>
+<li>设置点击回调调用SetOnClick方法,Destroy的时候会自动删除回调,以免持有引用影响Unity侧资源释放<blockquote>
+<p>UICanvas:   画布,用于层级管理和DrawCall划分</p>
 </blockquote>
+</li>
+<li>用于设置层级和DrawCall划分<blockquote>
+<p>UIEffect:   UI特效</p>
+</blockquote>
+</li>
+<li>核心功能是简化UI特效层级的设置<blockquote>
+<p>UIImage:    UI图集图片</p>
+</blockquote>
+</li>
+<li>简化UI图集图片的操作,使类似NGUI一样可以通过Sprite名字切换图片,SetSpriteName,需要提前设置图集配置,需要在配置文件中进行配置<blockquote>
+<p>UILayout:   UI层级</p>
+</blockquote>
+</li>
+<li>专门提供给UIManager来为各个Layer排布层级的,其中存在一个层级堆栈<blockquote>
 </blockquote>
 </li>
 </ul>
-<pre><code>链接</code></pre>
-<ul>
-<li>格式：[页面文字](链接地址)，如：<a target="_blank" rel="noopener" href="https://www.baidu.com/">百度</a></li>
-</ul>
-<pre><code>图片</code></pre>
-<ul>
-<li>用法类似于链接 <a target="_blank" rel="noopener" href="https://img.cheerfun.dev/c/540x540_70/img-master/img/2020/11/04/00/02/55/85446834_p0_master1200.jpg">图片</a></li>
-</ul>
-<h2 id="在线编辑"><a href="#在线编辑" class="headerlink" title="在线编辑"></a>在线编辑</h2><ul>
-<li><a target="_blank" rel="noopener" href="http://mahua.jser.me/">MaHua</a></li>
+</li>
 </ul>
 
     </div>
@@ -441,7 +461,7 @@
                 
                 
                 <li>
-                    <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>

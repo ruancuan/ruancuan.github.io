@@ -82,7 +82,7 @@
 			audio.currentTime = 0
 		} else {
 			$(".circle").addClass("open")
-			audio.play()
+			//audio.play()
 		}
 
 	})

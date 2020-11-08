@@ -70,6 +70,25 @@
 </section>
     <!-- 欧尼酱功能, 谁用谁知道 -->
     
+    <div class="gal-menu gal-dropdown">
+    <div class="circle" id="gal">
+        <div class="ring">
+            <a href="https://ruancuan.github.io" class="menuItem" style="left: 50%; top: 15%;">首页</a>
+            
+            <a class="menuItem" style="left: 80.3109%; top: 32.5%;">下一页</a>
+            
+            <a href="/archives" class="menuItem" style="left: 80.3109%; top: 67.5%;">归档</a>
+            <a href="/about" class="menuItem" style="left: 50%; top: 85%;">关于</a>
+            <a href="/message" class="menuItem" style="left: 19.6891%; top: 67.5%;">留言板</a>
+
+            
+            <a class="menuItem" style="left: 19.6891%; top: 32.5%;">上一页</a>
+            
+        </div>
+        <audio id="audio" src="/imgs/oni.mp3"></audio>
+    </div>
+</div>
+    
     <header class="navbar navbar-inverse" id="gal-header">
     <div class="container">
         <div class="navbar-header">
@@ -116,10 +135,26 @@
                 
                 
                 
-                <li class="">
-                    <a href="/categories">
+                <li class="dropdown">
+                    <!-- TODO 添加hover dropdown效果 -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
                         <i class="fa fa-list"></i>分类
                     </a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li>
+                            <a href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/Unity/">Unity</a>
+                        </li>
+                        
+                        
+                        
+                    </ul>
                 </li>
                 
                 
@@ -147,10 +182,10 @@
                             <a href="/tags/Unity/">Unity</a>
                         </li>
                         
-                        
                         <li>
-                            <a href="/tags">...</a>
+                            <a href="/tags/Hexo/">Hexo</a>
                         </li>
+                        
                         
                         
                     </ul>
@@ -231,7 +266,101 @@
         </center>
     </div>
     <div class="content-article">
-        
+        <h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><pre><code>宏</code></pre>
+<ul>
+<li>HOTFIX_ENABLE :开启热补丁特性.编辑器，各手机平台需要手动单独设置，如果是自动化打包，要注意在代码里用API设置的宏是不生效的，需要在编辑器里设置</li>
+<li>INJECT_WITHOUT_TOOL：采用内嵌到编辑器的方式注入。添加了该宏之后，在菜单栏XLUA里才能够进行【Hotfix inject in Editor】的操作；在构建手机包的时候这个步骤会在构建时自动进行，编辑器模式下开发补丁需要手动执行Hotfix inject in Editor进行注入</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34204419/article/details/81564591">来源</a></li>
+</ul>
+<h2 id="Xlua和Ulua之间的区别"><a href="#Xlua和Ulua之间的区别" class="headerlink" title="Xlua和Ulua之间的区别"></a>Xlua和Ulua之间的区别</h2><pre><code>wrap</code></pre>
+<ul>
+<li>每个wrap文件都是对一个c#类的包装，在lua中，通过对wrap类中的函数调用，间接的对c#实例进行操作 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/blueberryzzz/p/9672342.html">细节</a></li>
+</ul>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><h3 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h3><ul>
+<li><ol>
+<li>Lua运行的机制，简单点可以这么说，Lua脚本跑在Lua虚拟机中，而不管ToLua还是XLua，他们做的事情是把Lua虚拟机源代码整合到动态库供Unity使用，然后在CS中启动虚拟机跑Lua代码，此外，动态库还提供一些支持代码提供给Lua和Unity的交互，这部分支持代码就是ToLua、XLua所做的事情</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>XLua的热修复原理是打Hotfix标签，打上标签的对象或者方法会在IL层挂钩.</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>XLua不像ToLua那样必须导出脚本才能在Lua中使用，XLua遇到没有导出的脚本会自动用反射去访问，所以对于XLua来说，脚本导出只是可以提高性能，另外就是安全性，避免代码裁剪导致iOS上出现Jit错误</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>导出的脚本会生成wrap文件，这部分文件在XLua虚拟机启动时，每个文件会生成一张表，这个表相当于提供给Lua侧使用的接口文件，Lua侧访问表中的接口时就可以访问到wrap文件，wrap文件再调用原文件中的实现代码执行真正的逻辑，去反射就是这么来的</li>
+</ol>
+</li>
+</ul>
+<h3 id="Lua的面向对象"><a href="#Lua的面向对象" class="headerlink" title="Lua的面向对象"></a>Lua的面向对象</h3><ul>
+<li>类和类实例：Lua中只有表的概念，其实类和类实例都是一张表，对于类来说，定义以后全局范围内只有一张表来标识这个类，类实例就是以这个类为基础创建的一张新表</li>
+<li>虚表：模仿C++里面向对象的设计方式，对每个类使用了一张虚表来存放成员和方法</li>
+</ul>
+<h3 id="Lua元表"><a href="#Lua元表" class="headerlink" title="Lua元表"></a>Lua元表</h3><ul>
+<li><p>Metatable 允许我们改变table的行为，每个行为关联了对应的元方法</p>
+</li>
+<li><p>setmetatable(table,metatable): 对指定 table 设置元表(metatable)，如果元表(metatable)中存在 __metatable 键值，setmetatable 会失败</p>
+</li>
+<li><p>getmetatable(table): 返回对象的元表(metatable)</p>
+</li>
+<li><p>__index 元方法:当你通过键来访问 table 的时候，如果这个键没有值，那么Lua就会寻找该table的metatable（假定有metatable）中的__index 键。如果__index包含一个表格，Lua会在表格中查找相应的键</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ lua</span><br><span class="line">Lua 5.3.0  Copyright (C) 1994-2015 Lua.org, PUC-Rio</span><br><span class="line">&gt; other &#x3D; &#123; foo &#x3D; 3 &#125;</span><br><span class="line">&gt; t &#x3D; setmetatable(&#123;&#125;, &#123; __index &#x3D; other &#125;)</span><br><span class="line">&gt; t.foo</span><br><span class="line">3</span><br><span class="line">&gt; t.bar</span><br><span class="line">nil</span><br></pre></td></tr></table></figure></li>
+<li><p>如果__index包含一个函数的话，Lua就会调用那个函数，table和键会作为参数传递给函数。</p>
+</li>
+<li><p>__index 元方法查看表中元素是否存在，如果不存在，返回结果为 nil；如果存在则由 __index 返回结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mytable &#x3D; setmetatable(&#123;key1 &#x3D; &quot;value1&quot;&#125;, &#123;</span><br><span class="line">  __index &#x3D; function(mytable, key)</span><br><span class="line">    if key &#x3D;&#x3D; &quot;key2&quot; then</span><br><span class="line">      return &quot;metatablevalue&quot;</span><br><span class="line">    else</span><br><span class="line">      return nil</span><br><span class="line">    end</span><br><span class="line">  end</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">print(mytable.key1,mytable.key2)</span><br><span class="line">value1    metatablevalue</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Lua 查找一个表元素时的规则，其实就是如下 3 个步骤:</span><br><span class="line"></span><br><span class="line">1.在表中查找，如果找到，返回该元素，找不到则继续</span><br><span class="line">2.判断该表是否有元表，如果没有元表，返回 nil，有元表则继续。</span><br><span class="line">3.判断元表有没有 __index 方法，如果 __index 方法为 nil，则返回 nil；如果 __index 方法是一个表，则重复 1、2、3；如果 __index 方法是一个函数，则返回该函数的返回值</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>__newindex 元方法</p>
+</li>
+<li><p>__newindex 元方法用来对表更新，__index则用来对表访问 。</p>
+</li>
+<li><p>当你给表的一个缺少的索引赋值，解释器就会查找__newindex 元方法：如果存在则调用这个函数而不进行赋值操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">mymetatable &#x3D; &#123;&#125;</span><br><span class="line">mytable &#x3D; setmetatable(&#123;key1 &#x3D; &quot;value1&quot;&#125;, &#123; __newindex &#x3D; mymetatable &#125;)</span><br><span class="line"></span><br><span class="line">print(mytable.key1)</span><br><span class="line"></span><br><span class="line">mytable.newkey &#x3D; &quot;新值2&quot;</span><br><span class="line">print(mytable.newkey,mymetatable.newkey)</span><br><span class="line"></span><br><span class="line">mytable.key1 &#x3D; &quot;新值1&quot;</span><br><span class="line">print(mytable.key1,mymetatable.key1)</span><br><span class="line"></span><br><span class="line">value1</span><br><span class="line">nil    新值2</span><br><span class="line">新值1    nil</span><br></pre></td></tr></table></figure></li>
+<li><p>以上实例中表设置了元方法 __newindex，在对新索引键（newkey）赋值时（mytable.newkey = “新值2”），会调用元方法，而不进行赋值。而如果对已存在的索引键（key1），则会进行赋值，而不调用元方法 __newindex。</p>
+</li>
+<li><p>以下实例使用了 rawset 函数来更新表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mytable &#x3D; setmetatable(&#123;key1 &#x3D; &quot;value1&quot;&#125;, &#123;</span><br><span class="line">  __newindex &#x3D; function(mytable, key, value)</span><br><span class="line">                rawset(mytable, key, &quot;\&quot;&quot;..value..&quot;\&quot;&quot;)</span><br><span class="line"></span><br><span class="line">  end</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">mytable.key1 &#x3D; &quot;new value&quot;</span><br><span class="line">mytable.key2 &#x3D; 4</span><br><span class="line"></span><br><span class="line">print(mytable.key1,mytable.key2)</span><br><span class="line">new value    &quot;4&quot;</span><br></pre></td></tr></table></figure></li>
+<li><p>__add 加法</p>
+</li>
+<li><p>__sub 减法</p>
+</li>
+<li><p>__mul 乘法</p>
+</li>
+<li><p>__div 除法</p>
+</li>
+<li><p>__mod 取余</p>
+</li>
+<li><p>__concat 连接(..)</p>
+</li>
+<li><p>__eq (==)</p>
+</li>
+<li><p>__lt (&lt;)</p>
+</li>
+<li><p>__le (&lt;=)</p>
+</li>
+<li><p>__unm (-)</p>
+</li>
+<li><p>__call 元方法在 Lua 调用一个值时调用。以下实例演示了计算表中元素的和</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">-- 计算表中最大值，table.maxn在Lua5.2以上版本中已无法使用</span><br><span class="line">-- 自定义计算表中最大键值函数 table_maxn，即计算表的元素个数</span><br><span class="line">function table_maxn(t)</span><br><span class="line">    local mn &#x3D; 0</span><br><span class="line">    for k, v in pairs(t) do</span><br><span class="line">        if mn &lt; k then</span><br><span class="line">            mn &#x3D; k</span><br><span class="line">        end</span><br><span class="line">    end</span><br><span class="line">    return mn</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">-- 定义元方法__call</span><br><span class="line">mytable &#x3D; setmetatable(&#123;10&#125;, &#123;</span><br><span class="line">  __call &#x3D; function(mytable, newtable)</span><br><span class="line">        sum &#x3D; 0</span><br><span class="line">        for i &#x3D; 1, table_maxn(mytable) do</span><br><span class="line">                sum &#x3D; sum + mytable[i]</span><br><span class="line">        end</span><br><span class="line">    for i &#x3D; 1, table_maxn(newtable) do</span><br><span class="line">                sum &#x3D; sum + newtable[i]</span><br><span class="line">        end</span><br><span class="line">        return sum</span><br><span class="line">  end</span><br><span class="line">&#125;)</span><br><span class="line">newtable &#x3D; &#123;10,20,30&#125;</span><br><span class="line">print(mytable(newtable))</span><br><span class="line">70</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>__tostring 元方法用于修改表的输出行为。以下实例我们自定义了表的输出内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mytable &#x3D; setmetatable(&#123; 10, 20, 30 &#125;, &#123;</span><br><span class="line">  __tostring &#x3D; function(mytable)</span><br><span class="line">    sum &#x3D; 0</span><br><span class="line">    for k, v in pairs(mytable) do</span><br><span class="line">                sum &#x3D; sum + v</span><br><span class="line">        end</span><br><span class="line">    return &quot;表所有元素的和为 &quot; .. sum</span><br><span class="line">  end</span><br><span class="line">&#125;)</span><br><span class="line">print(mytable)</span><br><span class="line">表所有元素的和为 60</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.runoob.com/lua/lua-metatables.html">来源</a></p>
+</li>
+</ul>
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><pre><code>xlua.access, no field __Hotfix0_Update</code></pre>
+<ul>
+<li>产生原因: 2019.2.后dll路径改到了 Temp/StagingArea/Data/Managed/Assembly-CSharp.dll.</li>
+<li>以前是Library\ScriptAssemblies\Assembly-CSharp.dll</li>
+<li>Temp/StagingArea/Data/Managed/Assembly-CSharp.dll 这个路径只有打包过程中出现 打包前后都不存在</li>
+<li>在 Hotfix.cs 中,修改 GetHotfixAssemblyPaths 函数的实现</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43420347/article/details/106441441">来源</a></li>
+</ul>
+
     </div>
 </article>
 
@@ -280,6 +409,12 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
                 </span>
             </li>
@@ -315,6 +450,12 @@
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
                 </span>
             </li>
             
@@ -430,6 +571,10 @@
 
 <script src="/js/hs.js"></script>
 <script src="/js/blog.js"></script>
+
+
+
+<script src="/js/oni.js"></script>
 
 
 

@@ -70,6 +70,25 @@
 </section>
     <!-- 欧尼酱功能, 谁用谁知道 -->
     
+    <div class="gal-menu gal-dropdown">
+    <div class="circle" id="gal">
+        <div class="ring">
+            <a href="https://ruancuan.github.io" class="menuItem" style="left: 50%; top: 15%;">首页</a>
+            
+            <a class="menuItem" style="left: 80.3109%; top: 32.5%;">下一页</a>
+            
+            <a href="/archives" class="menuItem" style="left: 80.3109%; top: 67.5%;">归档</a>
+            <a href="/about" class="menuItem" style="left: 50%; top: 85%;">关于</a>
+            <a href="/message" class="menuItem" style="left: 19.6891%; top: 67.5%;">留言板</a>
+
+            
+            <a class="menuItem" style="left: 19.6891%; top: 32.5%;">上一页</a>
+            
+        </div>
+        <audio id="audio" src="/imgs/oni.mp3"></audio>
+    </div>
+</div>
+    
     <header class="navbar navbar-inverse" id="gal-header">
     <div class="container">
         <div class="navbar-header">
@@ -116,10 +135,26 @@
                 
                 
                 
-                <li class="">
-                    <a href="/categories">
+                <li class="dropdown">
+                    <!-- TODO 添加hover dropdown效果 -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false" data-hover="dropdown">
                         <i class="fa fa-list"></i>分类
                     </a>
+                    <ul class="dropdown-menu">
+                        
+                        
+                        <li>
+                            <a href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/Unity/">Unity</a>
+                        </li>
+                        
+                        
+                        
+                    </ul>
                 </li>
                 
                 
@@ -147,10 +182,10 @@
                             <a href="/tags/Unity/">Unity</a>
                         </li>
                         
-                        
                         <li>
-                            <a href="/tags">...</a>
+                            <a href="/tags/Hexo/">Hexo</a>
                         </li>
+                        
                         
                         
                     </ul>
@@ -207,6 +242,10 @@
         <div class="alert alert-info" style="font-size: 14px; line-height: 2; font-weight: bold;">
             
              
+             
+                        <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
+                        <br>
+            
              
                         <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
                         <br>
@@ -267,6 +306,12 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
                 </span>
             </li>
@@ -302,6 +347,12 @@
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
                 </span>
             </li>
             
@@ -417,6 +468,10 @@
 
 <script src="/js/hs.js"></script>
 <script src="/js/blog.js"></script>
+
+
+
+<script src="/js/oni.js"></script>
 
 
 
