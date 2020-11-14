@@ -10,7 +10,7 @@
     
     
     
-    <title>分类 | Avalon</title>
+    <title>基于物理渲染 | Avalon</title>
     <link href="https://ruancuan.github.io" rel="prefetch" />
 
     
@@ -217,21 +217,34 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 gal-right" id="mainstay">
-                    <!-- 搜索页面(尽可能接近ZanBlog搜索功能) -->
-
-
+                    
 <article class="article well article-body" id="article">
+    <div class="breadcrumb">
+        <i class="fa fa-home"></i>
+        <a href="https://ruancuan.github.io">Avalon</a>
+        >
+        <span>基于物理渲染</span>
+    </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/categories/index.html">分类</a>
+                <a href="/2020/11/11/PBR/">基于物理渲染</a>
             </h1>
         </div>
         <div class="tag-article">
+            
             <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2020-11-08
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/Shader/">Shader</a>
+                
             </span>
+            
+            <span class="label label-gal">
+                <i class="fa fa-calendar"></i> 2020-11-11
+            </span>
+            
         </div>
     </div>
     <!-- 小型设备详细文章 -->
@@ -239,19 +252,99 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/categories/index.html">分类</a>
+                    <a href="/2020/11/11/PBR/">基于物理渲染</a>
                 </h4>
             </div>
             <p>
-                <i class="fa fa-calendar"></i> 2020-11-08
+                <i class="fa fa-calendar"></i> 2020-11-11
+            </p>
+            <p>
+                
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/Shader/">Shader</a>
+                
+                
+                
             </p>
         </center>
     </div>
     <div class="content-article">
-        
+        <h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><h3 id="微平面理论"><a href="#微平面理论" class="headerlink" title="微平面理论"></a>微平面理论</h3><ul>
+<li>将物体表面建模成做无数微观尺度上有随机朝向的理想镜面反射的小平面（microfacet）的理论。在实际的PBR 工作流中，这种物体表面的不规则性用粗糙度贴图或者高光度贴图来表示</li>
+</ul>
+<h3 id="能量守恒"><a href="#能量守恒" class="headerlink" title="能量守恒"></a>能量守恒</h3><ul>
+<li>射光线的能量永远不能超过入射光线的能量。随着粗糙度的上升镜面反射区域的面积会增加，作为平衡，镜面反射区域的平均亮度则会下降</li>
+</ul>
+<h3 id="菲涅尔反射"><a href="#菲涅尔反射" class="headerlink" title="菲涅尔反射"></a>菲涅尔反射</h3><ul>
+<li>光线以不同角度入射会有不同的反射率。相同的入射角度，不同的物质也会有不同的反射率。万物皆有菲涅尔反射。F0是即0度角入射的菲涅尔反射值。大多数非金属的F0范围是0.02<del>0.04，大多数金属的F0范围是0.7</del>1.0</li>
+</ul>
+<h3 id="线性空间"><a href="#线性空间" class="headerlink" title="线性空间"></a>线性空间</h3><ul>
+<li>光照计算必须在线性空间完成，shader 中输入的gamma空间的贴图比如漫反射贴图需要被转成线性空间，在具体操作时需要根据不同引擎和渲染器的不同做不同的操作。而描述物体表面属性的贴图如粗糙度，高光贴图，金属贴图等必须保证是线性空间</li>
+</ul>
+<h3 id="色调映射"><a href="#色调映射" class="headerlink" title="色调映射"></a>色调映射</h3><ul>
+<li>将宽范围的照明级别拟合到屏幕有限色域内的过程。因为基于HDR渲染出来的亮度值会超过显示器能够显示最大亮度，所以需要使用色调映射，将光照结果从HDR转换为显示器能够正常显示的LDR</li>
+</ul>
+<h3 id="物质的光学特性"><a href="#物质的光学特性" class="headerlink" title="物质的光学特性"></a>物质的光学特性</h3><ul>
+<li>绝缘体（Insulators），半导体（semi-conductors）和导体（conductors）。在渲染和游戏领域，我们一般只对其中的两个感兴趣：导体（金属）和绝缘体（电解质，非金属）。其中非金属具有单色/灰色镜面反射颜色。而金属具有彩色的镜面反射颜色。即非金属的F0是一个float。而金属的F0是一个float3</li>
+</ul>
+<h2 id="范畴"><a href="#范畴" class="headerlink" title="范畴"></a>范畴</h2><h3 id="基于物理的材质"><a href="#基于物理的材质" class="headerlink" title="基于物理的材质"></a>基于物理的材质</h3><h3 id="基于物理的光照"><a href="#基于物理的光照" class="headerlink" title="基于物理的光照"></a>基于物理的光照</h3><h3 id="基于物理适配的摄像机"><a href="#基于物理适配的摄像机" class="headerlink" title="基于物理适配的摄像机"></a>基于物理适配的摄像机</h3><h2 id="渲染方程"><a href="#渲染方程" class="headerlink" title="渲染方程"></a>渲染方程</h2><pre><code>渲染方程
+反射方程
+BxDF
+    双向反射分布函数 (BRDF)
+    双向散射分布函数 (BSDF)
+    双向透射分布函数 (BTDF)
+    双向散射表面反射分布函数 (BSSRDF)</code></pre>
+<p><img src="https://ruancuan.github.io/imgs/showImg/img_3.png" alt="Image 效果"><br><img src="https://ruancuan.github.io/imgs/showImg/img_4.png" alt="Image 效果"></p>
+<ul>
+<li>BxDF一般而言是对BRDF、BTDF、BSDF、BSSRDF等几种双向分布函数的一个统一的表示</li>
+<li>BSDF可以看做BRDF和BTDF更一般的形式，而且BSDF = BRDF + BTDF</li>
+<li>BSSRDF和BRDF的不同之处在于，BSSRDF可以指定不同的光线入射位置和出射位置</li>
+<li>BRDF最为简单，也最为常用。因为游戏和电影中的大多数物体都是不透明的，用BRDF就完全足够</li>
+<li>BSDF、BTDF、BSSRDF往往更多用于半透明材质和次表面散射材质</li>
+</ul>
+<h3 id="迪士尼原则的BxDF"><a href="#迪士尼原则的BxDF" class="headerlink" title="迪士尼原则的BxDF"></a>迪士尼原则的BxDF</h3><h4 id="迪士尼原则的BRDF"><a href="#迪士尼原则的BRDF" class="headerlink" title="迪士尼原则的BRDF"></a>迪士尼原则的BRDF</h4><pre><code>参数</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">baseColor（基础色）：表面颜色，通常由纹理贴图提供。</span><br><span class="line">subsurface（次表面）：使用次表面近似控制漫反射形状。</span><br><span class="line">metallic（金属度）：金属（0 &#x3D;电介质，1&#x3D;金属）。这是两种不同模型之间的线性混合。金属模型没有漫反射成分，并且还具有等于基础色的着色入射镜面反射。</span><br><span class="line">specular（镜面反射强度）：入射镜面反射量。用于取代折射率。</span><br><span class="line">specularTint（镜面反射颜色）：对美术控制的让步，用于对基础色（base color）的入射镜面反射进行颜色控制。掠射镜面反射仍然是非彩色的。</span><br><span class="line">roughness（粗糙度）：表面粗糙度，控制漫反射和镜面反射。</span><br><span class="line">anisotropic（各向异性强度）：各向异性程度。用于控制镜面反射高光的纵横比。（0 &#x3D;各向同性，1 &#x3D;最大各向异性）</span><br><span class="line">sheen（光泽度）：一种额外的掠射分量（grazing component），主要用于布料。</span><br><span class="line">sheenTint（光泽颜色）：对sheen（光泽度）的颜色控制。</span><br><span class="line">clearcoat（清漆强度）：有特殊用途的第二个镜面波瓣（specular lobe）。</span><br><span class="line">clearcoatGloss（清漆光泽度）：控制透明涂层光泽度，0 &#x3D;“缎面（satin）”外观，1 &#x3D;“光泽（gloss）”外观。</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ruancuan.github.io/imgs/showImg/img_5.jpg" alt="Image 效果"></p>
+<pre><code>渲染方程将BRDF分为 Diffuse BRDF 和 Specular BRDF</code></pre>
+<h5 id="Diffuse-BRDF"><a href="#Diffuse-BRDF" class="headerlink" title="Diffuse BRDF"></a>Diffuse BRDF</h5><pre><code>传统型 Lambert
+
+
+基于物理型 GGX + Smith;来自《使命召唤：二战》的多散射漫反射BRDF（MultiScattrering Diffuse BRDF）</code></pre>
+<h5 id="Specular-BRDF"><a href="#Specular-BRDF" class="headerlink" title="Specular BRDF"></a>Specular BRDF</h5><pre><code>公式:f=D(h)*F(v,h)*G(l,v,h)/(4*(n·l)*(n·v))
+D(h):法线分布函数：
+    描述微面元法线分布的概率，即正确朝向的法线的浓度。即具有正确朝向，能够将来自l的光反射到v的表面点的相对于表面面积的浓度
+F(v,h):菲涅尔方程：
+    描述不同的表面角下表面所反射的光线所占的比率
+G(l,v,h):几何函数：
+    描述微平面自成阴影的属性，即m = h的未被遮蔽的表面点的百分比
+分母：校正因子
+
+注：(Microfacet Cook-Torrance BRDF是实践中使用最广泛的模型，实际上也是人们可以想到的最简单的微平面模型。它仅对几何光学系统中的单层微表面上的单个散射进行建模，没有考虑多次散射，分层材质，以及衍射)</code></pre>
+<h6 id="Specular-D"><a href="#Specular-D" class="headerlink" title="Specular D"></a>Specular D</h6><pre><code>法线分布函数
+    主流的法线分布函数是GGX,相对于Blinn-Phong有着更好的高光长尾</code></pre>
+<p><img src="https://ruancuan.github.io/imgs/showImg/img_7.jpg" alt="Image 效果"><br>        简化版：<br>        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">half BRDF_DTerm(float NdotH, float i_roughness) &#123;</span><br><span class="line">    &#x2F;&#x2F;DGGX &#x3D;  a^2 &#x2F; π((a^2 – 1) (n · h)^2 + 1)^2</span><br><span class="line">    float a2 &#x3D; i_roughness * i_roughness;</span><br><span class="line">    float val &#x3D; ((a2 - 1) * (NdotH * NdotH) + 1);</span><br><span class="line">    return a2 &#x2F; (UNITY_PI * (val * val));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">float roughness &#x3D; 1.0 - _Smoothness;</span><br><span class="line">roughness &#x3D; max(roughness, 0.002);</span><br><span class="line">float roughness2 &#x3D; roughness * roughness;                </span><br><span class="line">&#x2F;&#x2F;d项</span><br><span class="line">half dCol &#x3D; BRDF_DTerm(NdotH, roughness2);</span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h6 id="Specular-F"><a href="#Specular-F" class="headerlink" title="Specular F"></a>Specular F</h6><pre><code>菲涅尔方程：
+    业界方案一般都采用Schlick的Fresnel近似，因为计算成本低廉，而且精度足够
+    ![Image 效果](https://ruancuan.github.io/imgs/showImg/img_8.jpg)
+    简化版：
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">half BRDF_GTerm(float NdotL, float NdotV, float i_roughness) &#123;</span><br><span class="line">    &#x2F;&#x2F;G(l,v,h)&#x3D;1&#x2F;(((n·l)(1-k)+k)*((n·v)(1-k)+k))</span><br><span class="line">    float k &#x3D; i_roughness * i_roughness &#x2F; 2;</span><br><span class="line">    return 0.5 &#x2F; ((NdotL * (1 - k) + k) + (NdotV * (1 - k) + k));</span><br><span class="line">&#125;</span><br><span class="line">half3 frenCol &#x3D; BRDF_FresnelTerm(_specularColor.rgb, LdotH);</span><br></pre></td></tr></table></figure></code></pre>
+<h6 id="Specular-G"><a href="#Specular-G" class="headerlink" title="Specular G"></a>Specular G</h6><pre><code>目前较为常用的是其中最为简单的形式，分离遮蔽阴影
+该形式将几何项G分为两个独立的部分：光线方向（light）和视线方向（view），并对两者用相同的分布函数来描述
+![Image 效果](https://ruancuan.github.io/imgs/showImg/img_9.jpg)
+
+half BRDF_GTerm(float NdotL, float NdotV, float i_roughness) &#123;
+    //G(l,v,h)=1/(((n·l)(1-k)+k)*((n·v)(1-k)+k))
+    float k = i_roughness * i_roughness / 2;
+    return 0.5 / ((NdotL * (1 - k) + k) + (NdotV * (1 - k) + k));
+&#125;
+half gTerm = BRDF_GTerm(NdotL, NdotV, roughness2);</code></pre>
+<h4 id="迪士尼原则的BSDF"><a href="#迪士尼原则的BSDF" class="headerlink" title="迪士尼原则的BSDF"></a>迪士尼原则的BSDF</h4><p><img src="https://ruancuan.github.io/imgs/showImg/img_6.jpg" alt="Image 效果"></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/53086060">来源</a></p>
+
     </div>
 </article>
-
 
 
                 </div>
@@ -409,7 +502,7 @@
                 
                 
                 <li>
-                    <a href="/categories/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2020/11/11/PBR/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
