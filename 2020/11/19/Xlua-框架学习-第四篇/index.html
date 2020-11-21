@@ -10,7 +10,7 @@
     
     
     
-    <title>水 | Avalon</title>
+    <title>Xlua-框架学习-第四篇 | Avalon</title>
     <link href="https://ruancuan.github.io" rel="prefetch" />
 
     
@@ -223,13 +223,13 @@
         <i class="fa fa-home"></i>
         <a href="https://ruancuan.github.io">Avalon</a>
         >
-        <span>水</span>
+        <span>Xlua-框架学习-第四篇</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2020/11/09/Water/">水</a>
+                <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
             </h1>
         </div>
         <div class="tag-article">
@@ -237,12 +237,14 @@
             <span class="label label-gal">
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Shader/">Shader</a>
+                <a href="/tags/Xlua/">Xlua</a>, 
+                
+                <a href="/tags/Unity/">Unity</a>
                 
             </span>
             
             <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2020-11-09
+                <i class="fa fa-calendar"></i> 2020-11-19
             </span>
             
         </div>
@@ -252,17 +254,19 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2020/11/09/Water/">水</a>
+                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
                 </h4>
             </div>
             <p>
-                <i class="fa fa-calendar"></i> 2020-11-09
+                <i class="fa fa-calendar"></i> 2020-11-19
             </p>
             <p>
                 
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Shader/">Shader</a>
+                <a href="/tags/Xlua/">Xlua</a>, 
+                
+                <a href="/tags/Unity/">Unity</a>
                 
                 
                 
@@ -270,16 +274,8 @@
         </center>
     </div>
     <div class="content-article">
-        <h2 id="河水"><a href="#河水" class="headerlink" title="河水"></a>河水</h2><p><img src="https://ruancuan.github.io/imgs/showImg/img_2.png" alt="Image 效果"></p>
-<h3 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">_MainTex (&quot;Texture&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;</span><br><span class="line">_DepthTex(&quot;DepthTex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;</span><br><span class="line">_DepthScale(&quot;DepthScale&quot;,float)&#x3D;0.5</span><br><span class="line">_BumpTex(&quot;BumpTex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;</span><br><span class="line">_NormalScale(&quot;NormalScale&quot;,Range(0.01,500))&#x3D;200</span><br><span class="line">_FoamTex(&quot;FoamTex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;        </span><br><span class="line">_Smoothness(&quot;Smoothness&quot;,Range(0,1))&#x3D;1</span><br><span class="line">_Saturation(&quot;饱和度&quot;,Range(0,3)) &#x3D; 1</span><br><span class="line">_specularColor(&quot;浪花颜色&quot;, Color) &#x3D; (1, 1, 1, 1)</span><br><span class="line"></span><br><span class="line">_WaveSpeed(&quot;波浪速度&quot;,Vector) &#x3D; (0.5,0.1,0,0)</span><br><span class="line">_NormalsStrength(&quot;法线强度&quot;, Range(0.0001,100)) &#x3D; 0.36</span><br><span class="line">_DepthGradientShallow(&quot;Depth Gradient Shallow&quot;, Color) &#x3D; (0.325, 0.807, 0.971, 0.725)</span><br><span class="line">_DepthGradientDeep(&quot;Depth Gradient Deep&quot;, Color) &#x3D; (0.086, 0.407, 1, 0.749)</span><br><span class="line">_fresnelPow(&quot;_fresnelPow&quot;,Range(0.1,20)) &#x3D; 5</span><br><span class="line"></span><br><span class="line">_waveFaMin(&quot;波浪指数最小&quot;,float) &#x3D; 0.08</span><br><span class="line">_waveFaMax(&quot;波浪指数最大&quot;,float) &#x3D; 0.3</span><br><span class="line">_waveFaSpeed(&quot;波浪速度&quot;,float) &#x3D; 50</span><br><span class="line">_line(&quot;波浪大小&quot;,Range(0,0.1)) &#x3D; 0.01</span><br><span class="line">cSecondWeight(&quot;cSecondWeight&quot;,Range(0,0.1)) &#x3D; 0.01</span><br></pre></td></tr></table></figure>
-
-<h3 id="混合采样"><a href="#混合采样" class="headerlink" title="混合采样"></a>混合采样</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">float4 bumpUv&#x3D;float4(1,1,1,1);</span><br><span class="line">bumpUv.xy &#x3D; i.depthUv + float2(_SinTime.x * _WaveSpeed.x, _SinTime.x * _WaveSpeed.y);</span><br><span class="line">bumpUv.zw &#x3D; i.depthUv + float2(_CosTime.y * 1.2 * _WaveSpeed.z, _SinTime.y*0.5* _WaveSpeed.w);</span><br><span class="line"></span><br><span class="line">half4 bump10 &#x3D; (tex2D(_BumpTex, bumpUv.xy &#x2F; _NormalScale) * 2) + (tex2D(_BumpTex, bumpUv.zw &#x2F; _NormalScale) * 2) - 2;</span><br><span class="line">half3 bump &#x3D; normalize(bump10);</span><br><span class="line">half3 oriOffset &#x3D; UnpackNormal(bump10);</span><br><span class="line">oriOffset.xy &#x3D; oriOffset.xy * _NormalsStrength;</span><br><span class="line">bump &#x3D; normalize(oriOffset);</span><br><span class="line">half2 offset &#x3D; oriOffset.xy; </span><br><span class="line">fixed4 col &#x3D; tex2D(_MainTex, i.uv+offset);</span><br><span class="line"></span><br><span class="line">float zdepth &#x3D; tex2D(_DepthTex, i.depthUv).r;</span><br><span class="line">zdepth &#x3D; pow(zdepth, 1.3);</span><br><span class="line">float depthDifference &#x3D; zdepth * _DepthScale;</span><br><span class="line">float waterDepthDifference01 &#x3D; saturate(depthDifference);</span><br><span class="line">float NdotL &#x3D; saturate(dot(normalDirection, lightDir));</span><br><span class="line">float NdotV &#x3D; abs(saturate(dot(normalDirection, viewDir)));</span><br><span class="line">float3 halfDirection &#x3D; normalize(viewDir + lightDir);</span><br><span class="line">half NdotH &#x3D; saturate(dot(normalDirection, halfDirection));</span><br><span class="line">float LdotH &#x3D; saturate(dot(lightDir, halfDirection));</span><br></pre></td></tr></table></figure>
-<pre><code>_DepthTex 表示哪些范围是水哪些部分是不处理</code></pre>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">float4 lightColor &#x3D; lerp(float4(1, 1, 1, 1),_DepthGradientShallow , smoothstep(0,0.5, waterDepthDifference01));</span><br><span class="line">float4 waterColor &#x3D; lerp(lightColor, _DepthGradientDeep, waterDepthDifference01);</span><br><span class="line">float alpha &#x3D; smoothstep(0, 0.1, zdepth);</span><br></pre></td></tr></table></figure>
-<pre><code>根据深度值进行颜色插值</code></pre>
-<h3 id="用到的相关函数"><a href="#用到的相关函数" class="headerlink" title="用到的相关函数"></a>用到的相关函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">half BRDF_DTerm(float NdotH, float i_roughness) &#123;</span><br><span class="line">    &#x2F;&#x2F;DGGX &#x3D;  a^2 &#x2F; π((a^2 – 1) (n · h)^2 + 1)^2</span><br><span class="line">    float a2 &#x3D; i_roughness * i_roughness;</span><br><span class="line">    float val &#x3D; ((a2 - 1) * (NdotH * NdotH) + 1);</span><br><span class="line">    return a2 &#x2F; (UNITY_PI * (val * val));</span><br><span class="line">&#125;</span><br><span class="line">half BRDF_GTerm(float NdotL, float NdotV, float i_roughness) &#123;</span><br><span class="line">    &#x2F;&#x2F;G(l,v,h)&#x3D;1&#x2F;(((n·l)(1-k)+k)*((n·v)(1-k)+k))</span><br><span class="line">    float k &#x3D; i_roughness * i_roughness &#x2F; 2;</span><br><span class="line">    return 0.5 &#x2F; ((NdotL * (1 - k) + k) + (NdotV * (1 - k) + k));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">half3 BRDF_FresnelTerm(half3 F0, float LdotH) &#123;</span><br><span class="line">    &#x2F;&#x2F;F(l,h) &#x3D; F0+(1-F0)(1-l·h)^5</span><br><span class="line">    return F0 + (1 - F0) * pow(1 - LdotH, 5);</span><br><span class="line">&#125;</span><br><span class="line">half3 custom_FresnelLerp(half3 F0, half3 F90, half cosA)</span><br><span class="line">&#123;</span><br><span class="line">    half t &#x3D; pow(1 - cosA, _fresnelPow);   &#x2F;&#x2F; ala Schlick interpoliation</span><br><span class="line">    return lerp(F0, F90, t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;高光，PBR的高光</span><br><span class="line">float roughness &#x3D; 1.0 - _Smoothness;</span><br><span class="line">roughness &#x3D; max(roughness, 0.002);</span><br><span class="line">float roughness2 &#x3D; roughness * roughness;                </span><br><span class="line">&#x2F;&#x2F;d项</span><br><span class="line">half dCol &#x3D; BRDF_DTerm(NdotH, roughness2);</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;G项</span><br><span class="line">half gTerm &#x3D; BRDF_GTerm(NdotL, NdotV, roughness2);</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F;F项 菲涅尔</span><br><span class="line">half3 frenCol &#x3D; BRDF_FresnelTerm(_specularColor.rgb, LdotH);</span><br><span class="line">float specularPBL &#x3D; dCol * gTerm * UNITY_PI * frenCol;</span><br><span class="line">&#x2F;&#x2F;不会为负数</span><br><span class="line">specularPBL &#x3D; max(0, specularPBL * NdotL);</span><br><span class="line">&#x2F;&#x2F;any 参数里的任意一个元素不为零</span><br><span class="line">specularPBL *&#x3D; any(_specularColor.rgb) ? 1.0 : 0.0;</span><br><span class="line"></span><br><span class="line">finalCol+&#x3D;float4(specularPBL*_LightColor0.xyz,1)*alpha;</span><br><span class="line">&#x2F;&#x2F; apply fog</span><br><span class="line">&#x2F;&#x2F; UNITY_APPLY_FOG(i.fogCoord, finalCol);</span><br><span class="line">finalCol.r &#x3D; clamp(finalCol.r, 0, 1);</span><br><span class="line">finalCol.g &#x3D; clamp(finalCol.g, 0, 1);</span><br><span class="line">finalCol.b &#x3D; clamp(finalCol.b, 0, 1);</span><br></pre></td></tr></table></figure>
+        <h4 id="GameLaunch-cs"><a href="#GameLaunch-cs" class="headerlink" title="GameLaunch.cs"></a>GameLaunch.cs</h4><h5 id="InitAppVersion"><a href="#InitAppVersion" class="headerlink" title="InitAppVersion():"></a>InitAppVersion():</h5><h4 id="AssetBundleManager-cs"><a href="#AssetBundleManager-cs" class="headerlink" title="AssetBundleManager.cs"></a>AssetBundleManager.cs</h4><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h4 id="Manifest-cs"><a href="#Manifest-cs" class="headerlink" title="Manifest.cs"></a>Manifest.cs</h4><pre><code>功能：Manifest管理：提供对AssetBundleManifest类的封装</code></pre>
+<h5 id="-1"><a href="#-1" class="headerlink" title=""></a></h5>
     </div>
 </article>
 
@@ -452,13 +448,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/21/Xlua-%E6%A1%86%E6%9E%B6%E5%BA%94%E7%94%A8/">Xlua 框架应用</a>
+                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/07/hello-world/">Hello World</a>
+                    <a href="/2020/11/21/Xlua-%E6%A1%86%E6%9E%B6%E5%BA%94%E7%94%A8/">Xlua 框架应用</a>
                 </span>
             </li>
             
@@ -475,7 +471,7 @@
                 
                 
                 <li>
-                    <a href="/2020/11/09/Water/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
