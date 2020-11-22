@@ -283,6 +283,31 @@
   type: 决定加载哪个逻辑场景，多个逻辑场景可以使用同一个物理场景</code></pre>
 </li>
 </ul>
+<ul>
+<li><p>UI模块:</p>
+<p>  需要在 UIConfig.lua 中配置 UIModel</p>
+<p>  窗口配置：</p>
+<pre><code>  Name:
+  Layer: 
+  Model: Model层逻辑代码 lua
+  Ctrl: Ctrl层逻辑代码 lua
+  View: View层逻辑代码 lua
+  PrefabPath: 预制体路径</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>消息事件</p>
+<p>  DataMessageNames.lua</p>
+<pre><code>  配置Model层消息名称</code></pre>
+<p>  UIMessageNames.lua</p>
+<pre><code>  配置View层消息名称</code></pre>
+<p>  UIBroadcast(messageName)</p>
+<pre><code>  广播事件</code></pre>
+</li>
+<li><p>编程方面</p>
+<p>  修改lua后没有反应，发现当前模式并不是编辑器模式，代码读取的是ab包资源</p>
+</li>
+</ul>
 <h3 id="C-方面"><a href="#C-方面" class="headerlink" title="C# 方面"></a>C# 方面</h3>
     </div>
 </article>
@@ -420,13 +445,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/11/PBR/">基于物理渲染</a>
+                    <a href="/2020/11/09/Water/">水</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/09/Water/">水</a>
+                    <a href="/2020/11/15/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AF%87/">Xlua 框架学习 第三篇</a>
                 </span>
             </li>
             
@@ -438,7 +463,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/15/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AF%87/">Xlua 框架学习 第三篇</a>
+                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
                 </span>
             </li>
             
