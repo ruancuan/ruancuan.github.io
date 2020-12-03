@@ -10,7 +10,7 @@
     
     
     
-    <title>tags: Hexo | Avalon</title>
+    <title>音频后处理 | Avalon</title>
     <link href="https://ruancuan.github.io" rel="prefetch" />
 
     
@@ -225,19 +225,34 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-8 gal-right" id="mainstay">
-                    <article class="article well article-body" id="article-tag">
+                    
+<article class="article well article-body" id="article">
     <div class="breadcrumb">
         <i class="fa fa-home"></i>
         <a href="https://ruancuan.github.io">Avalon</a>
         >
-        <span>标签</span>
+        <span>音频后处理</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/tags/Hexo/index.html">Hexo</a>
+                <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/">音频后处理</a>
             </h1>
+        </div>
+        <div class="tag-article">
+            
+            <span class="label label-gal">
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/audio/">audio</a>
+                
+            </span>
+            
+            <span class="label label-gal">
+                <i class="fa fa-calendar"></i> 2020-12-03
+            </span>
+            
         </div>
     </div>
     <!-- 小型设备详细文章 -->
@@ -245,21 +260,46 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/tags/Hexo/index.html">Hexo</a>
+                    <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/">音频后处理</a>
                 </h4>
             </div>
+            <p>
+                <i class="fa fa-calendar"></i> 2020-12-03
+            </p>
+            <p>
+                
+                <i class="fa fa-tags"></i>
+                
+                <a href="/tags/audio/">audio</a>
+                
+                
+                
+            </p>
         </center>
     </div>
-    <div class="content-article" style="margin-top: 30px;">
-        <div class="alert alert-info" style="font-size: 14px; line-height: 2; font-weight: bold;">
-            
-            <a href="/2020/11/07/hello-world/">Hello World</a>
-            <br>
-            
-            
-        </div>
+    <div class="content-article">
+        <h4 id="音频后处理"><a href="#音频后处理" class="headerlink" title="音频后处理"></a>音频后处理</h4><h5 id="素材的获取方式"><a href="#素材的获取方式" class="headerlink" title="素材的获取方式"></a>素材的获取方式</h5><pre><code>打开网易云音乐，随便找到一首歌，复制浏览器网址中的 id，或者客户端中分享歌曲链接中的 id</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;song?id&#x3D;40915589</span><br></pre></td></tr></table></figure>
+
+<pre><code>获取到歌曲 id 以后直接拼接就可以拿到歌曲的直链</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;music.163.com&#x2F;song&#x2F;media&#x2F;outer&#x2F;url?id&#x3D;40915589.mp3</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><a target="_blank" rel="noopener" href="http://www.mamicode.com/info-detail-2863160.html">来源</a></li>
+</ul>
+<h5 id="傅里叶变化公式"><a href="#傅里叶变化公式" class="headerlink" title="傅里叶变化公式"></a>傅里叶变化公式</h5><p><img src="https://ruancuan.github.io/imgs/showImg/img_10.png" alt="Image 效果"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">audiosource&#x3D;GetComponent&lt;AudioSource&gt;();</span><br><span class="line">float[] samples &#x3D; new float[audiosource.clip.samples * audiosource.clip.channels];</span><br><span class="line">audiosource.clip.GetData(samples, 0);</span><br><span class="line">while (i &lt; samples.Length)</span><br><span class="line">&#123;</span><br><span class="line">    float v &#x3D; Mathf.Asin(samples[i]);</span><br><span class="line">    samples[i] &#x3D; samples[i] + (Mathf.Sin(scale * v)) &#x2F; scale;</span><br><span class="line">    ++i;</span><br><span class="line">&#125;</span><br><span class="line">audiosource.clip.SetData(samples, 0);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/19714540">来源</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/110278983">来源</a></li>
+<li><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1195087">来源</a></li>
+<li>[来源](<a target="_blank" rel="noopener" href="https://blog.csdn.net/qiumingjian/category_2831885.html">https://blog.csdn.net/qiumingjian/category_2831885.html</a></li>
+</ul>
+
     </div>
 </article>
+
+
                 </div>
                 <aside class="col-md-4 gal-left" id="sidebar">
     <!-- 此为sidebar的搜索框, 非搜索结果页面 -->
@@ -380,13 +420,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/11/08/AuroraSky/">星空效果</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/11/PBR/">基于物理渲染</a>
+                    <a href="/2020/11/28/ShaderToy-To-Unity/">ShaderToy To Unity</a>
                 </span>
             </li>
             
@@ -428,12 +474,6 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/07/hello-world/">Hello World</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/">音频后处理</a>
                 </span>
             </li>
@@ -451,7 +491,7 @@
                 
                 
                 <li>
-                    <a href="/tags/Hexo/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>
