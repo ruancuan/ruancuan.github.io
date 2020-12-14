@@ -279,12 +279,9 @@
     </div>
     <div class="content-article">
         <h4 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h4><pre><code>shader_feature
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">作用</span><br><span class="line">    根据编译选项产生shader变体</span><br><span class="line">    避免分支语句导致的性能下降</span><br><span class="line">    主要用于材质选项上</span><br><span class="line">    unity打包时如果发现没有材质引用shader_feature产生的变体，不会打包该变体</span><br></pre></td></tr></table></figure>
-
-
-hull shader（细分控制着色器）
-
-[参考](https://gameinstitute.qq.com/community/detail/128308)</code></pre>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">作用</span><br><span class="line">    根据编译选项产生shader变体</span><br><span class="line">    避免分支语句导致的性能下降</span><br><span class="line">    主要用于材质选项上</span><br><span class="line">    unity打包时如果发现没有材质引用shader_feature产生的变体，不会打包该变体</span><br></pre></td></tr></table></figure></code></pre>
+<p>hull shader（细分控制着色器）</p>
+<p><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/128308">参考</a></p>
 <ul>
 <li><p>细分控制着色器的作用：数据传递</p>
 </li>
@@ -295,9 +292,11 @@ hull shader（细分控制着色器）
 <li><p>Unity在Lighting.cginc内对UnityTessellationFactors包了一层（针对三角形图元），此float4向量的前三个标量为周长Tessellation factor，最后一个为Inside Tessellation factor，在细分三角形时，内部会根据Inside factor产生N个同心三角形，三角形的边上会根据周长产生新的细分点</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#ifdef UNITY_CAN_COMPILE_TESSELLATION</span><br><span class="line">    struct UnityTessellationFactors &#123;</span><br><span class="line">        float edge[3] : SV_TessFactor;</span><br><span class="line">        float inside : SV_InsideTessFactor;</span><br><span class="line">    &#125;;</span><br><span class="line">#endif &#x2F;&#x2F; UNITY_CAN_COMPILE_TESSELLATION</span><br></pre></td></tr></table></figure>
 
-<p>  Domain Shader（细分计算着色器）</p>
-<p>  <a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/128308">参考</a></p>
 </li>
+</ul>
+<p>Domain Shader（细分计算着色器）</p>
+<p><a target="_blank" rel="noopener" href="https://gameinstitute.qq.com/community/detail/128308">参考</a></p>
+<ul>
 <li><p>细分计算着色器负责计算由hull shader传入的顶点的细分坐标的位置</p>
 </li>
 <li><p>包括空间转换（如没有几何着色器，否则也可选择在几何shader中转换）</p>
@@ -325,9 +324,8 @@ hull shader（细分控制着色器）
 <li><p>再进行空间转换到Clip空间，就可以输出到fragment shader片元着色器处进行最终渲染了</p>
 </li>
 </ul>
-<pre><code>Geometry Shader（集合体着色器）
-
-[参考](https://blog.csdn.net/qq_34980278/article/details/86749647)</code></pre>
+<p>Geometry Shader（集合体着色器）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_34980278/article/details/86749647">参考</a></p>
 <ul>
 <li>优点：可以修改网格（增删改模型的顶点及三角面等）</li>
 <li>缺点：几何体着色器并行调用硬件困难，并行程度低，效率和顶点着色器有很大的差距</li>
@@ -463,13 +461,31 @@ hull shader（细分控制着色器）
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/11/PBR/">基于物理渲染</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/12/11/Shader-%E5%A4%87%E5%BF%98%E5%BD%95/">Shader 备忘录</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/09/Water/">水</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2020/11/28/ShaderToy-To-Unity/">ShaderToy To Unity</a>
                 </span>
             </li>
             
@@ -488,24 +504,6 @@ hull shader（细分控制着色器）
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/11/22/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%94%E7%AF%87/">Xlua-框架学习-第五篇</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/11/21/Xlua-%E6%A1%86%E6%9E%B6%E5%BA%94%E7%94%A8/">Xlua 框架应用</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/">音频后处理</a>
                 </span>
             </li>
             
