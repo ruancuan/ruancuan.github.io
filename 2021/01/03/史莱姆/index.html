@@ -10,7 +10,7 @@
     
     
     
-    <title>Xlua-框架学习-第四篇 | Avalon</title>
+    <title>史莱姆 | Avalon</title>
     <link href="https://ruancuan.github.io" rel="prefetch" />
 
     
@@ -231,13 +231,13 @@
         <i class="fa fa-home"></i>
         <a href="https://ruancuan.github.io">Avalon</a>
         >
-        <span>Xlua-框架学习-第四篇</span>
+        <span>史莱姆</span>
     </div>
     <!-- 大型设备详细文章 -->
     <div class="hidden-xs">
         <div class="title-article">
             <h1>
-                <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
+                <a href="/2021/01/03/%E5%8F%B2%E8%8E%B1%E5%A7%86/">史莱姆</a>
             </h1>
         </div>
         <div class="tag-article">
@@ -245,14 +245,12 @@
             <span class="label label-gal">
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Xlua/">Xlua</a>, 
-                
-                <a href="/tags/Unity/">Unity</a>
+                <a href="/tags/Shader/">Shader</a>
                 
             </span>
             
             <span class="label label-gal">
-                <i class="fa fa-calendar"></i> 2020-11-19
+                <i class="fa fa-calendar"></i> 2021-01-03
             </span>
             
         </div>
@@ -262,19 +260,17 @@
         <center>
             <div class="title-article">
                 <h4>
-                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
+                    <a href="/2021/01/03/%E5%8F%B2%E8%8E%B1%E5%A7%86/">史莱姆</a>
                 </h4>
             </div>
             <p>
-                <i class="fa fa-calendar"></i> 2020-11-19
+                <i class="fa fa-calendar"></i> 2021-01-03
             </p>
             <p>
                 
                 <i class="fa fa-tags"></i>
                 
-                <a href="/tags/Xlua/">Xlua</a>, 
-                
-                <a href="/tags/Unity/">Unity</a>
+                <a href="/tags/Shader/">Shader</a>
                 
                 
                 
@@ -282,8 +278,24 @@
         </center>
     </div>
     <div class="content-article">
-        <h4 id="GameLaunch-cs"><a href="#GameLaunch-cs" class="headerlink" title="GameLaunch.cs"></a>GameLaunch.cs</h4><h5 id="InitAppVersion"><a href="#InitAppVersion" class="headerlink" title="InitAppVersion():"></a>InitAppVersion():</h5><h4 id="AssetBundleManager-cs"><a href="#AssetBundleManager-cs" class="headerlink" title="AssetBundleManager.cs"></a>AssetBundleManager.cs</h4><h5 id=""><a href="#" class="headerlink" title=""></a></h5><h4 id="Manifest-cs"><a href="#Manifest-cs" class="headerlink" title="Manifest.cs"></a>Manifest.cs</h4><pre><code>功能：Manifest管理：提供对AssetBundleManifest类的封装</code></pre>
-<h5 id="-1"><a href="#-1" class="headerlink" title=""></a></h5>
+        <p><img src="https://ruancuan.github.io/imgs/showImg/img_11.png" alt="Image 效果"></p>
+<h3 id="史莱姆效果"><a href="#史莱姆效果" class="headerlink" title="史莱姆效果"></a>史莱姆效果</h3><h4 id="形变"><a href="#形变" class="headerlink" title="形变"></a>形变</h4><ul>
+<li>用 法线的y 区分了球体的上下面区域，同时使用两个权重参数控制上方和下方的收缩大小</li>
+<li>应用了一个sin，为了缩短周期</li>
+<li>根据法线方向进行收缩</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">float val&#x3D; clamp(sin(PI*(v.normal.y*_ScaleVal.z)+_ScaleVal.y),0,1);</span><br><span class="line">float3 pos&#x3D;v.vertex+v.normal*val*_ScaleVal.x;</span><br><span class="line"></span><br><span class="line">o.vertex &#x3D; UnityObjectToClipPos(pos);</span><br></pre></td></tr></table></figure>
+
+<h4 id="贴图颜色"><a href="#贴图颜色" class="headerlink" title="贴图颜色"></a>贴图颜色</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fixed4 col &#x3D; tex2D(_MainTex, i.uv);</span><br><span class="line">float temp&#x3D;col.x;</span><br><span class="line">col&#x3D;col+ (1-temp)* _MainColor;</span><br></pre></td></tr></table></figure>
+
+<h4 id="两个颜色叠加"><a href="#两个颜色叠加" class="headerlink" title="两个颜色叠加"></a>两个颜色叠加</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">float val&#x3D; clamp(sin(PI*(-i.nml.y*_ScaleVal.z)+_ScaleVal.y),0,1);</span><br><span class="line">float3 worldNormal&#x3D; normalize(UnityObjectToWorldNormal(i.nml));</span><br><span class="line">float3 viewDir&#x3D;normalize(UnityWorldSpaceViewDir(i.worldPos));</span><br><span class="line">float nv&#x3D;dot(worldNormal,viewDir);</span><br><span class="line">float k&#x3D; max(0,_EdgeScale-nv);</span><br><span class="line">float3 secondCol&#x3D;_SecondColor*(1-temp)+temp*float3(1,1,1);</span><br><span class="line">col.xyz&#x3D;col.xyz*(1-val)+secondCol*val;&#x2F;&#x2F;*(1-temp);</span><br></pre></td></tr></table></figure>
+
+<h4 id="高光"><a href="#高光" class="headerlink" title="高光"></a>高光</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">float3 lightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));</span><br><span class="line">float3 halfDir&#x3D;normalize(lightDir+viewDir);</span><br><span class="line">float nh&#x3D;dot(halfDir,worldNormal);</span><br><span class="line">float spec&#x3D;max(0, pow(nh,_Specular*128)*_Gloss);</span><br></pre></td></tr></table></figure>
+
+<h4 id="最终颜色"><a href="#最终颜色" class="headerlink" title="最终颜色"></a>最终颜色</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">col.xyz&#x3D;_EdgeColor*k+(1-k)*col.xyz + spec*_SpecularColor.xyz;</span><br><span class="line">return float4(col.xyz,_Alpha);</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://www.element3ds.com/forum.php?mod=viewthread&tid=305966&_dsign=8c0e0160">参考</a></p>
+
     </div>
 </article>
 
@@ -420,13 +432,13 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/12/11/Shader-%E5%A4%87%E5%BF%98%E5%BD%95/">Shader 备忘录</a>
+                    <a href="/2020/11/11/PBR/">基于物理渲染</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/28/ShaderToy-To-Unity/">ShaderToy To Unity</a>
+                    <a href="/2020/12/11/Shader-%E5%A4%87%E5%BF%98%E5%BD%95/">Shader 备忘录</a>
                 </span>
             </li>
             
@@ -438,13 +450,19 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AF%87/">Xlua 框架学习 第一篇</a>
+                    <a href="/2020/11/15/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AF%87/">Xlua 框架学习 第三篇</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/11/22/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%94%E7%AF%87/">Xlua-框架学习-第五篇</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2020/11/21/Xlua-%E6%A1%86%E6%9E%B6%E5%BA%94%E7%94%A8/">Xlua 框架应用</a>
                 </span>
             </li>
             
@@ -457,12 +475,6 @@
             <li class="list-group-item">
                 <span class="post-title">
                     <a href="/2020/12/03/%E9%9F%B3%E9%A2%91%E5%90%8E%E5%A4%84%E7%90%86/">音频后处理</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/12/11/%E8%8D%89%E5%9C%B0/">草地</a>
                 </span>
             </li>
             
@@ -479,7 +491,7 @@
                 
                 
                 <li>
-                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
+                    <a href="/2021/01/03/%E5%8F%B2%E8%8E%B1%E5%A7%86/index.html#sidebar-links" data-toggle="tab" id="links-tab">个人链接</a>
                 </li>
                 
             </ul>

@@ -330,6 +330,48 @@
 <li>优点：可以修改网格（增删改模型的顶点及三角面等）</li>
 <li>缺点：几何体着色器并行调用硬件困难，并行程度低，效率和顶点着色器有很大的差距</li>
 </ul>
+<p>染色部分</p>
+<p><a target="_blank" rel="noopener" href="https://www.element3ds.com/forum.php?mod=viewthread&tid=189433&extra=page=1">参考</a></p>
+<ul>
+<li><p>基于查表的颜色替换</p>
+</li>
+<li><p>使用表格的方式提供了从一种颜色映射到另外一种颜色的定义方式，常见的应用场景是在后处理里对渲染结果做Color Grading。在一些2D游戏中，这也是一种对于角色和特效实施变色的方法</p>
+</li>
+<li><p>DyeColor = LookupTable(BaseColor.r, BaseColor.g, BaseColor.b)</p>
+</li>
+<li><p>优点：</p>
+</li>
+<li><p>可定制性强，在颜色的RGB空间中可以定义任意（当然由于要存成图，所以未必是连续的）颜色之间的映射关系，可以做到非常细致。</p>
+</li>
+<li><p>对于分区有原生的支持。这里还没有讨论到分区的部分，但是在一个角色不同染色分区没有颜色相似的前提下，对于一个角色使用一张Color Lookup Table图就可以处理很多分区的染色需求。</p>
+</li>
+<li><p>性能影响相对较小，只有rgb转换到UV空间的计算过程和一次贴图采样的消耗</p>
+</li>
+<li><p>缺点：</p>
+</li>
+<li><p>每种染色都要新制作一张Color Lookup Table，有较多的资源消耗，当然理论上不同角色之间相似的染色可以尝试复用Color Lookup Table，但是效果可能不够理想。</p>
+</li>
+<li><p>Color Lookup Table的尺寸和染色精细度需要权衡和取舍，两者不好兼得。</p>
+</li>
+<li><p>几乎没有玩家自己定制的可能性。这种方式需要提前定制好Color Lookup Table，因此基本上只能提供给玩家定制好的染色效果。</p>
+</li>
+</ul>
+<ul>
+<li>基于颜色叠加的染色方式</li>
+<li>相比于颜色替换，基于原始颜色进行一些计算从而获得新的颜色效果是一种更加通用的计算方式。我们首先讨论一种非常简单的计算方式——颜色叠加。颜色叠加的方式有多种，比如直接的相加，而更为常用的是乘法。在特效制作中就大量使用了这种变色方式</li>
+<li>DyeColor = BaseColor * TintColor</li>
+<li>问题：</li>
+<li>由于采用的是乘法，因此颜色亮度上肯定是小于等于原始颜色的亮度的，对于同一个区域内原始颜色变化较大的情况无法调整出好的效果。<br>所以，这种染色效果通常应用在一些简单的2D游戏或者cel shading这种大色块的3D渲染方式下，对于细节较多的写实3D游戏并不太适用</li>
+<li>改进：</li>
+<li>颜色值使用HDR，允许超过1的值，这样来解决颜色只能变暗的问题</li>
+<li>制作中，原始贴图的颜色采用灰度的方式，只保留明暗对比，所有的颜色都通过染色来做，这样可以剥离之前原始贴图颜色对于最终染色效果的影响</li>
+</ul>
+<ul>
+<li>基于HSV/HSL的染色方式</li>
+<li>HSV分别是色相（Hue），饱和度（Saturation），明度（Value）</li>
+<li>HSL中的L是亮度（Lightness），原理类似</li>
+<li></li>
+</ul>
 
     </div>
 </article>
@@ -376,6 +418,12 @@
             <i class="fa fa-chevron-circle-up panel-toggle"></i>
         </div>
         <ul class="list-group list-group-flush">
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2021/01/03/%E5%8F%B2%E8%8E%B1%E5%A7%86/">史莱姆</a>
+                </span>
+            </li>
             
             <li class="list-group-item">
                 <span class="post-title">
@@ -431,12 +479,6 @@
                 </span>
             </li>
             
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/11/09/Water/">水</a>
-                </span>
-            </li>
-            
         </ul>
     </div>
 </aside>
@@ -461,25 +503,7 @@
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/08/Md-%E8%AF%AD%E6%B3%95/">Md 语法</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/11/11/PBR/">基于物理渲染</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
                     <a href="/2020/12/11/Shader-%E5%A4%87%E5%BF%98%E5%BD%95/">Shader 备忘录</a>
-                </span>
-            </li>
-            
-            <li class="list-group-item">
-                <span class="post-title">
-                    <a href="/2020/11/09/Water/">水</a>
                 </span>
             </li>
             
@@ -491,25 +515,43 @@
             
             <li class="list-group-item">
                 <span class="post-title">
+                    <a href="/2020/11/09/Water/">水</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
                     <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%80%E7%AF%87/">Xlua 框架学习 第一篇</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/08/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%8C%E7%AF%87/">Xlua 框架学习 第二篇</a>
+                    <a href="/2020/11/15/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%B8%89%E7%AF%87/">Xlua 框架学习 第三篇</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/11/22/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E4%BA%94%E7%AF%87/">Xlua-框架学习-第五篇</a>
+                    <a href="/2020/11/19/Xlua-%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0-%E7%AC%AC%E5%9B%9B%E7%AF%87/">Xlua-框架学习-第四篇</a>
                 </span>
             </li>
             
             <li class="list-group-item">
                 <span class="post-title">
-                    <a href="/2020/12/11/%E8%8D%89%E5%9C%B0/">草地</a>
+                    <a href="/2020/11/21/Xlua-%E6%A1%86%E6%9E%B6%E5%BA%94%E7%94%A8/">Xlua 框架应用</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2020/11/07/hello-world/">Hello World</a>
+                </span>
+            </li>
+            
+            <li class="list-group-item">
+                <span class="post-title">
+                    <a href="/2021/01/03/%E5%8F%B2%E8%8E%B1%E5%A7%86/">史莱姆</a>
                 </span>
             </li>
             
