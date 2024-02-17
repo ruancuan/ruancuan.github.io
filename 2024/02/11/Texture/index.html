@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>纹理 | 星光咖啡馆</title><meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="纹理管线纹理重复平铺问题 纹理重复平铺超过三次后，会导致看起来不自然，避免这种周期性问题的常见方法上，将纹理值与另外一个非重复平铺的纹理相结合。       商业地形渲染系统           商业地形渲染系统可以根据地形类型、高度、坡度等因素，对多种纹理进行组合。同时纹理图像也会与几何模型在场景中的位置相关  使用着色器程序来实现一些特殊的转换函数，从而将纹理图案和瓦片贴图进行随机重组。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="纹理">
+<meta property="og:url" content="http://example.com/2024/02/11/Texture/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="纹理管线纹理重复平铺问题 纹理重复平铺超过三次后，会导致看起来不自然，避免这种周期性问题的常见方法上，将纹理值与另外一个非重复平铺的纹理相结合。       商业地形渲染系统           商业地形渲染系统可以根据地形类型、高度、坡度等因素，对多种纹理进行组合。同时纹理图像也会与几何模型在场景中的位置相关  使用着色器程序来实现一些特殊的转换函数，从而将纹理图案和瓦片贴图进行随机重组。">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-820e83e20101c346c15fb9025b27adc1_1440w.webp?source=d16d100b">
+<meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101004.png?raw=true">
+<meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611100923.png?raw=true">
+<meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101200.png?raw=true">
+<meta property="og:image" content="http://example.com/img/texture/ktxys.png">
+<meta property="og:image" content="http://example.com/img/texture/ktxorigin.png">
+<meta property="og:image" content="http://example.com/img/texture/texture1.png">
+<meta property="og:image" content="http://example.com/img/texture/2a318e68e7ddaf574ff1fcfd40d4e093416f6353.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101436.png">
+<meta property="og:image" content="http://example.com/img/texture/a81ac41576481f52856f1219210d8394beaddcf6.png">
+<meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101513.png?raw=true">
+<meta property="og:image" content="http://example.com/img/texture/450394fe859ceb699b644662a3a49e3e22459d42.png">
+<meta property="og:image" content="http://example.com/img/texture/bb443b2225cc3ebe7a1275c0440263199fd2d4e5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101754.png">
+<meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101813.png?raw=true">
+<meta property="article:published_time" content="2024-02-11T05:29:24.000Z">
+<meta property="article:modified_time" content="2024-02-17T10:26:41.191Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Shader">
+<meta property="article:tag" content="理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.zhimg.com/80/v2-820e83e20101c346c15fb9025b27adc1_1440w.webp?source=d16d100b">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0/">
+                游戏开发日记
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%97%A5%E8%AE%B0/" rel="tag">日记</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Texture" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        纹理
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-11T05:29:24.000Z" itemprop="datePublished">2024-02-11</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">实时渲染4</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="纹理管线"><a href="#纹理管线" class="headerlink" title="纹理管线"></a>纹理管线</h2><h3 id="纹理重复平铺问题"><a href="#纹理重复平铺问题" class="headerlink" title="纹理重复平铺问题"></a>纹理重复平铺问题</h3><blockquote>
+<p>纹理重复平铺超过三次后，会导致看起来不自然，避免这种周期性问题的常见方法上，将纹理值与另外一个非重复平铺的纹理相结合。</p>
+</blockquote>
+<dl>
+    <dt>商业地形渲染系统</dt>
+    <dd>
+    
+<p><a href="(https://github.com/QianMo/Real-Time-Rendering-4th-Bibliography-Collection/blob/main/Chapter%201-24/%5B0040%5D%20%5BSIGGRAPH%202007%5D%20Terrain%20Rendering%20in%20Frostbite%20Using%20Procedural%20Shader%20Splatting.pdf)">商业地形渲染系统</a>可以根据地形类型、高度、坡度等因素，对多种纹理进行组合。同时纹理图像也会与几何模型在场景中的位置相关</dd></p>
+<dt>
+使用着色器程序来实现一些特殊的转换函数，从而将纹理图案和瓦片贴图进行随机重组。
+</dt>
+
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/618916953">改善地形贴图密铺重复感的若干种采样方法 - 破晓的文章 - 知乎</a></p>
+<dd>
+使命召唤中的地形处理
+
+<p><img src="https://pic1.zhimg.com/80/v2-820e83e20101c346c15fb9025b27adc1_1440w.webp?source=d16d100b"></p>
+</dd>
+
+</dl>
+
+<h2 id="图像纹理"><a href="#图像纹理" class="headerlink" title="图像纹理"></a>图像纹理</h2><blockquote>
+<p>所有纹理抗锯齿算法背后的思想基本相同：对纹理进行预处理，创建某种数据结构，从而快速近似计算一组纹素对像素的影响。对于实时渲染而言，这些算法在执行过程中具有使用固定时间开销和资源开销的特点。通过这种方式，每个像素会采集固定数量的样本，并将这些结果组合起来，从而计算大量纹素对像素的影响。</p>
+</blockquote>
+<h3 id="放大"><a href="#放大" class="headerlink" title="放大"></a>放大</h3><blockquote>
+<p>底层的图像系统需要将纹理进行放大时，会使用放大过滤技术执行</p>
+</blockquote>
+<dl>
+    <dt>邻近过滤（使用了box滤波器）</dt>
+    <dd>单个纹素可能会变得十分明显，这种效果被称为像素化；因为放大时，会选取距离每个像素中心最近的纹素，从而产生了块状外观，只需要为每个像素获取一个像素即可。虽然质量差</dd></dl>
+<dl>    <dt>双线性插值</dt>
+    <dd>需要找到四个相邻的纹素，并在二维上进行线性插值，从而获得混合后的像素值。最后结果比较模糊，但并不会像邻近过滤那样出现锯齿。</dd>
+    <dd>并不是所有时候都需要进行双线性插值，比如国际象棋盘</dd>
+    </dl>
+
+<p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101004.png?raw=true"></p>
+<dl>
+    <dt>三次卷积插值（双三次插值）</dt>
+    <dd>使用4x4或者5x5范围纹素的加权和，可以实现更高质量的放大。虽然硬件并不原生支持三次卷积插值，但是可以在着色器程序中进行执行，计算成本比双线性插值更高，但是许多的高阶滤波器都可以被表示为重复的线性插值，因此可以通过若干次简单的线性插值，来充分利用纹理单元中用于线性插值操作的GPU硬件。</dd>
+    <dd>降低计算成本的方法：在一组2x2的纹素之间，使用一个平滑的曲线来进行插值。最常用的时smoothstep和quintic曲线。</dd>
+</dl>
+
+<p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611100923.png?raw=true"></p>
+<h3 id="缩小"><a href="#缩小" class="headerlink" title="缩小"></a>缩小</h3><blockquote>
+<p>当纹理被压缩时，平面上一个像素单元格可能会占据好几个纹素。为了得到这个像素的颜色值，应当将这几个纹素对像素的影响整合起来。</p>
+</blockquote>
+<dl>
+    <dt>邻近过滤</dt>
+    <dd>直接选择位于像素中心可见的纹素值，来作为自身的像素值，会产生严重的锯齿问题。会产生严重的锯齿问题，因为只是在影响像素的众多纹素中，选择一个纹素来代表该点的颜色，当表面发生移动时，这种瑕疵会变得更加明显，<font color=#ffa500>时域锯齿</font></dd>
+    <dt>Mipmap</dt>
+    <dd>将原始纹理反复过滤成更小的图像，在实际渲染发生前，原始纹理图像会生成一系列较小尺寸的版本。原始纹理会被下采样到原始尺寸的四分之一，每个新生成的纹素值，通常为原始纹理中四个相邻纹素的平均值，这个新生成的纹理有时也会被叫做原始纹理的字纹理。这个下采样的过程会被递归执行，直到最终生成的某个纹理的维度为1.</dd>
+    <dd>生成高质量mipmap的重要因素：</dd>
+    <dd>
+    <font color=#ffa500>使用良好的过滤</font>。生成mipmap的常用方法是将每2x2的纹素进行平均，从而获得下一级mip所对应的纹素值。具体使用的是一个box滤波器，这可能会导致较差的质量，因为它会对低频信息进行模糊，同时保留一些产生锯齿的高频信息。<font color=#ffa500>最好是使用高斯、Lanczos、Kaiser或者类似的滤波器</font>
+    </dd>
+    <dd>
+    <font color=#ffa500>伽马校正</font>，对于在非线性颜色空间中进行编码的纹理，在过滤时忽略伽马校正会修改该层级mipmap的感知亮度。如果使用了未校正的mipmap，相机距离物体越远，物体整体看起来越暗，对比度和表面细节也会受影响。会在线性空间中完成mipmap的生成和过滤，然后将生产的结果转换回sRGB颜色空间中并进行存储。
+    </dd>
+    <dd>
+    纹理化时访问mipmap的过程：计算纹理细节，为了确定沿着mipmap金字塔轴进行采样的层级。（计算第三个纹理坐标d）。方法1：利用像素单元格投影后所形成的四边形，取其中较长的那个边来对像素的覆盖范围进行近似；方法2：使用四个梯度中绝对值最大的那个作为度量。在得到d之后，根据坐标（u，v）对mipmap分别进行双线性插值，获得两个纹理值。最后按照参数d再对这两个纹理值进行一次线性插值。可以通过细节层次偏移（LOD bias），来对坐标d进行一定的控制，这是一个加在坐标d上的偏移量，影响了纹理的相对感知锐度。
+    <font color=#ffa500>好处：并不是单独计算每个纹素对像素的影响，而是对预先生成的纹素几何进行访问和插值，时间开销固定；缺陷：过度模糊，如下图所示。</font>
+    </dd>
+    <dt>SAT（面积积分表）</dt>
+    <dd>创建一个尺寸与纹理相同的数组，但是颜色存储的精度要更高（单个通道占据16个bit），像素单元格会被反向投影到纹理上，并被一个轴对齐矩形包围盒所包围，包围盒的四个角会用于访问SAT。</dd>
+    <dd>可以提供更好的质量，并且额外的内存开销合理，在现代广泛应用</dd>
+    <dt>无约束的各向异性过滤</dt>
+    <dd>重用现有的mipmap硬件。将像素单元格反向投影到纹理上，然后再对纹理上的四边形区域进行多次采样，最后将采样的结果整合在一起，作为该像素的颜色。</dd>
+    <dd>这可能会导致采样到很多无关纹素，使得表面变得模糊。</dd>
+</dl>
+
+<p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101200.png?raw=true"></p>
+<blockquote>
+<p>点采样（邻近过滤）、mipmap、SAT</p>
+</blockquote>
+<h2 id="体积纹理"><a href="#体积纹理" class="headerlink" title="体积纹理"></a>体积纹理</h2><h3 id="高精度体积纹理"><a href="#高精度体积纹理" class="headerlink" title="高精度体积纹理"></a>高精度体积纹理</h3><h2 id="立方体贴图"><a href="#立方体贴图" class="headerlink" title="立方体贴图"></a>立方体贴图</h2><h2 id="纹理压缩"><a href="#纹理压缩" class="headerlink" title="纹理压缩"></a>纹理压缩</h2><p><a href="ttps://www.bilibili.com/read/cv24650572/">百人计划</a></p>
+<blockquote>
+<p>图片和纹理区别：图片格式，图片文件的存储格式，通常在硬盘、内存中存储，传输文件时使用。无法减少显存占用率，且需要CPU压缩后才能被GPU读取，在显卡中解码都是RGBA的纹理格式。纹理格式，是显卡能够直接进行采样的纹理数据格式，通常在显卡中加载纹理时使用。对于贴图，设置纹理压缩格式后，CPU会对其进行压缩，然后传递给GPU读取。不设置的话，会压缩为RGBA32格式，但是占用高。</p>
+</blockquote>
+<blockquote>
+<p>目的是为了直接解决内存、带宽以及缓冲问题。通过让GPU对纹理进行实时的解码压缩，能够使得纹理占据更少的内存，从而增加有效的缓存大小。这样的纹理使用起来会更加有效，因为访问纹理时，对于内存带宽的开销变少了。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/GPUOpen-Tools/Compressonator">Compressonator</a>，可以查看压缩后图片的信息。<br><img src="/img/texture/ktxys.png"><br><img src="/img/texture/ktxorigin.png"></p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1LUPrvdjqFP5nGxe_SF_eQHB6mPbkBOb7w8qgSyQR0Uc/edit?pli=1#slide=id.p">Improving Texture Compression in Games</a>，Basis相对于其他格式，支持多平台，文件离线压缩为Basis，在运行时转码到需要的GPU格式，目前支持ETC1和DXT。</p>
+</blockquote>
+<p><img src="/img/texture/texture1.png"><br><img src="/img/texture/2a318e68e7ddaf574ff1fcfd40d4e093416f6353.png"></p>
+<dl>
+    <dt>DXTC/BC</dt>
+    <dd>块压缩方法，优点在于可以创建大小固定的压缩图像，具有独立编码的片段，并且解码过程简单（所以速度快）。每个压缩部分都可以被单独解码，没有共享查找表或者其他依赖关系，简化解码过程。</dd>
+    <dd>将4x4的像素块压缩成一个64或者128位的数据块。</dd>
+    <dd>变体：BC1（6:1）、BC2（4：1）、BC3（4:1）、BC4（4:1）、BC5（2:1）、BC6H（6:1）（针对HDR图像）、BC7（3:1）（专门针对LDR）</dd>
+    <dd>Unity对贴图类型位法线的贴图，会采用DXTnm格式，基于DXT5，将法线贴图的R通道存入A通道，然后将RB通道清位1，可以将法线xy信息分别存入RGB和A中进行压缩，获取更高的精度。</dd>
+
+<p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101436.png"><br><img src="/img/texture/a81ac41576481f52856f1219210d8394beaddcf6.png"></p>
+<dd>通过两个颜色可以通过线性插值再获得其他两个中间颜色，索引代表这四个颜色中的选择。(RGB565)</dd>
+
+
+<dd>有损压缩，无法从压缩纹理中还原出原始图像。</dd>
+<dt>ETC</dt>
+<dd>内置在OPENGL的API中，与BC一样拥有<font color=#ffa500>快速解码、随机访问、无间接查找和固定压缩比</font>的特点。将4x4的纹素块压缩为64bit，每个像素4bit。</dd>
+<dd>每2x4块（4x2）会存储一个基色。纹素块会从一个很小的静态查找表中选择四个常量，纹素块中的每个纹素，都可以选择其上的一个值，这会逐像素的修改其亮度值。压缩质量与DXTC相当。</dd>
+
+<p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101513.png?raw=true"></p>
+<p><img src="/img/texture/450394fe859ceb699b644662a3a49e3e22459d42.png"><br><img src="/img/texture/bb443b2225cc3ebe7a1275c0440263199fd2d4e5.png"></p>
+<blockquote>
+<p>亮度索引图</p>
+</blockquote>
+<dt>PVRTC</dt>
+<dd>广泛用于iphone和ipad上。对4x4的纹素块进行压缩，同时对每个纹素提供两种存储方案，2bit和4bit。提供两个图像的低频信号，信号通过对相邻纹素块进行插值获得，解码时，每个纹素会使用1bit或者2bit的插值因子，来在这两个信号之间进行插值。</dd>
+
+<dt>ASTC</dt>
+<dd>自适应可伸缩纹理压缩，可以将nxm的纹理块压缩成128bit，其中纹素块的尺寸范围可以从4x4（8bit）到12x12（0.89bit），纹素块尺寸大小会导致不同压缩比，不支持iphone6以下的设备。兼容性不够，且解码时间较长，图片尺寸不需要为2的幂次</dd>
+
+</dl>
+
+<h3 id="实际应用中的选择"><a href="#实际应用中的选择" class="headerlink" title="实际应用中的选择"></a>实际应用中的选择</h3><blockquote>
+<p>PC：低质量使用DXT1格式不支持A通道，DXT5格式支持A通道<br>安卓：低质量：ETC1格式，不支持A通道；ETC2，支持A通道，但要求OpenGL ES 3.0&#x2F;OpenGl 4.3以上版本；高质量使用ASTC格式，需要在安卓5.0&#x2F;Opengl ES 3.1以上版本；<br>IOS：高质量ASTC，需要iphone6以上版本；低质量使用PVRTC2格式，支持Iphone6以下版本；<br>实际移动端使用上常用ASTC。</p>
+</blockquote>
+<h2 id="Alpha映射"><a href="#Alpha映射" class="headerlink" title="Alpha映射"></a>Alpha映射</h2><blockquote>
+<p>alpha测试存在的问题，过度放大、过度缩小。当alpha测试和mipmap一起使用时，如果不进行特殊处理，效果会很差</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101754.png"></p>
+<blockquote>
+<p>右边为：根据覆盖率重新调整alpha值的alpha测试结果</p>
+</blockquote>
+<p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101813.png?raw=true"></p>
+<blockquote>
+<p>出现这种问题是因为计算的透明度阈值固定，mipmap进行阈值为0.5的alpha测试处理。</p>
+</blockquote>
+<blockquote>
+<p>透明度测试在放大的情况下会出现<font color=#ffa500>波纹瑕疵</font>，可以通过将alpha贴图预先计算为一个距离场来避免。</p>
+</blockquote>
+<blockquote>
+<p>Alpha to Coverage，以及类似的透明度自适应抗锯齿，可以将片元的透明度值转换为像素内覆盖的样本书。</p>
+</blockquote>
+<!-- flag of hidden posts -->
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>
