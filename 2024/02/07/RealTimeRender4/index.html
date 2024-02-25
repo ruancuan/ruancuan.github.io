@@ -20,19 +20,21 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="概述记录从实时渲染4这本书里学到的种种，以及现有引擎中怎么运用、自己如何使用等 目录图形渲染管线利用给定的虚拟相机、三维物体、光源等信息，来生成或渲染一张二维图像 图形处理单元Transform变换着色基础纹理给出了纹理化过程的一般框架，以及如何在纹理表明上应用纹理贴图的过程 阴影光与颜色基于物理的着色基础局部光照全局光照图像空间特效超越多边形体积和半透明渲染非真实感渲染多边形技术曲线和曲面管线优">
+  <meta name="description" content="概述记录从实时渲染4这本书里学到的种种，以及现有引擎中怎么运用、自己如何使用等 目录图形渲染管线利用给定的虚拟相机、三维物体、光源等信息，来生成或渲染一张二维图像 图形处理单元Transform变换着色基础纹理给出了纹理化过程的一般框架，以及如何在纹理表明上应用纹理贴图的过程 阴影光与颜色基于物理的着色基础局部光照全局光照 图像空间特效超越多边形体积和半透明渲染非真实感渲染多边形技术曲线和曲面管线">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实时渲染4">
 <meta property="og:url" content="http://example.com/2024/02/07/RealTimeRender4/index.html">
 <meta property="og:site_name" content="星光咖啡馆">
-<meta property="og:description" content="概述记录从实时渲染4这本书里学到的种种，以及现有引擎中怎么运用、自己如何使用等 目录图形渲染管线利用给定的虚拟相机、三维物体、光源等信息，来生成或渲染一张二维图像 图形处理单元Transform变换着色基础纹理给出了纹理化过程的一般框架，以及如何在纹理表明上应用纹理贴图的过程 阴影光与颜色基于物理的着色基础局部光照全局光照图像空间特效超越多边形体积和半透明渲染非真实感渲染多边形技术曲线和曲面管线优">
+<meta property="og:description" content="概述记录从实时渲染4这本书里学到的种种，以及现有引擎中怎么运用、自己如何使用等 目录图形渲染管线利用给定的虚拟相机、三维物体、光源等信息，来生成或渲染一张二维图像 图形处理单元Transform变换着色基础纹理给出了纹理化过程的一般框架，以及如何在纹理表明上应用纹理贴图的过程 阴影光与颜色基于物理的着色基础局部光照全局光照 图像空间特效超越多边形体积和半透明渲染非真实感渲染多边形技术曲线和曲面管线">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp">
 <meta property="article:published_time" content="2024-02-07T10:55:33.000Z">
-<meta property="article:modified_time" content="2024-02-17T10:31:32.564Z">
+<meta property="article:modified_time" content="2024-02-25T08:07:02.313Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Shader">
 <meta property="article:tag" content="理论">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp">
   
     <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
   
@@ -162,7 +164,7 @@
       <div class="category-box">
             <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
                 实时渲染4
-                <div class="category-count">5</div>
+                <div class="category-count">6</div>
             </a>
         
             <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0/">
@@ -236,7 +238,8 @@
           <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>记录从实时渲染4这本书里学到的种种，以及现有引擎中怎么运用、自己如何使用等</p>
 <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><h2 id="图形渲染管线"><a href="#图形渲染管线" class="headerlink" title="图形渲染管线"></a><a href="../../10/RenderPipeline">图形渲染管线</a></h2><p>利用给定的虚拟相机、三维物体、光源等信息，来生成或渲染一张二维图像</p>
 <h2 id="图形处理单元"><a href="#图形处理单元" class="headerlink" title="图形处理单元"></a>图形处理单元</h2><h2 id="Transform变换"><a href="#Transform变换" class="headerlink" title="Transform变换"></a>Transform变换</h2><h2 id="着色基础"><a href="#着色基础" class="headerlink" title="着色基础"></a>着色基础</h2><h2 id="纹理"><a href="#纹理" class="headerlink" title="纹理"></a><a href="../../11/Texture">纹理</a></h2><p>给出了纹理化过程的一般框架，以及如何在纹理表明上应用纹理贴图的过程</p>
-<h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><h2 id="光与颜色"><a href="#光与颜色" class="headerlink" title="光与颜色"></a>光与颜色</h2><h2 id="基于物理的着色基础"><a href="#基于物理的着色基础" class="headerlink" title="基于物理的着色基础"></a>基于物理的着色基础</h2><h2 id="局部光照"><a href="#局部光照" class="headerlink" title="局部光照"></a>局部光照</h2><h2 id="全局光照"><a href="#全局光照" class="headerlink" title="全局光照"></a>全局光照</h2><h2 id="图像空间特效"><a href="#图像空间特效" class="headerlink" title="图像空间特效"></a><a href="../../17/%E5%9B%BE%E5%83%8F%E7%A9%BA%E9%97%B4%E7%89%B9%E6%95%88">图像空间特效</a></h2><h2 id="超越多边形"><a href="#超越多边形" class="headerlink" title="超越多边形"></a>超越多边形</h2><h2 id="体积和半透明渲染"><a href="#体积和半透明渲染" class="headerlink" title="体积和半透明渲染"></a>体积和半透明渲染</h2><h2 id="非真实感渲染"><a href="#非真实感渲染" class="headerlink" title="非真实感渲染"></a>非真实感渲染</h2><h2 id="多边形技术"><a href="#多边形技术" class="headerlink" title="多边形技术"></a>多边形技术</h2><h2 id="曲线和曲面"><a href="#曲线和曲面" class="headerlink" title="曲线和曲面"></a>曲线和曲面</h2><h2 id="管线优化"><a href="#管线优化" class="headerlink" title="管线优化"></a>管线优化</h2><h2 id="加速算法"><a href="#加速算法" class="headerlink" title="加速算法"></a><a href="../../17/%E5%8A%A0%E9%80%9F%E7%AE%97%E6%B3%95">加速算法</a></h2><h2 id="高效着色"><a href="#高效着色" class="headerlink" title="高效着色"></a>高效着色</h2><h2 id="虚拟现实"><a href="#虚拟现实" class="headerlink" title="虚拟现实"></a>虚拟现实</h2><h2 id="相交测试方法"><a href="#相交测试方法" class="headerlink" title="相交测试方法"></a>相交测试方法</h2><h2 id="图像硬件"><a href="#图像硬件" class="headerlink" title="图像硬件"></a>图像硬件</h2><h2 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h2><h2 id="实时光线追踪"><a href="#实时光线追踪" class="headerlink" title="实时光线追踪"></a>实时光线追踪</h2>
+<h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><h2 id="光与颜色"><a href="#光与颜色" class="headerlink" title="光与颜色"></a>光与颜色</h2><h2 id="基于物理的着色基础"><a href="#基于物理的着色基础" class="headerlink" title="基于物理的着色基础"></a>基于物理的着色基础</h2><h2 id="局部光照"><a href="#局部光照" class="headerlink" title="局部光照"></a>局部光照</h2><h2 id="全局光照"><a href="#全局光照" class="headerlink" title="全局光照"></a><a href="../../25/%E5%85%A8%E5%B1%80%E5%85%89%E7%85%A7">全局光照</a></h2><p><img src="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp"></p>
+<h2 id="图像空间特效"><a href="#图像空间特效" class="headerlink" title="图像空间特效"></a><a href="../../17/%E5%9B%BE%E5%83%8F%E7%A9%BA%E9%97%B4%E7%89%B9%E6%95%88">图像空间特效</a></h2><h2 id="超越多边形"><a href="#超越多边形" class="headerlink" title="超越多边形"></a>超越多边形</h2><h2 id="体积和半透明渲染"><a href="#体积和半透明渲染" class="headerlink" title="体积和半透明渲染"></a>体积和半透明渲染</h2><h2 id="非真实感渲染"><a href="#非真实感渲染" class="headerlink" title="非真实感渲染"></a>非真实感渲染</h2><h2 id="多边形技术"><a href="#多边形技术" class="headerlink" title="多边形技术"></a>多边形技术</h2><h2 id="曲线和曲面"><a href="#曲线和曲面" class="headerlink" title="曲线和曲面"></a>曲线和曲面</h2><h2 id="管线优化"><a href="#管线优化" class="headerlink" title="管线优化"></a>管线优化</h2><h2 id="加速算法"><a href="#加速算法" class="headerlink" title="加速算法"></a><a href="../../17/%E5%8A%A0%E9%80%9F%E7%AE%97%E6%B3%95">加速算法</a></h2><h2 id="高效着色"><a href="#高效着色" class="headerlink" title="高效着色"></a>高效着色</h2><h2 id="虚拟现实"><a href="#虚拟现实" class="headerlink" title="虚拟现实"></a>虚拟现实</h2><h2 id="相交测试方法"><a href="#相交测试方法" class="headerlink" title="相交测试方法"></a>相交测试方法</h2><h2 id="图像硬件"><a href="#图像硬件" class="headerlink" title="图像硬件"></a>图像硬件</h2><h2 id="碰撞检测"><a href="#碰撞检测" class="headerlink" title="碰撞检测"></a>碰撞检测</h2><h2 id="实时光线追踪"><a href="#实时光线追踪" class="headerlink" title="实时光线追踪"></a>实时光线追踪</h2>
         
       </div>
 

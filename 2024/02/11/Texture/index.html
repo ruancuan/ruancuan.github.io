@@ -43,7 +43,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101754.png">
 <meta property="og:image" content="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101813.png?raw=true">
 <meta property="article:published_time" content="2024-02-11T05:29:24.000Z">
-<meta property="article:modified_time" content="2024-02-17T10:26:41.191Z">
+<meta property="article:modified_time" content="2024-02-25T08:15:14.776Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Shader">
 <meta property="article:tag" content="理论">
@@ -178,7 +178,7 @@
       <div class="category-box">
             <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
                 实时渲染4
-                <div class="category-count">5</div>
+                <div class="category-count">6</div>
             </a>
         
             <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0/">
@@ -254,19 +254,19 @@
 </blockquote>
 <dl>
     <dt>商业地形渲染系统</dt>
-    <dd>
+    <dl>
     
-<p><a href="(https://github.com/QianMo/Real-Time-Rendering-4th-Bibliography-Collection/blob/main/Chapter%201-24/%5B0040%5D%20%5BSIGGRAPH%202007%5D%20Terrain%20Rendering%20in%20Frostbite%20Using%20Procedural%20Shader%20Splatting.pdf)">商业地形渲染系统</a>可以根据地形类型、高度、坡度等因素，对多种纹理进行组合。同时纹理图像也会与几何模型在场景中的位置相关</dd></p>
+<p><a href="(https://github.com/QianMo/Real-Time-Rendering-4th-Bibliography-Collection/blob/main/Chapter%201-24/%5B0040%5D%20%5BSIGGRAPH%202007%5D%20Terrain%20Rendering%20in%20Frostbite%20Using%20Procedural%20Shader%20Splatting.pdf)">商业地形渲染系统</a>可以根据地形类型、高度、坡度等因素，对多种纹理进行组合。同时纹理图像也会与几何模型在场景中的位置相关</dl></p>
 <dt>
 使用着色器程序来实现一些特殊的转换函数，从而将纹理图案和瓦片贴图进行随机重组。
 </dt>
 
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/618916953">改善地形贴图密铺重复感的若干种采样方法 - 破晓的文章 - 知乎</a></p>
-<dd>
+<dl>
 使命召唤中的地形处理
 
 <p><img src="https://pic1.zhimg.com/80/v2-820e83e20101c346c15fb9025b27adc1_1440w.webp?source=d16d100b"></p>
-</dd>
+</dl>
 
 </dl>
 
@@ -278,17 +278,17 @@
 </blockquote>
 <dl>
     <dt>邻近过滤（使用了box滤波器）</dt>
-    <dd>单个纹素可能会变得十分明显，这种效果被称为像素化；因为放大时，会选取距离每个像素中心最近的纹素，从而产生了块状外观，只需要为每个像素获取一个像素即可。虽然质量差</dd></dl>
+    <dl>单个纹素可能会变得十分明显，这种效果被称为像素化；因为放大时，会选取距离每个像素中心最近的纹素，从而产生了块状外观，只需要为每个像素获取一个像素即可。虽然质量差</dl></dl>
 <dl>    <dt>双线性插值</dt>
-    <dd>需要找到四个相邻的纹素，并在二维上进行线性插值，从而获得混合后的像素值。最后结果比较模糊，但并不会像邻近过滤那样出现锯齿。</dd>
-    <dd>并不是所有时候都需要进行双线性插值，比如国际象棋盘</dd>
+    <dl>需要找到四个相邻的纹素，并在二维上进行线性插值，从而获得混合后的像素值。最后结果比较模糊，但并不会像邻近过滤那样出现锯齿。</dl>
+    <dl>并不是所有时候都需要进行双线性插值，比如国际象棋盘</dl>
     </dl>
 
 <p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101004.png?raw=true"></p>
 <dl>
     <dt>三次卷积插值（双三次插值）</dt>
-    <dd>使用4x4或者5x5范围纹素的加权和，可以实现更高质量的放大。虽然硬件并不原生支持三次卷积插值，但是可以在着色器程序中进行执行，计算成本比双线性插值更高，但是许多的高阶滤波器都可以被表示为重复的线性插值，因此可以通过若干次简单的线性插值，来充分利用纹理单元中用于线性插值操作的GPU硬件。</dd>
-    <dd>降低计算成本的方法：在一组2x2的纹素之间，使用一个平滑的曲线来进行插值。最常用的时smoothstep和quintic曲线。</dd>
+    <dl>使用4x4或者5x5范围纹素的加权和，可以实现更高质量的放大。虽然硬件并不原生支持三次卷积插值，但是可以在着色器程序中进行执行，计算成本比双线性插值更高，但是许多的高阶滤波器都可以被表示为重复的线性插值，因此可以通过若干次简单的线性插值，来充分利用纹理单元中用于线性插值操作的GPU硬件。</dl>
+    <dl>降低计算成本的方法：在一组2x2的纹素之间，使用一个平滑的曲线来进行插值。最常用的时smoothstep和quintic曲线。</dl>
 </dl>
 
 <p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611100923.png?raw=true"></p>
@@ -297,26 +297,26 @@
 </blockquote>
 <dl>
     <dt>邻近过滤</dt>
-    <dd>直接选择位于像素中心可见的纹素值，来作为自身的像素值，会产生严重的锯齿问题。会产生严重的锯齿问题，因为只是在影响像素的众多纹素中，选择一个纹素来代表该点的颜色，当表面发生移动时，这种瑕疵会变得更加明显，<font color=#ffa500>时域锯齿</font></dd>
+    <dl>直接选择位于像素中心可见的纹素值，来作为自身的像素值，会产生严重的锯齿问题。会产生严重的锯齿问题，因为只是在影响像素的众多纹素中，选择一个纹素来代表该点的颜色，当表面发生移动时，这种瑕疵会变得更加明显，<font color=#ffa500>时域锯齿</font></dl>
     <dt>Mipmap</dt>
-    <dd>将原始纹理反复过滤成更小的图像，在实际渲染发生前，原始纹理图像会生成一系列较小尺寸的版本。原始纹理会被下采样到原始尺寸的四分之一，每个新生成的纹素值，通常为原始纹理中四个相邻纹素的平均值，这个新生成的纹理有时也会被叫做原始纹理的字纹理。这个下采样的过程会被递归执行，直到最终生成的某个纹理的维度为1.</dd>
-    <dd>生成高质量mipmap的重要因素：</dd>
-    <dd>
+    <dl>将原始纹理反复过滤成更小的图像，在实际渲染发生前，原始纹理图像会生成一系列较小尺寸的版本。原始纹理会被下采样到原始尺寸的四分之一，每个新生成的纹素值，通常为原始纹理中四个相邻纹素的平均值，这个新生成的纹理有时也会被叫做原始纹理的字纹理。这个下采样的过程会被递归执行，直到最终生成的某个纹理的维度为1.</dl>
+    <dl>生成高质量mipmap的重要因素：</dl>
+    <dl>
     <font color=#ffa500>使用良好的过滤</font>。生成mipmap的常用方法是将每2x2的纹素进行平均，从而获得下一级mip所对应的纹素值。具体使用的是一个box滤波器，这可能会导致较差的质量，因为它会对低频信息进行模糊，同时保留一些产生锯齿的高频信息。<font color=#ffa500>最好是使用高斯、Lanczos、Kaiser或者类似的滤波器</font>
-    </dd>
-    <dd>
+    </dl>
+    <dl>
     <font color=#ffa500>伽马校正</font>，对于在非线性颜色空间中进行编码的纹理，在过滤时忽略伽马校正会修改该层级mipmap的感知亮度。如果使用了未校正的mipmap，相机距离物体越远，物体整体看起来越暗，对比度和表面细节也会受影响。会在线性空间中完成mipmap的生成和过滤，然后将生产的结果转换回sRGB颜色空间中并进行存储。
-    </dd>
-    <dd>
+    </dl>
+    <dl>
     纹理化时访问mipmap的过程：计算纹理细节，为了确定沿着mipmap金字塔轴进行采样的层级。（计算第三个纹理坐标d）。方法1：利用像素单元格投影后所形成的四边形，取其中较长的那个边来对像素的覆盖范围进行近似；方法2：使用四个梯度中绝对值最大的那个作为度量。在得到d之后，根据坐标（u，v）对mipmap分别进行双线性插值，获得两个纹理值。最后按照参数d再对这两个纹理值进行一次线性插值。可以通过细节层次偏移（LOD bias），来对坐标d进行一定的控制，这是一个加在坐标d上的偏移量，影响了纹理的相对感知锐度。
     <font color=#ffa500>好处：并不是单独计算每个纹素对像素的影响，而是对预先生成的纹素几何进行访问和插值，时间开销固定；缺陷：过度模糊，如下图所示。</font>
-    </dd>
+    </dl>
     <dt>SAT（面积积分表）</dt>
-    <dd>创建一个尺寸与纹理相同的数组，但是颜色存储的精度要更高（单个通道占据16个bit），像素单元格会被反向投影到纹理上，并被一个轴对齐矩形包围盒所包围，包围盒的四个角会用于访问SAT。</dd>
-    <dd>可以提供更好的质量，并且额外的内存开销合理，在现代广泛应用</dd>
+    <dl>创建一个尺寸与纹理相同的数组，但是颜色存储的精度要更高（单个通道占据16个bit），像素单元格会被反向投影到纹理上，并被一个轴对齐矩形包围盒所包围，包围盒的四个角会用于访问SAT。</dl>
+    <dl>可以提供更好的质量，并且额外的内存开销合理，在现代广泛应用</dl>
     <dt>无约束的各向异性过滤</dt>
-    <dd>重用现有的mipmap硬件。将像素单元格反向投影到纹理上，然后再对纹理上的四边形区域进行多次采样，最后将采样的结果整合在一起，作为该像素的颜色。</dd>
-    <dd>这可能会导致采样到很多无关纹素，使得表面变得模糊。</dd>
+    <dl>重用现有的mipmap硬件。将像素单元格反向投影到纹理上，然后再对纹理上的四边形区域进行多次采样，最后将采样的结果整合在一起，作为该像素的颜色。</dl>
+    <dl>这可能会导致采样到很多无关纹素，使得表面变得模糊。</dl>
 </dl>
 
 <p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101200.png?raw=true"></p>
@@ -337,19 +337,19 @@
 <p><img src="/img/texture/texture1.png"><br><img src="/img/texture/2a318e68e7ddaf574ff1fcfd40d4e093416f6353.png"></p>
 <dl>
     <dt>DXTC/BC</dt>
-    <dd>块压缩方法，优点在于可以创建大小固定的压缩图像，具有独立编码的片段，并且解码过程简单（所以速度快）。每个压缩部分都可以被单独解码，没有共享查找表或者其他依赖关系，简化解码过程。</dd>
-    <dd>将4x4的像素块压缩成一个64或者128位的数据块。</dd>
-    <dd>变体：BC1（6:1）、BC2（4：1）、BC3（4:1）、BC4（4:1）、BC5（2:1）、BC6H（6:1）（针对HDR图像）、BC7（3:1）（专门针对LDR）</dd>
-    <dd>Unity对贴图类型位法线的贴图，会采用DXTnm格式，基于DXT5，将法线贴图的R通道存入A通道，然后将RB通道清位1，可以将法线xy信息分别存入RGB和A中进行压缩，获取更高的精度。</dd>
+    <dl>块压缩方法，优点在于可以创建大小固定的压缩图像，具有独立编码的片段，并且解码过程简单（所以速度快）。每个压缩部分都可以被单独解码，没有共享查找表或者其他依赖关系，简化解码过程。</dl>
+    <dl>将4x4的像素块压缩成一个64或者128位的数据块。</dl>
+    <dl>变体：BC1（6:1）、BC2（4：1）、BC3（4:1）、BC4（4:1）、BC5（2:1）、BC6H（6:1）（针对HDR图像）、BC7（3:1）（专门针对LDR）</dl>
+    <dl>Unity对贴图类型位法线的贴图，会采用DXTnm格式，基于DXT5，将法线贴图的R通道存入A通道，然后将RB通道清位1，可以将法线xy信息分别存入RGB和A中进行压缩，获取更高的精度。</dl>
 
 <p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-6/20230611101436.png"><br><img src="/img/texture/a81ac41576481f52856f1219210d8394beaddcf6.png"></p>
-<dd>通过两个颜色可以通过线性插值再获得其他两个中间颜色，索引代表这四个颜色中的选择。(RGB565)</dd>
+<dl>通过两个颜色可以通过线性插值再获得其他两个中间颜色，索引代表这四个颜色中的选择。(RGB565)</dl>
 
 
-<dd>有损压缩，无法从压缩纹理中还原出原始图像。</dd>
+<dl>有损压缩，无法从压缩纹理中还原出原始图像。</dl>
 <dt>ETC</dt>
-<dd>内置在OPENGL的API中，与BC一样拥有<font color=#ffa500>快速解码、随机访问、无间接查找和固定压缩比</font>的特点。将4x4的纹素块压缩为64bit，每个像素4bit。</dd>
-<dd>每2x4块（4x2）会存储一个基色。纹素块会从一个很小的静态查找表中选择四个常量，纹素块中的每个纹素，都可以选择其上的一个值，这会逐像素的修改其亮度值。压缩质量与DXTC相当。</dd>
+<dl>内置在OPENGL的API中，与BC一样拥有<font color=#ffa500>快速解码、随机访问、无间接查找和固定压缩比</font>的特点。将4x4的纹素块压缩为64bit，每个像素4bit。</dl>
+<dl>每2x4块（4x2）会存储一个基色。纹素块会从一个很小的静态查找表中选择四个常量，纹素块中的每个纹素，都可以选择其上的一个值，这会逐像素的修改其亮度值。压缩质量与DXTC相当。</dl>
 
 <p><img src="https://github.com/Morakito/Real-Time-Rendering-4th-CN/blob/master/sourceFile/images/Chapter-6/20230611101513.png?raw=true"></p>
 <p><img src="/img/texture/450394fe859ceb699b644662a3a49e3e22459d42.png"><br><img src="/img/texture/bb443b2225cc3ebe7a1275c0440263199fd2d4e5.png"></p>
@@ -357,10 +357,10 @@
 <p>亮度索引图</p>
 </blockquote>
 <dt>PVRTC</dt>
-<dd>广泛用于iphone和ipad上。对4x4的纹素块进行压缩，同时对每个纹素提供两种存储方案，2bit和4bit。提供两个图像的低频信号，信号通过对相邻纹素块进行插值获得，解码时，每个纹素会使用1bit或者2bit的插值因子，来在这两个信号之间进行插值。</dd>
+<dl>广泛用于iphone和ipad上。对4x4的纹素块进行压缩，同时对每个纹素提供两种存储方案，2bit和4bit。提供两个图像的低频信号，信号通过对相邻纹素块进行插值获得，解码时，每个纹素会使用1bit或者2bit的插值因子，来在这两个信号之间进行插值。</dl>
 
 <dt>ASTC</dt>
-<dd>自适应可伸缩纹理压缩，可以将nxm的纹理块压缩成128bit，其中纹素块的尺寸范围可以从4x4（8bit）到12x12（0.89bit），纹素块尺寸大小会导致不同压缩比，不支持iphone6以下的设备。兼容性不够，且解码时间较长，图片尺寸不需要为2的幂次</dd>
+<dl>自适应可伸缩纹理压缩，可以将nxm的纹理块压缩成128bit，其中纹素块的尺寸范围可以从4x4（8bit）到12x12（0.89bit），纹素块尺寸大小会导致不同压缩比，不支持iphone6以下的设备。兼容性不够，且解码时间较长，图片尺寸不需要为2的幂次</dl>
 
 </dl>
 

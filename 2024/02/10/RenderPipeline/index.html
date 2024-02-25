@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-2/202211041451486.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/Rebort1012/picgo/main/image-20211209013022842.png">
 <meta property="article:published_time" content="2024-02-10T08:29:41.000Z">
-<meta property="article:modified_time" content="2024-02-11T05:29:45.406Z">
+<meta property="article:modified_time" content="2024-02-25T08:15:55.942Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Shader">
 <meta property="article:tag" content="理论">
@@ -170,7 +170,7 @@
       <div class="category-box">
             <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
                 实时渲染4
-                <div class="category-count">5</div>
+                <div class="category-count">6</div>
             </a>
         
             <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0/">
@@ -279,56 +279,56 @@
 <p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-2/202211031944539.png" alt="alt text"></p>
 <dl>
     <dt>顶点着色</dt>
-        <dd>
+        <dl>
         在物体最终进入屏幕的过程中，需要在不同的空间或者坐标系下，进行若干次变换。
         可以将若干个模型变换和同一个模型相关联，以便调整自身的位置和朝向。我们可以将若干个模型变换和同一个模型相关联，这样我可以在不复制这个模型的前提下，在一个场景中放置同一个模型的多个副本，每个实例都拥有各自不同的位置和朝向。
-        </dd>
-        <dd>
+        </dl>
+        <dl>
         各个模型经过各自的模型变换之后，所有的模型便位于一个相同的空间中
-        </dd>
-        <dd>
+        </dl>
+        <dl>
         观察变化的目的是将相机放置在原点，并调整相机的朝向，使其看向Z轴负半轴，y指向上方，x指向右方
-        </dd>
+        </dl>
 </dl>
 
 <p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-2/202211032042724.png" alt="alt text"></p>
 <dl>
     <dt>投影</dt>
-    <dd>
+    <dl>
     分为正交投影和透视投影，在投影变换之后，模型所处的坐标系被称为裁剪坐标系。在坐标除以w之前，都是齐次坐标。
-    </dd>
-    <dd>
+    </dl>
+    <dl>
     <font color=#ffa500>GPU的顶点着色器必须始终输出这种类型的坐标，以便于在裁剪阶段可以正常执行</font>
-    </dd>
+    </dl>
 </dl>
 
 <dl>
 <dt>可选阶段</dt>
 <dt>- 曲面细分</dt>
-    <dd>略</dd>
+    <dl>略</dl>
 <dt>- 几何着色器</dt>
-    <dd>略</dd>
+    <dl>略</dl>
 <dt>- 流式输出</dt>
-    <dd>
+    <dl>
     <font color=#ffa500>可以把GPU作为几何引擎，选择将这些处理好的数据输入到一个缓冲区中，而不是将其直接输入到渲染管线的后续部分并直接输出到屏幕上，这些缓冲区中的数据可以被CPU读回使用，也可以被GPU本身后续步骤使用，通常用于粒子模拟</font>
-    </dd>
+    </dl>
 </dl>
 
 
 <dl>
     <dt>裁剪</dt>
-    <dd>
+    <dl>
     完全位于可视空间的图元，将会按照原样传递给下一阶段；完全位于可视空间之外的图元，将不会被传递给下一阶段，对于部分在可视空间内的图元，需要进行额外的裁剪操作，生成新的顶点用来代替可视空间之外的那个顶点。裁剪后，会进行透视除法，把三角形位置转换到三维标准化设备坐标系（NDC）中，（-1，-1，-1）到（1，1，1），几何处理阶段最后一步就是将这个空间转换为窗口坐标系
-    </dd>
-    <dd>线段裁剪：点面关系，线面关系，通过向量在面上的投影，以及点是否在矩形内；
-    八方位裁剪法；</dd>
-    三角形裁剪：平顶三角和平底三角形，判断出界平移顶点；
-<dd>
+    </dl>
+    <dl>线段裁剪：点面关系，线面关系，通过向量在面上的投影，以及点是否在矩形内；
+    八方位裁剪法；</dl>
+    <dl>三角形裁剪：平顶三角和平底三角形，判断出界平移顶点；</dl>
+<dl>
 
 <p>裁剪算法有<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland算法</a>、<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Liang%E2%80%93Barsky_algorithm">Liang-Barsky算法</a>和<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm">Sutherland-Hodgman多边形裁剪算法</a></p>
-</dd>
+</dl>
     <dt>背面剔除</dt>
-    <dd>只跟三角形和摄像机的距离有关，不依赖摄像机朝向；根据三角形顶点顺序，叉乘出法向量；顶点顺时针法向量朝外剔除，逆时针朝内剔除</dd>
+    <dl>只跟三角形和摄像机的距离有关，不依赖摄像机朝向；根据三角形顶点顺序，叉乘出法向量；顶点顺时针法向量朝外剔除，逆时针朝内剔除</dl>
 </dl>
 
 <p><img src="https://raw.githubusercontent.com/Morakito/Real-Time-Rendering-4th-CN/master/sourceFile/images/Chapter-2/202211041451486.png" alt="alt text"></p>
@@ -336,8 +336,8 @@
     <dt>屏幕映射</dt>
     <dt>透视剔除</dt>
     <dt>视口变换</dt>
-    <dd>通过执行透视除法获得归一化的NDC坐标，z值在视口变换过程中被映射到[-1,1](OpenGl)、[0,1](DirectX)</dd>
-    <dd>NDC坐标映射到窗口坐标需要通过平移和缩放过程（相机的宽高比），xy为窗口相对于屏幕的位置</dd>
+    <dl>通过执行透视除法获得归一化的NDC坐标，z值在视口变换过程中被映射到[-1,1](OpenGl)、[0,1](DirectX)</dl>
+    <dl>NDC坐标映射到窗口坐标需要通过平移和缩放过程（相机的宽高比），xy为窗口相对于屏幕的位置</dl>
 </dl>
 
 <p><img src="https://raw.githubusercontent.com/Rebort1012/picgo/main/image-20211209013022842.png"></p>
@@ -355,20 +355,20 @@
 </blockquote>
 <dl>
     <dt>三角形设置</dt>
-    <dd>三角形的微分、边界方程和其他数据，都会在这个阶段进行计算，这些数据可以用于三角形遍历，以及对几何处理阶段产生的各种着色数据进行插值。一般会使用固定功能的硬件实现</dd></dl>
+    <dl>三角形的微分、边界方程和其他数据，都会在这个阶段进行计算，这些数据可以用于三角形遍历，以及对几何处理阶段产生的各种着色数据进行插值。一般会使用固定功能的硬件实现</dl></dl>
 <dl>
     <dt>三角形遍历</dt>
-    <dd>对每个被三角形覆盖的像素（中心点或者样本点在三角形内部的像素）进行逐个检查，并生成一个对应的片元。找到那些位于三角形内部的点或者样本，并且会对三角形三个顶点上的属性进行插值，获取每个三角形片元的属性，包括片元的深度，以及几何阶段输出的相关着色数据等。</dd>
+    <dl>对每个被三角形覆盖的像素（中心点或者样本点在三角形内部的像素）进行逐个检查，并生成一个对应的片元。找到那些位于三角形内部的点或者样本，并且会对三角形三个顶点上的属性进行插值，获取每个三角形片元的属性，包括片元的深度，以及几何阶段输出的相关着色数据等。</dl>
     </dl><dl>
     <dt>线段的扫描转化</dt>
-    <dd>
+    <dl>
 
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74990578">Bresenham光栅化算法</a><br>    </dd><br>    <dd>数字微分画线算法DDA</dd></dl></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74990578">Bresenham光栅化算法</a><br>    </dl><br>    <dl>数字微分画线算法DDA</dl></dl></p>
 <dl>
     <dt>多边形填充</dt>
-    <dd>
+    <dl>
 
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dongguolei/p/10591724.html">扫描线填充算法</a><br>    </dd><br>    <dd>重心计算多边形片元颜色：<br>    </dd></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/dongguolei/p/10591724.html">扫描线填充算法</a><br>    </dl><br>    <dl>重心计算多边形片元颜色：<br>    </dl></p>
 </dl>
 
 
@@ -380,53 +380,53 @@
 </blockquote>
 <h2 id="锯齿和抗锯齿"><a href="#锯齿和抗锯齿" class="headerlink" title="锯齿和抗锯齿"></a>锯齿和抗锯齿</h2><dl>
     <dt>超级采样抗锯齿（SSAA）</dt>
-    <dd>
+    <dl>
     将原图分辨率放大一倍，再采样；光栅化和片元着色器开销都是原先四倍，渲染缓冲开销也是四倍
-    </dd>
+    </dl>
     <dt>多重采样抗锯齿（MSAA）</dt>
-    <dd>
+    <dl>
     每个片元有多个采样点，计算采样点的覆盖率，光栅化阶段计算采样点覆盖率，在片元着色器计算颜色值后乘以这个覆盖率；
-    </dd>
-    <dd>
+    </dl>
+    <dl>
     MSAA和延迟渲染不兼容（延迟渲染需要Geometry和Lighting两个Pass，Lighting阶段无法通过GBuffer获得片元覆盖率）
-    </dd>
+    </dl>
 </dl>
 
 <h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><dl>
 <dt></dt>
-<dd>光照烘培得到Shadowmap；先光照烘培获得深度信息，再通过阴影贴图判断那些片元落在阴影中；Shadowmap的精度会导致阴影粉刺，需要偏移深度来消除粉刺现象；
-</dd>
-<dd>阴影锯齿通过百分比渐进过滤（PCF）实现软化阴影（softshadow）</dd>
+<dl>光照烘培得到Shadowmap；先光照烘培获得深度信息，再通过阴影贴图判断那些片元落在阴影中；Shadowmap的精度会导致阴影粉刺，需要偏移深度来消除粉刺现象；
+</dl>
+<dl>阴影锯齿通过百分比渐进过滤（PCF）实现软化阴影（softshadow）</dl>
 </dl>
 
 <h2 id="像素着色"><a href="#像素着色" class="headerlink" title="像素着色"></a>像素着色</h2><dl>
     <dt></dt>
-    <dd>使用插值过的着色数据作为输入，进行逐像素的着色计算，生成一个或者多个颜色值。最终会输出每个片元的颜色值，这些颜色值会被输入到下一个子阶段中</dd>
+    <dl>使用插值过的着色数据作为输入，进行逐像素的着色计算，生成一个或者多个颜色值。最终会输出每个片元的颜色值，这些颜色值会被输入到下一个子阶段中</dl>
 </dl>
 
 <h2 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h2><dl>
     <dt></dt>
-    <dd>这个阶段的任务是将颜色缓冲中的颜色组合起来。这个阶段被称为光栅操作管线（ROP）或者渲染输出单元。执行这一阶段的GPU子单元，并不是完全可编程的；但它仍然是高度可配置的，可以支持各种效果</dd>
-    <dd>可见行问题，当一个图元要被渲染到某个像素上时，会计算这个图元的z值，并将其与z-buffer中对应像素深度进行比较。z-buffer允许图元以任意顺序进行渲染。但不适用于透明物体。透明物体需要在所有不透明物体渲染后，才能进行渲染，并且严格按照从后往前顺序进行渲染，或者使用一个顺序无关的透明算法。较老的api中，会使用透明通道进行透明测试，现在基本在像素着色器中完成</dd>
-    <dd>模版缓冲，记录被渲染图元的位置信息，每个像素包含8bit。图元可以通过各种各样函数来杯渲染到模版缓冲中，同时模版测试可以用来控制渲染到颜色缓冲和z-buffer中的内容。</dd>
+    <dl>这个阶段的任务是将颜色缓冲中的颜色组合起来。这个阶段被称为光栅操作管线（ROP）或者渲染输出单元。执行这一阶段的GPU子单元，并不是完全可编程的；但它仍然是高度可配置的，可以支持各种效果</dl>
+    <dl>可见行问题，当一个图元要被渲染到某个像素上时，会计算这个图元的z值，并将其与z-buffer中对应像素深度进行比较。z-buffer允许图元以任意顺序进行渲染。但不适用于透明物体。透明物体需要在所有不透明物体渲染后，才能进行渲染，并且严格按照从后往前顺序进行渲染，或者使用一个顺序无关的透明算法。较老的api中，会使用透明通道进行透明测试，现在基本在像素着色器中完成</dl>
+    <dl>模版缓冲，记录被渲染图元的位置信息，每个像素包含8bit。图元可以通过各种各样函数来杯渲染到模版缓冲中，同时模版测试可以用来控制渲染到颜色缓冲和z-buffer中的内容。</dl>
 </dl>
 
 <dl>
     <dt>双缓冲机制</dt>
-    <dd>场景的渲染都会在屏幕外的后置缓冲区中进行。当场景被渲染到后置缓冲区后，后置缓冲区会与显示在屏幕上的前置缓冲区交换内容。通常发生在垂直回扫的过程中</dd>
+    <dl>场景的渲染都会在屏幕外的后置缓冲区中进行。当场景被渲染到后置缓冲区后，后置缓冲区会与显示在屏幕上的前置缓冲区交换内容。通常发生在垂直回扫的过程中</dl>
 </dl>
 
 <h2 id="渲染顺序"><a href="#渲染顺序" class="headerlink" title="渲染顺序"></a>渲染顺序</h2><dl>
 <dt>画家算法</dt>
-<dd>对于不透明物体，先从前往后渲染；不透明物体渲染前先进行深度检测（这里应该值得是执行完片元着色器后，根据深度值进行深度检测，之所以在片元着色器后，应该是考虑半透明物体的透明度剔除处理等操作，可以先通过在片元着色前进行深度检测，但是这类的shader不能有透明度剔除操作，unity中通过DepthOnly pass，提前计算深度），没通过深度检测的物体，不会进行深度写入的操作</dd>
+<dl>对于不透明物体，先从前往后渲染；不透明物体渲染前先进行深度检测（这里应该值得是执行完片元着色器后，根据深度值进行深度检测，之所以在片元着色器后，应该是考虑半透明物体的透明度剔除处理等操作，可以先通过在片元着色前进行深度检测，但是这类的shader不能有透明度剔除操作，unity中通过DepthOnly pass，提前计算深度），没通过深度检测的物体，不会进行深度写入的操作</dl>
 <dt>顺序无关半透明算法</dt>
-<dd>
+<dl>
 
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/127399447">深度剥离</a></p>
-</dd>
-<dd>
+</dl>
+<dl>
 双向剥离：两个方向剥离，一个从前往后，一个从后往前，两个方向效率更高
-</dd>
+</dl>
 </dl>
 
 <h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/littleperilla/p/15667021.html">图形学3D渲染管线</a></p>

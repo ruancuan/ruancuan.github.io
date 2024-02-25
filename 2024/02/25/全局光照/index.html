@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>全局光照 | 星光咖啡馆</title><meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="效果原神实时全局光照开关对比 环境光遮蔽 当光照缺乏方向变化，无法展现物体细节时，环境光遮蔽可以提供对于物体形状的视觉暗示irradiance会随着表面位置的变化而变化，Ka确实由表面位置所决定，这样所得到的结果会更加真实，尖锐折痕处的Ka值较低，表面位置会显得较暗  可见性和obscurance相互反射预计算环境光遮蔽动态计算环境光遮蔽屏幕空间方法使用环境光遮蔽进行着色定向遮蔽 单独使用环境光遮">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全局光照">
+<meta property="og:url" content="http://example.com/2024/02/25/%E5%85%A8%E5%B1%80%E5%85%89%E7%85%A7/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="效果原神实时全局光照开关对比 环境光遮蔽 当光照缺乏方向变化，无法展现物体细节时，环境光遮蔽可以提供对于物体形状的视觉暗示irradiance会随着表面位置的变化而变化，Ka确实由表面位置所决定，这样所得到的结果会更加真实，尖锐折痕处的Ka值较低，表面位置会显得较暗  可见性和obscurance相互反射预计算环境光遮蔽动态计算环境光遮蔽屏幕空间方法使用环境光遮蔽进行着色定向遮蔽 单独使用环境光遮">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-fe0759f32c8c4c99744413dff88302f3_720w.webp">
+<meta property="article:published_time" content="2024-02-25T06:36:06.000Z">
+<meta property="article:modified_time" content="2024-02-25T08:15:14.771Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Shader">
+<meta property="article:tag" content="理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E5%BC%80%E5%8F%91%E6%97%A5%E8%AE%B0/">
+                游戏开发日记
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Unity/" rel="tag">Unity</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%97%A5%E8%AE%B0/" rel="tag">日记</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-全局光照" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        全局光照
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-02-25T06:36:06.000Z" itemprop="datePublished">2024-02-25</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">实时渲染4</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h2><p>原神实时全局光照开关对比<br><img src="https://pic3.zhimg.com/v2-234d26705e4b3bb9f92abbdac286c29e_b.webp"></p>
+<h2 id="环境光遮蔽"><a href="#环境光遮蔽" class="headerlink" title="环境光遮蔽"></a>环境光遮蔽</h2><blockquote>
+<p>当光照缺乏方向变化，无法展现物体细节时，环境光遮蔽可以提供对于物体形状的视觉暗示<br>irradiance会随着表面位置的变化而变化，Ka确实由表面位置所决定，这样所得到的结果会更加真实，尖锐折痕处的Ka值较低，表面位置会显得较暗</p>
+</blockquote>
+<h3 id="可见性和obscurance"><a href="#可见性和obscurance" class="headerlink" title="可见性和obscurance"></a>可见性和obscurance</h3><h3 id="相互反射"><a href="#相互反射" class="headerlink" title="相互反射"></a>相互反射</h3><h3 id="预计算环境光遮蔽"><a href="#预计算环境光遮蔽" class="headerlink" title="预计算环境光遮蔽"></a>预计算环境光遮蔽</h3><h3 id="动态计算环境光遮蔽"><a href="#动态计算环境光遮蔽" class="headerlink" title="动态计算环境光遮蔽"></a>动态计算环境光遮蔽</h3><h3 id="屏幕空间方法"><a href="#屏幕空间方法" class="headerlink" title="屏幕空间方法"></a>屏幕空间方法</h3><h3 id="使用环境光遮蔽进行着色"><a href="#使用环境光遮蔽进行着色" class="headerlink" title="使用环境光遮蔽进行着色"></a>使用环境光遮蔽进行着色</h3><h2 id="定向遮蔽"><a href="#定向遮蔽" class="headerlink" title="定向遮蔽"></a>定向遮蔽</h2><blockquote>
+<p>单独使用环境光遮蔽可以极大地提高图像的视觉质量，但毕竟是一个简化的模型。处理大面积光源的时候，所给出的可见性近似很差，更不用说较小的光源或者精确光源。<br>主要是用于为大面积光源或者环境照明提供遮挡效果，这些方法可以生成柔和的阴影，并且由近似可见性所引起的瑕疵也不是很明显。还可以在常规阴影技术无法运行的时候，提供一些遮挡效果，例如凹凸贴图细节产生的自阴影，以及超大场景的阴影，导致阴影贴图没有足够的分辨率。</p>
+</blockquote>
+<h3 id="预计算的定向遮蔽"><a href="#预计算的定向遮蔽" class="headerlink" title="预计算的定向遮蔽"></a>预计算的定向遮蔽</h3><h3 id="动态计算的定向遮蔽"><a href="#动态计算的定向遮蔽" class="headerlink" title="动态计算的定向遮蔽"></a>动态计算的定向遮蔽</h3><h3 id="使用定向遮蔽进行着色"><a href="#使用定向遮蔽进行着色" class="headerlink" title="使用定向遮蔽进行着色"></a>使用定向遮蔽进行着色</h3><h2 id="漫反射全光光照"><a href="#漫反射全光光照" class="headerlink" title="漫反射全光光照"></a>漫反射全光光照</h2><h3 id="预计算传输"><a href="#预计算传输" class="headerlink" title="预计算传输"></a>预计算传输</h3><blockquote>
+<p>假设场景中的几何物体没有发生变化，只有光照发生了变化，那么可以对光线和模型的相互作用进行预计算。物体之间的影响（相互反射或者次表面散射），可以预先进行一定程度的分析，并将结果存储下来，不需要对实际的radiance进行操作。接受入射光线，将其转换为整个场景的radiacne分布（PRT）。<br>这类技术具有明显的运行时间开销，当在屏幕上显示场景时，需要计算特定光照环境中的radiance。为了实现这一点，需要将一定数量的直接光源注入到系统中，然后应用传输函数来将其传播到整个场景中。<br>可以用球谐函数来描述它，使用一定数量的构建光源来描述直接光照，就可以对场景如何被这些光源单独照亮进行预计算。<br>可以使用PCA（主成分分析）技术来对整个集合进行分析。减少每个点所需要的内存量。（LDPRT）</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/571673961">预计算辐照度全局光照（PRTGI）从理论到实战 - AKG4e3的文章 - 知乎</a></p>
+<h4 id="通过球谐函数近似存储光照信息"><a href="#通过球谐函数近似存储光照信息" class="headerlink" title="通过球谐函数近似存储光照信息"></a>通过球谐函数近似存储光照信息</h4><blockquote>
+<p>使用球谐函数来近似存储光照信息是一种常见的方法，它可以有效地减少存储开销并提供较高的渲染质量。球谐函数是一组基函数，可以表示在球面上的函数。在光照领域，球谐函数被用来近似表示给定方向上的光照信息</p>
+</blockquote>
+<dl>
+    <dt>计算球谐系数</dt>
+    <dl>使用光照环境或预计算的光照数据，通过采样一组方向并计算每个方向上的光照颜色。对于每个方向，将光照颜色与球谐函数进行内积运算，然后将结果累加起来。通过对多个方向进行采样和计算，可以得到一组球谐系数，用于近似表示光照信息。</dl>
+    <dt>存储球谐系数</dt>
+    <dl>将计算得到的球谐系数存储起来，可以使用数组或纹理等数据结构。由于球谐函数具有良好的性质，通常只需要存储较少的系数即可获得较好的近似效果。</dl>
+    <dt>重建光照信息</dt>
+    <dl>在渲染时，对于给定的方向，使用球谐函数的系数和对应的球谐函数进行内积运算，即可得到该方向上的近似光照颜色。通过对球谐函数的加权组合，可以还原出整个光照环境的近似颜色。</dl>
+</dl>
+
+<blockquote>
+<p>使用球谐函数近似存储光照信息的好处在于，它可以使用较少的系数来表示光照信息，从而大大减少了存储开销。而且球谐函数具有平滑性质，可以提供较为准确的光照近似结果。然而，球谐函数也有其限制，例如无法捕捉高频细节和强烈的光照变化，因此在某些特定场景下可能需要其他更高级的近似方法</p>
+</blockquote>
+<h4 id="方案思路"><a href="#方案思路" class="headerlink" title="方案思路"></a>方案思路</h4><dl>
+    <dt>场景的几何信息</dt>
+    <dl>通过探针去获得CubeMap，为了节省计算，只存储指定数量的 Surfel 数据</dl>
+    <dt>实时光照计算</dt>
+    <dl>运行时计算每个 Surfel 收到的 Radiance，为了计算屏幕像素的光照，而不是单个 Surfel，需要将 Surfel 代表的环境光照信息编码到 Probe 上，像素着色时访问 Probe 得到其周边环境光照信息</dl>
+    <dl>https://zhuanlan.zhihu.com/p/541137978?utm_id=0 中，
+        在Probe的位置烘焙3张128x128的Cubemap存储这些信息，再从probe随机发射64条球形射线，将3个Cubemap采样到的信息作为Surfel存储下来。获取Surfel后，再将一定的范围内（4米）的Surfel索引存为一个Brick，最后再将相应的Brick索引存到Probe里. Surfel 数据可能存在相同，需要求平均与合并，
+        因为Surfel的精度为1米，而很多物体的大小远小于1立方米，因此在Surfel的精度范围内可能出现差异巨大的法线信息（例如很薄的墙壁），而法线背对某个Probe的Surfel是不会对这个Probe产生贡献的，所以需要在Surfel和Brick的精度范围内把法线差异巨大的各个单位互相分离
+    </dl>
+    <dl>阴影的计算，根据世界空间坐标采样ShadowMap结果获取阴影信息，但是不在视锥内产生产生阴影的物体会在绘制ShadowMap时被剔除，因此采样到的Shadow信息不准确，需要在Surfel中存储Shadow信息的Cache，在Surfel访问到可信的Shadow信息时将其保存下来，并一直使用该值到下一次Surfel访问到可信的Shadow信</dl>
+</dl>
+
+<p><img src="https://pic4.zhimg.com/80/v2-fe0759f32c8c4c99744413dff88302f3_720w.webp"></p>
+<dl>
+    <dt>光照信息编码</dt>
+    <dl>通过球谐函数和球谐系数和构建的函数，可以得到给定方向上的光照颜色（对 Radiance 信息编码）</dl>
+    <dl>根据当进行球面对称的核函数与原始信号函数的卷积时，可以等价为核函数球谐系数与原始信号函数的球谐系数进行乘法操作
+    </dl>
+    <dl>通过计算 Radiance 的球谐系数，简单的和传输函数的球谐系数相乘，再乘以一个固定倍率，就可以得到对应的 irradiance</dl>
+    <dt>计算 radiance 的球谐系数</dt>
+    <dl>使用蒙特卡洛方法来估算数值</dl>
+    <dl>(4Π/n)*(SH()*radiance) 得到系数</dl>
+    <dt>数据的混合</dt>
+    <dl>计算像素的世界空间坐标、得到当前位置的体素，和周边八个体素的结果进行混合计算</dl>
+    <dt>分块加载</dt>
+    <dl>为了支持大世界，需要实现PRT数据的分块，只动态加载玩家附件的PRT信息</dl>
+    <dt>Probe的自动撒点</dt>
+    <dl>在布置PRT分块时，会生成一个相机从上至下拍摄当前分块的深度信息，如果没有获取到深度信息将放弃在当前位置设置分块,
+        在当前分块的顶部生成相机获取该分块的高度图，精度为4米1个像素，每隔4米在该高度生成一个Probe。当相邻像素之间的深度差超过4米时，会在更低的Probe上方生成新的Probe，新生成的probe高度为较低Probe与较高Probe的高度中点
+</dl>
+</dl>
+
+
+<h3 id="动态漫反射全局光照"><a href="#动态漫反射全局光照" class="headerlink" title="动态漫反射全局光照"></a>动态漫反射全局光照</h3><blockquote>
+<p>预计分的方式需要进行预计素，离线预计算时间过长。在修正后需要再烘培。</p>
+</blockquote>
+<dl>
+    <dt>VPL（虚拟点光源）</dt>
+    <dl>会从光源向外投射光线，对于这些光线照射到的每个位置，都会放置一个新的光源，用于代表来自该表面元素的间接照明</dl>
+    <dt>RSM（反射阴影贴图）</dt>
+    <dl>从光源的视角来渲染，除了深度信息之外，还会存储有关可见表面的其他信息，例如反照率albedo、法线、直接光照。在进行最后着色的时候，RSM的纹素会被视为虚拟点光源，从而提供单词弹射的间接照明效果。一个典型的RSM中存在数十万个像素，需要通过使用重要性驱动的启发式方法，来选择其中一个子集。可以给予整个RSM来创建一些虚拟光源，并将其放置在屏幕空间中，而不是为每个着色点都从RSM中选择相关的纹素。</dl>
+</dl>
+
+<p><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/XdtSRn">ShaderToy</a><br><a target="_blank" rel="noopener" href="https://github.com/arigo/LPVTest">LPVTest</a></p>
+<blockquote>
+<p>存在的缺点，无法为间接光照提供遮挡效果，生成的结果看起来还合理，可以接受</p>
+</blockquote>
+<h3 id="光照传播体积"><a href="#光照传播体积" class="headerlink" title="光照传播体积"></a>光照传播体积</h3><h3 id="基于体素的方法"><a href="#基于体素的方法" class="headerlink" title="基于体素的方法"></a>基于体素的方法</h3><blockquote>
+<p>VXGI，基于一种体素化的场景表示。几何物体本身使用稀疏体素把茶树的形式进行存储。结构提供了一种类似于mipmap的场景表示，可以对体积空间进行块都的遮挡测试等效果。每个体素块还包含了它们所代表的几何物体所反射出的光线量等信息，以一种定向形式进行存储，因为radiance会在六个主要方向上发生反射。首先会使用反射阴影贴图（RSM），将直接照明注入到八叉树的最低层节点中，然后再根据层次结构向上进行传播。<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/549938187">实时全局光照VXGI技术介绍 - 友人y的文章 - 知乎</a></p>
+</blockquote>
+<blockquote>
+<p>使用稀疏八叉树存储光照信息，一个主要问题就是查找成本较高。找到包含给定位置的叶子节点，需要进行一系列的内存查找，还穿插着简单的逻辑缺点。大部分时间花在内存读取，ALU工作很少，经常会出现所有分组都在等待内存返回数据，都没有实际工作执行的情况。<br>大量warp停滞会导致性能表现不佳，可以使用一组级联的三位纹理来代替八叉树结构。具有相同的尺寸，但是所覆盖的区域面积越来越大。只需要进行一次常规的纹理查找即可完成数据的读取，而不需要进行额外的依赖读取。存储的数据都包含着六个方向的albedo、normal、反弹光照信息。因为级联的位置会随着相机的移动而发生变化，因此物体可能会不断地进出高分辨率区域。<br><a target="_blank" rel="noopener" href="https://github.com/arigo/CascatedVoxelConeTracing">CascatedVoxelConeTracing</a></p>
+</blockquote>
+<h3 id="屏幕空间方法-1"><a href="#屏幕空间方法-1" class="headerlink" title="屏幕空间方法"></a>屏幕空间方法</h3><p>可以只使用存储在屏幕位置上的表面信息，来模拟一些漫反射全局光照效果。这些方法并不流行，因为屏幕空间中可用的数据量十分有限，因此会导致更加明显的瑕疵。比如颜色溢出等，通常是由于强烈的直射光照照亮具有相对恒定颜色的大面积区域而产生。<br><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/dsGBzW">ShaderToy</a><br><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2301.11376.pdf">理论</a></p>
+<h3 id="光照信息存储"><a href="#光照信息存储" class="headerlink" title="光照信息存储"></a>光照信息存储</h3><dl>
+    <dt>不一定要是规则均匀</dt>
+    <dl>存储为不规则点云，构建四面体，类似光照探针</dl>
+    <dt>手动放置、自动放置</dt>
+    <dl></dl>
+    <dt>漏光瑕疵的解决</dt>
+    <dl></dl>
+    <dt>自动设置的探针添加可见性信息，将单个四面体的影响范围限制在相关区域内</dt>
+    <dl></dl>
+</dl>
+
+<h2 id="镜面全局光照"><a href="#镜面全局光照" class="headerlink" title="镜面全局光照"></a>镜面全局光照</h2><blockquote>
+<p>各种用于渲染视图依赖效果的方法。</p>
+</blockquote>
+<h3 id="局部环境贴图"><a href="#局部环境贴图" class="headerlink" title="局部环境贴图"></a>局部环境贴图</h3><h3 id="环境贴图的动态更新"><a href="#环境贴图的动态更新" class="headerlink" title="环境贴图的动态更新"></a>环境贴图的动态更新</h3><h3 id="基于体素的方法-1"><a href="#基于体素的方法-1" class="headerlink" title="基于体素的方法"></a>基于体素的方法</h3><h3 id="平面反射"><a href="#平面反射" class="headerlink" title="平面反射"></a>平面反射</h3><h3 id="屏幕空间方法-2"><a href="#屏幕空间方法-2" class="headerlink" title="屏幕空间方法"></a>屏幕空间方法</h3><!-- flag of hidden posts -->
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>
