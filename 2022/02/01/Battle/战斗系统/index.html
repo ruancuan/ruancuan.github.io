@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>战斗系统 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc：记录战斗系统的实现 AOI主要解决游戏中多人同屏的问题 目标离你的距离远超你九宫格的距离，你依然要将他显示出来。那这个时候该怎么办呢？所以，我们顺其自然地有了一个新的概念——“关注者“，AOI搜寻到的列表并不能就完全等同于关注者列表。而客户端显示的就是关注者列表里面的内容。AOI搜寻到的列表只是用来获得关注者的手段 AOI并不需要双向连接 以游戏场景为例的话，假如周边有很多玩家的话，你不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="战斗系统">
+<meta property="og:url" content="http://example.com/2022/02/01/Battle/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc：记录战斗系统的实现 AOI主要解决游戏中多人同屏的问题 目标离你的距离远超你九宫格的距离，你依然要将他显示出来。那这个时候该怎么办呢？所以，我们顺其自然地有了一个新的概念——“关注者“，AOI搜寻到的列表并不能就完全等同于关注者列表。而客户端显示的就是关注者列表里面的内容。AOI搜寻到的列表只是用来获得关注者的手段 AOI并不需要双向连接 以游戏场景为例的话，假如周边有很多玩家的话，你不">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/show69.png">
+<meta property="og:image" content="http://example.com/showImg/show70.png">
+<meta property="og:image" content="http://example.com/showImg/show71.png">
+<meta property="og:image" content="http://example.com/showImg/Battle/show2.jpg">
+<meta property="article:published_time" content="2022-02-01T15:10:30.000Z">
+<meta property="article:modified_time" content="2023-05-21T11:25:10.714Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="战斗">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/show69.png">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Battle/战斗系统" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        战斗系统
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-02-01T15:10:30.000Z" itemprop="datePublished">2022-02-01</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">游戏框架</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            12k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="Desc："><a href="#Desc：" class="headerlink" title="Desc："></a>Desc：</h1><p>记录战斗系统的实现</p>
+<h2 id="AOI"><a href="#AOI" class="headerlink" title="AOI"></a>AOI</h2><p>主要解决游戏中多人同屏的问题</p>
+<p>目标离你的距离远超你九宫格的距离，你依然要将他显示出来。那这个时候该怎么办呢？<br>所以，我们顺其自然地有了一个新的概念——“关注者“，AOI搜寻到的列表并不能就完全等同于关注者列表。而客户端显示的就是关注者列表里面的内容。AOI搜寻到的列表只是用来获得关注者的手段</p>
+<p>AOI并不需要双向连接</p>
+<p>以游戏场景为例的话，假如周边有很多玩家的话，你不一定需要严格按照位置远近来排序，而是需要把跟你关联度最高的玩家加到你的关注者列表中</p>
+<p>AOI的信息需要立即更新吗？不一定需要，我们未必需要时时刻刻关注离我最近的目标，附近的人这个功能里面的用户列表更新频率慢一点也没关系</p>
+<h2 id="技能系统"><a href="#技能系统" class="headerlink" title="技能系统"></a>技能系统</h2><p>一个完整的技能系统逻辑层主要包括三个模块：技能模块，buff模块，projectile（子弹）模块</p>
+<p>技能系统中，所有的技能里面不包含任何具体技能效果及逻辑，每个技能根据其类型提供若干抽象接口，具体执行效果由策划去配置</p>
+<p>技能类型：被动技能\主动施法技能\开关类技能\激活类技能</p>
+<h3 id="被动技能"><a href="#被动技能" class="headerlink" title="被动技能"></a>被动技能</h3><p>一般会在技能初始化时生效，技能初始化时会有抽象行为接口Ablilty::OnAlilityInit()<br>被动技能可以在这个接口中执行一些行为，具体执行的功能由策划配置，一般情况下策划会配置给角色添加Buff来监听各种事件以触发各种效果</p>
+<h3 id="主动技能"><a href="#主动技能" class="headerlink" title="主动技能"></a>主动技能</h3><p>可以手动释放 释放前需要目标信息</p>
+<p>情况：<br>    不需要目标就可以释放(群体治疗)<br>    需要选中目标(单体指向性技能)<br>需要以指定地点为目标(常用于AOE)</p>
+<p>阶段：<br>    技能起手、前摇阶段、施法阶段、后摇阶段、结束</p>
+<p>表中配置，来控制技能参数<br>Bimmediately : 技能是否可强制立即释放<br>CastPoint : 前摇配置时长</p>
+<p>引导阶段：<br>    提供三个接口供策划配置逻辑：<br>        ChannelStart (引导开始)：<br>        ChannelThink (引导持续触发)：<br>        ChannelFinish (引导结束)：<br>    提供两个时间参数以供配置：<br>        ThinkInterval (引导触发间隔)<br>        ChannelTIme (引导阶段总时长)</p>
+<p>使用：<br>如策划配置CastPoint为0.1秒，ThinkInterval为0.3秒，ChannelTime为1.4秒时。则技能将会在AbilityStart0.1秒后调用ChannelStart,将在第0.4秒-&gt;0.7秒-&gt;1.0秒-&gt;1.3秒调用ChannelThink，将在第1.5秒调用ChannelFinish。这样的接口设计在保证简洁的情况下基本能覆盖几乎所有的需求</p>
+<h3 id="开关类技能："><a href="#开关类技能：" class="headerlink" title="开关类技能："></a>开关类技能：</h3><p>OnAbilityToggleOn<br>OnAbilityToggleOff		<br>通过调用添加、移除Buff实现具体效果</p>
+<h3 id="激活类技能："><a href="#激活类技能：" class="headerlink" title="激活类技能："></a>激活类技能：</h3><p>OnAbilityActivate<br>OnAbilityDeactivate<br>通过调用添加、移除Buff实现具体效果</p>
+<h2 id="Buff"><a href="#Buff" class="headerlink" title="Buff"></a>Buff</h2><h3 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h3><p><img src="/showImg/show69.png" alt="Image text"><br>Buff：所有Buff的基类，包含各类成员函数和基本接口</p>
+<p>Modifier：继承于Buff，代表这个Buff是一个修改器，它可以用来修改当前目标的各种属性，状态等等。抽象Modifier这个类的目的是出于性能优化的考虑。因为当Buff修改角色的属性或者状态时，会导致重新计算角色的动态属性， 而在游戏中我们很多的Buff并不需要修改角色的属性状态，仅仅用来提供一段逻辑。那么如果它是一个Buff不是Modifier，就不需要重新计算角色的动态属性</p>
+<p>MotionModifier：继承于Modifier，代表此类Buff提供修改玩家运动效果的功能。因为牵涉到与运动组件的交互，所以抽象出一个新的类</p>
+<p>类的设计</p>
+<p>Caster代表Buff的施加者，它有可能为空，也有可能不为空，视具体构造时是否传Caster参数而定。但是Buff有一个配置项bNoCaster（是否强制设置Caster为空）。如果bNoCaster &#x3D; true。则Buff的Caster一定为空。<br>Caster不仅仅是一个成员项，它还关系到Buff合并问题。如果存在两个TypeId类型相同的Buff时候，当他们的Caster相同才可以走合并流程（Buff层数增加），如果Caster不同，则不能合并。<br>当策划有一些玩法需求可以多人给BOSS叠Buff时就可以配置Buff的bNoCaster&#x3D;true，这样就不需要开发者在写代码添加Buff的时候小心翼翼的设置Caster参数为空了。另外还有几种情况也需要设置bNoCaster&#x3D;true，比如存在一个熔岩地图，或者冰雪地图，玩家每秒掉多少血量，这个时候也可以配置bNoCaster&#x3D;true。<br>再比如说一些活动buff，如双倍经验buff，红名惩罚buff，都可以由策划配置bNoCaster&#x3D;true。类似于双倍经验，还有红名Buff这种所有需要存盘的Buff，我们都需要设置bNoCaster&#x3D;true</p>
+<p>Ability代表Buff是由哪个技能创建，它有可能为空，也有可能不为空，视具体构造时是否传Ability参数而定。通过Ability这个成员类型，我们就将Buff与技能联系起来了，我们能在Buff中取得技能的各种数据，通过获取技能的数据，然后由Buff来实现各种各样的技能效果</p>
+<p>Context代表Buff创建时候的一些上下文数据，它是一个不确定的项，通过外部传入各种自定义的数据，然后在Buff逻辑中使用这些自定义数据</p>
+<details>
+<summary>Buff类</summary>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">local</span> Buff=BaseClass(<span class="string">&quot;Buff&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">__init</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- 施加者</span></span><br><span class="line">    <span class="built_in">self</span>.caster=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- buff当前挂载的目标</span></span><br><span class="line">    <span class="built_in">self</span>.parent=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 由哪个技能创建</span></span><br><span class="line">    <span class="built_in">self</span>.ability=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 层数</span></span><br><span class="line">    <span class="built_in">self</span>.buffLayer=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 等级</span></span><br><span class="line">    <span class="built_in">self</span>.buffLevel=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 时长</span></span><br><span class="line">    <span class="built_in">self</span>.buffDuration=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 标签</span></span><br><span class="line">    <span class="built_in">self</span>.buffTag=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 免疫标签(当身上添加了其他带有免疫标签的buff，会直接免疫，并不会添加到对象身上)</span></span><br><span class="line">    <span class="built_in">self</span>.buffImmuneTag=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- 表信息</span></span><br><span class="line">    <span class="built_in">self</span>.buffInfo=<span class="literal">nil</span></span><br><span class="line">    <span class="comment">-- buff产生的数值</span></span><br><span class="line">    <span class="built_in">self</span>.buffValue=<span class="literal">nil</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">Init</span><span class="params">(self,info)</span></span></span><br><span class="line">    <span class="built_in">assert</span>(info,<span class="string">&quot;info nil!&quot;</span>)</span><br><span class="line">    <span class="built_in">self</span>.buffInfo=info</span><br><span class="line">    <span class="comment">-- 根据info初始化</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">__delete</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="built_in">self</span>.caster=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.parent=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.ability=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.buffLayer=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.buffDuration=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.buffTag=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.buffImmuneTag=<span class="literal">nil</span></span><br><span class="line">    <span class="built_in">self</span>.buffInfo=<span class="literal">nil</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 实例化之后，生效之前，未加入到buff容器中</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">OnBuffAwake</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- TODO 派发事件，buff在生效前可能会被销毁</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- Buff生效时，加入到Buff容器后</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">OnBuffStart</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- 根据配置表处理效果</span></span><br><span class="line">    <span class="comment">-- TODO 派发事件</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 添加时，存在相同类型且caster相等的时候，buff执行刷新流程(更新buff层数，等级，持续时间)</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">OnBuffRefresh</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- TODO 派发事件</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 还未从buff容器中移除</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">OnBuffRemove</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- TODO 派发事件</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 已从buff容器中移除</span></span><br><span class="line"><span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">OnBuffDestroy</span><span class="params">(self)</span></span></span><br><span class="line">    <span class="comment">-- TODO 派发事件</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+<details>
+<summary>表转换成lua文件后的结果</summary>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> BuffItem = &#123;</span><br><span class="line">    [<span class="number">2002</span>] = &#123;</span><br><span class="line">        buffId = <span class="number">2002</span>,</span><br><span class="line">        name = <span class="string">&#x27;subAttack&#x27;</span>,</span><br><span class="line">        <span class="built_in">type</span> = <span class="string">&#x27;Attack&#x27;</span>,</span><br><span class="line">        buffTag = <span class="number">2002</span>,</span><br><span class="line">        BuffImmuneTag = &#123;&#125;,</span><br><span class="line">        mount = <span class="literal">false</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="number">11001</span>] = &#123;</span><br><span class="line">        buffId = <span class="number">11001</span>,</span><br><span class="line">        name = <span class="string">&#x27;banHp&#x27;</span>,</span><br><span class="line">        <span class="built_in">type</span> = <span class="string">&#x27;HP&#x27;</span>,</span><br><span class="line">        buffTag = <span class="number">11001</span>,</span><br><span class="line">        BuffImmuneTag = &#123;<span class="number">1001</span>&#125;,</span><br><span class="line">        mount = <span class="literal">true</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="number">2001</span>] = &#123;</span><br><span class="line">        buffId = <span class="number">2001</span>,</span><br><span class="line">        name = <span class="string">&#x27;addAttack&#x27;</span>,</span><br><span class="line">        <span class="built_in">type</span> = <span class="string">&#x27;Attack&#x27;</span>,</span><br><span class="line">        buffTag = <span class="number">2001</span>,</span><br><span class="line">        BuffImmuneTag = &#123;&#125;,</span><br><span class="line">        mount = <span class="literal">false</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="number">1002</span>] = &#123;</span><br><span class="line">        buffId = <span class="number">1002</span>,</span><br><span class="line">        name = <span class="string">&#x27;subHp&#x27;</span>,</span><br><span class="line">        <span class="built_in">type</span> = <span class="string">&#x27;HP&#x27;</span>,</span><br><span class="line">        buffTag = <span class="number">1002</span>,</span><br><span class="line">        BuffImmuneTag = &#123;&#125;,</span><br><span class="line">        mount = <span class="literal">false</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    [<span class="number">1001</span>] = &#123;</span><br><span class="line">        buffId = <span class="number">1001</span>,</span><br><span class="line">        name = <span class="string">&#x27;addHp&#x27;</span>,</span><br><span class="line">        <span class="built_in">type</span> = <span class="string">&#x27;HP&#x27;</span>,</span><br><span class="line">        buffTag = <span class="number">1001</span>,</span><br><span class="line">        BuffImmuneTag = &#123;&#125;,</span><br><span class="line">        mount = <span class="literal">false</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> BuffItem</span><br></pre></td></tr></table></figure>
+</details>
+
+<h3 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h3><p>阶段：<br>1：创建前检查当前Buff是否可以创建<br>    检测目标身上是否存在免疫该Buff的相关Buff，<br>    如果被免疫则不会创建该Buff<br>2：Buff在实例化之后，生效之前 （还未加入到Buff容器中）时会抛出一个OnBuffAwake事件。如果存在某种Buff的效果是：受到负面效果时，驱散当前所有负面效果，并给自己加一个护盾，并把所有负面Buff驱散。这意味着一个Buff可能还未生效前就销毁了(小心Buff的生命周期)<br>3：当Buff生效时(加入到Buff容器后)，我们提供一个抽象接口 OnBuffStart，由策划配置具体效果<br>4：当Buff添加时存在相同类型且Caster相等的时候，Buff执行刷新流程（更新Buff层数，等级，持续时间等数据）。我们提供一个抽象接口 OnBuffRefresh 由策划配置具体效果<br>5：当Buff销毁前（还未从Buff容器中移除），我们提供一个抽象接口 OnBuffRemove<br>6：当Buff销毁后（已从Buff容器中移除），提供一个抽象接口 OnBuffDestroy<br>7：Buff可以创建定时器，以触发间隔持续效果。通过配置表调用 StartIntervalThink 操作，提供 OnIntervalThink 抽象接口供配置具体效果<br>8：Buff可以通过请求改变运动来触发相应效果。通过策划配置时调用 ApplyMotion操作，提供 OnMotionUpdate 和 OnMotionInterrupt 接口供策划配置具体效果</p>
+<details>
+<summary>lua代码</summary>
+
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 检测unit身上是否有冲突的标签</span></span><br><span class="line">    <span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">AddCheckHandle</span><span class="params">(self,buff,unit)</span></span></span><br><span class="line">        <span class="built_in">assert</span>(buff,<span class="string">&quot;buff nil!&quot;</span>)</span><br><span class="line">        <span class="built_in">assert</span>(unit,<span class="string">&quot;unit nil!&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">local</span> state=<span class="literal">true</span>;</span><br><span class="line">        <span class="built_in">table</span>.walk(unit.buff_collection,<span class="function"><span class="keyword">function</span> <span class="params">(k,v)</span></span></span><br><span class="line">            <span class="keyword">if</span> v.BuffImmuneTag <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">for</span> id,tag <span class="keyword">in</span> <span class="built_in">ipairs</span>(v.BuffImmuneTag) <span class="keyword">do</span></span><br><span class="line">                    <span class="keyword">if</span> tag==buff.buffTag <span class="keyword">then</span></span><br><span class="line">                        state= <span class="literal">false</span></span><br><span class="line">                        <span class="keyword">return</span></span><br><span class="line">                    <span class="keyword">end</span></span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span>)</span><br><span class="line">        <span class="keyword">return</span> state</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">AddBuffToUnit</span><span class="params">(self,buff,unit)</span></span></span><br><span class="line">        <span class="built_in">assert</span>(buff,<span class="string">&quot;buff nil!&quot;</span>)</span><br><span class="line">        <span class="built_in">assert</span>(unit,<span class="string">&quot;unit nil!&quot;</span>)</span><br><span class="line">        <span class="keyword">local</span> result=<span class="built_in">self</span>:AddCheckHandle(buff,unit)</span><br><span class="line">        <span class="keyword">if</span> result <span class="keyword">then</span></span><br><span class="line">            <span class="comment">-- 更新unit的属性</span></span><br><span class="line">            unit.unit_attr:UpdateAttrExternal(buff.<span class="built_in">type</span>,)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> buff.mount <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">if</span> unit.buff_collection[buff.buffId]~=<span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">                <span class="comment">-- 增加层数</span></span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                unit.buff_collection[buff.buffId]=buff</span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span> <span class="function"><span class="keyword">function</span> <span class="title">RemoveBuffToUnit</span><span class="params">(self,buff,inst)</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</details>
+
+<h3 id="Buff修改状态（ModifyState"><a href="#Buff修改状态（ModifyState" class="headerlink" title="Buff修改状态（ModifyState)"></a>Buff修改状态（ModifyState)</h3><p>Buff可以通过修改状态去影响角色行为逻辑。以下列举一些最常见的状态：</p>
+<ol>
+<li>Stun（眩晕状态——目标不再响应任何操控）</li>
+<li>Root（缠绕，又称定身——目标不响应移动请求，但是可以执行某些操作，如施放某些技能）</li>
+<li>Silence （沉默——目标禁止施放技能）</li>
+<li>Invincible (无敌——几乎不受到所有的伤害和效果影响）</li>
+<li>Invisible (隐身——不可被其他人看见）</li>
+</ol>
+<p>这些状态是高度凝练的精华，抽象到极致的代表。非常多的游戏效果实际上都是这几种状态+运动+动画的组合。这里很多开发者都会有一个设计误区就是把Buff的状态跟运动和动画耦合在一块，比如：眩晕状态一定就是播个眩晕动画，然后击退状态就是击退位移+击退动画。这样最后导致的问题就是状态膨胀，而且各种逻辑耦合，Bug频出，最后维护成本大大提高。<br>以Stun为例，很多人第一眼看过去就觉得它是个Debuff，是个敌人给我方加的控制Buff。实际上并非如此，Stun可以用到的地方非常多。例如有个技能是野蛮冲撞，释放后2秒内向前移动10米并将敌人推开。那这个Buff的实现就是技能Spell的时候给角色加个Buff，这个Buff会有个Stun状态同时带位移突进效果。挂上这个Buff后，技能施放后角色2秒内就不会响应角色按键移动和释放其他技能的请求了，同时往前突进的效果由Buff控制，将来处理各种位移打断效果也很方便。 再比如说有个技能叫寒冰屏障：你被一道寒冰屏障所笼罩，在十秒内不会受到任何物理和法术伤害，但这期间无法移动、攻击或施法。那这个技能的实现也很简单，就是一个十秒的Buff同时添加了眩晕和无敌这两个状态，如果还需要每秒回血，则StartIntervalThink(interval)，然后OnIntervalThink的时候Heal当前角色即可。<br>除了各类战斗效果之外，我们的Buff甚至可以扩展到一些其他场景。比如说打BOSS前有个播过场动画的需求，此时策划希望隐藏Boss和玩家的血条和姓名。那么此时我们完全可以做个Buff，这个Buff扩展个状态HideHpBar，当有这个状态时即隐藏血条和名字就行了。而且我们还可以让这个Buff加上无敌状态，毕竟播过场动画的时候我们不希望玩家或者BOSS真的受到什么伤害。<br>总而言之，Buff状态除了上面提到几种高度凝练抽象的状态外，我们还可以根据具体游戏的需求去扩展各种特殊状态，以满足策划的需求，同时方便开发者管理逻辑</p>
+<h3 id="Buff修改属性"><a href="#Buff修改属性" class="headerlink" title="Buff修改属性"></a>Buff修改属性</h3><p>在游戏中Buff的添加与移除是一个频繁的过程。而玩家的属性来源有很多，如等级，装备，成就，任务，时装等等各种各样的来源。相比于Buff，这些模块修改属性的频率要远低于Buff，所以我们一般将玩家的属性划分为两层，第一层时Core（核心层），第二层是External（外部层）。Core层是玩家各个其他模块的属性总和，而External层则是Buff修改属性的总和。两者相加既为玩家的实时属性</p>
+<h3 id="Buff监听事件"><a href="#Buff监听事件" class="headerlink" title="Buff监听事件"></a>Buff监听事件</h3><p>Buff可以通过监听各类事件，执行特定逻辑或者修改事件数据来实现各种效果</p>
+<p>最常见的事件监听一般有：<br>• OnAbilityExecuted，监听某个主动技能执行成功。常用于被动技能Buff，比如说角色施法时有10%概率获得30%的攻速提升。那么我们通常是Buff-A监听OnAbilityExcuted事件，然后10%概率添加Buff-B。Buff-B的作用是修改玩家属性，增加30%攻速。<br>• OnBeforeGiveDamage，OnAfterGiveDamage监听我方给目标造成伤害时触发。比如说对目标造成的伤害有10%概率无法被闪避，那么这个效果我们就可以通过监听OnBeforeGiveDamage的流程来实现。当执行伤害流程时，在计算伤害前我们抛出一个事件event。event里面有当前伤害数据。Buff在调用OnBeforeGiveDamage(event)时，修改event.Damage.DamageFlag |&#x3D; DamageFlag_NotMiss，标注该伤害无法被闪避就行了。又或者如果有一个需求是给目标造成伤害后有10%几率触发DOT伤害效果，那么我们在OnAfterGiveDamage的时候取出event.Target并给这个目标加个DOT类Buff即可。<br>• OnBeforeTakeDamage，OnAfterTakeDamage监听我方受到伤害时触发。如护盾类Buff通常在OnBeforeTakeDamage的时候修改伤害数据。又或者有某些Buff在受到伤害后可以触发各类效果就可以通过监听OnAfterTakeDamage事件来触发指定逻辑。<br>• OnBeforeDead，OnAfterDead监听我方死亡时触发。如免疫致死效果可以通过监听OnBeforeDead事件修改角色当前的Hp&gt;0，从而让角色提前退出死亡流程以避免死亡。死亡后触发额外效果，如爆炸或者召唤其他生物都可以通过监听OnAfterDead事件来执行。<br>• OnKill事件，监听我方击杀目标时触发。如当击杀目标后获得治疗效果回复即可通过监听到Kill事件时给自己加一个HOT的Buff来实现。<br>开发者可以通过扩展各类事件列表，让Buff通过监听对应事件就能执行任意逻辑。不需要与任何模块耦合，只需要抛出事件，监听事件，执行逻辑即可获得Buff功能上的扩展。</p>
+<h2 id="技能编辑器"><a href="#技能编辑器" class="headerlink" title="技能编辑器"></a>技能编辑器</h2><h3 id="Track赋值"><a href="#Track赋值" class="headerlink" title="Track赋值"></a>Track赋值</h3><p>轨道的名字对应Bindings的key值<br>脚本可以获取PlayableDirector类，通过SetGenericBinding函数赋值物体<br>            var mDirector &#x3D; new PlayableDirector;<br>    mDirector.SetGenericBinding(“轨道名字”，”轨道绑定的物体”);<br>如果做攻击和被击效果的话可以直接把动作放在角色控制器里面，没必要用TimeLine实现。<br>的确是这样，但是如果游戏中模型动作资源太多，比如战神这款游戏，每一个精英怪都会有一个动作特写，如果一开始全部放在动画控制器中，会造成动画十分混乱。<br>而使用TimeLine，相当于我们动态给模型加载动画，当使用到这个动画的时候再加载它，这样就会让动画控制器非常的干净简洁</p>
+<h3 id="TimeLineClip赋值"><a href="#TimeLineClip赋值" class="headerlink" title="TimeLineClip赋值"></a>TimeLineClip赋值</h3><p>动态给轨道内的Clip赋值，比如说Cinemachine的摄像机，和摄像机观察的物体、跟随的物体</p>
+<p>待续</p>
+<h2 id="图形相交检测"><a href="#图形相交检测" class="headerlink" title="图形相交检测"></a>图形相交检测</h2><h3 id="圆和圆"><a href="#圆和圆" class="headerlink" title="圆和圆"></a>圆和圆</h3><details>
+<summary>圆和圆的相交</summary>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">判断半径和距离的大小</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 圆形区间</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> CircleArea</span><br><span class="line">&#123;     </span><br><span class="line">    <span class="keyword">public</span> Vector2 o;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> r;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 判断圆形与圆形相交</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;circleArea&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;target&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Circle</span>(<span class="params">CircleArea circleArea, CircleArea target</span>)</span></span><br><span class="line">    &#123;</span><br><span class="line">    <span class="keyword">return</span> (circleArea.o - target.o).sqrMagnitude &lt; (circleArea.r + target.r) * (circleArea.r + target.r);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<p><img src="/showImg/show70.png" alt="Image text"></p>
+<h3 id="圆和胶囊体"><a href="#圆和胶囊体" class="headerlink" title="圆和胶囊体"></a>圆和胶囊体</h3><details>
+<summary>圆和胶囊体的相交</summary>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 胶囊体</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> CapsuleArea</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Vector2 X0;</span><br><span class="line">    <span class="keyword">public</span> Vector2 U;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 判断胶囊体与圆形相交</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;capsuleArea&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;circleArea&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Capsule</span>(<span class="params">CapsuleArea capsuleArea, CircleArea circleArea</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> sqrD = SegmentPointSqrDistance(capsuleArea.X0, capsuleArea.U, circleArea.o);</span><br><span class="line">    <span class="keyword">return</span> sqrD &lt; (circleArea.r + capsuleArea.d) * (circleArea.r + capsuleArea.d);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<p><img src="/showImg/show71.png" alt="Image text"></p>
+<h3 id="圆形和扇形"><a href="#圆形和扇形" class="headerlink" title="圆形和扇形"></a>圆形和扇形</h3><p>当扇形角度大于180度时，就不再是凸多边形，不能适用于分离轴理论。可以找出相交时圆心的所有可能区域，并把区域划分成可以简单验证的几个区域，逐个试验</p>
+<p>划分了两个区间：<br>    1：半径为两者半径和的扇形区间，角度方向同扇形，验证方法是 验证距离和夹角<br>    2：扇形边为轴，圆形半径为大小组成的胶囊体空间，由于扇形的对称性，我们可以通过把圆心映射到一侧，从而只需要计算一条边</p>
+<p><img src="/showImg/Battle/show2.jpg" alt="Image text"></p>
+<details>
+<summary>圆和扇的相交</summary>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 扇形区间。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> SectorArea</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Vector2 o;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> r;</span><br><span class="line">    <span class="keyword">public</span> Vector2 direction;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> angle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 判断圆形与扇形相交。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;sectorArea&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;target&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">Sector</span>(<span class="params">SectorArea sectorArea, CircleArea target</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Vector2 tempDistance = target.o - sectorArea.o;</span><br><span class="line">    <span class="built_in">float</span> halfAngle = Mathf.Deg2Rad * sectorArea.angle / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (tempDistance.sqrMagnitude &lt; (sectorArea.r + target.r) * (sectorArea.r + target.r))</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (Vector3.Angle(tempDistance, sectorArea.direction) &lt; sectorArea.angle / <span class="number">2</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            Vector2 targetInSectorAxis = <span class="keyword">new</span> Vector2(Vector2.Dot(tempDistance,</span><br><span class="line">            sectorArea.direction), Mathf.Abs(Vector2.Dot(tempDistance, <span class="keyword">new</span> Vector2(-sectorArea.direction.y, sectorArea.direction.x))));</span><br><span class="line">            Vector2 directionInSectorAxis = sectorArea.r * <span class="keyword">new</span> Vector2(Mathf.Cos(halfAngle), Mathf.Sin(halfAngle));</span><br><span class="line">            <span class="keyword">return</span> SegmentPointSqrDistance(Vector2.zero, directionInSectorAxis, targetInSectorAxis) &lt;= target.r * target.r;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Vector2.Dot(tempDistance,sectorArea.direction)</span><br><span class="line">X:轴下的投影</span><br><span class="line"></span><br><span class="line">Mathf.Abs(Vector2.Dot(tempDistance, <span class="keyword">new</span> Vector2(-sectorArea.direction.y, sectorArea.direction.x)</span><br><span class="line">Y轴下的投影</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<h3 id="圆形和凸多边形"><a href="#圆形和凸多边形" class="headerlink" title="圆形和凸多边形"></a>圆形和凸多边形</h3><details>
+<summary>圆和凸边形的相交</summary>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 多边形区域。</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> PolygonArea</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Vector2[] vertexes;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> 判断多边形与圆形相交</span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;polygonArea&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;param name=&quot;target&quot;&gt;</span><span class="doctag">&lt;/param&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;returns&gt;</span><span class="doctag">&lt;/returns&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">PolygonS</span>(<span class="params">PolygonArea polygonArea, CircleArea target</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (polygonArea.vertexes.Length &lt; <span class="number">3</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(<span class="string">&quot;多边形边数小于3.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">region</span> 定义临时变量</span></span><br><span class="line">    <span class="comment">//圆心</span></span><br><span class="line">    Vector2 circleCenter = target.o;</span><br><span class="line">    <span class="comment">//半径的平方</span></span><br><span class="line">    <span class="built_in">float</span> sqrR = target.r * target.r;</span><br><span class="line">    <span class="comment">//多边形顶点</span></span><br><span class="line">    Vector2[] polygonVertexes = polygonArea.vertexes;</span><br><span class="line">    <span class="comment">//圆心指向顶点的向量数组</span></span><br><span class="line">    Vector2[] directionBetweenCenterAndVertexes = <span class="keyword">new</span> Vector2[polygonArea.vertexes.Length];</span><br><span class="line">    <span class="comment">//多边形的边</span></span><br><span class="line">    Vector2[] polygonEdges = <span class="keyword">new</span> Vector2[polygonArea.vertexes.Length];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; polygonArea.vertexes.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        directionBetweenCenterAndVertexes[i] = polygonVertexes[i] - circleCenter;</span><br><span class="line">        polygonEdges[i] = polygonVertexes[i] - polygonVertexes[(i + <span class="number">1</span>)% polygonArea.vertexes.Length];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">region</span> 以下为圆心处于多边形内的判断。</span></span><br><span class="line">    <span class="comment">//总夹角</span></span><br><span class="line">    <span class="built_in">float</span> totalAngle = Vector2.SignedAngle(directionBetweenCenterAndVertexes[polygonVertexes.Length - <span class="number">1</span>], directionBetweenCenterAndVertexes[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; polygonVertexes.Length - <span class="number">1</span>; i++)</span><br><span class="line">        totalAngle += Vector2.SignedAngle(directionBetweenCenterAndVertexes[i], directionBetweenCenterAndVertexes[i + <span class="number">1</span>]);</span><br><span class="line">    <span class="keyword">if</span> (Mathf.Abs(Mathf.Abs(totalAngle) - <span class="number">360f</span>) &lt; <span class="number">0.1f</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line">    <span class="meta">#<span class="keyword">region</span> 以下为多边形的边与圆形相交的判断。</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; polygonEdges.Length; i++)</span><br><span class="line">        <span class="keyword">if</span> (SegmentPointSqrDistance(polygonVertexes[i], polygonEdges[i], circleCenter) &lt; sqrR)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    <span class="meta">#<span class="keyword">endregion</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/148077453">AOI</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/149704315">技能系统</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/29585350">技能编辑器</a><br><a target="_blank" rel="noopener" href="https://github.com/chs71371/TimeLineBattle">技能编辑器Github</a><br><a target="_blank" rel="noopener" href="https://www.zhangshengrong.com/p/v710KvDRXM/">相交检测</a></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/02/02/UGUI/UGUI%E4%BC%98%E5%8C%96/"
+      title="UGUI优化"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        UGUI优化
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/02/01/Shaders/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E6%B8%B2%E6%9F%93/"
+      title="基于物理渲染"
+     >
+
+    <p class="title-text">
+      
+        基于物理渲染
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

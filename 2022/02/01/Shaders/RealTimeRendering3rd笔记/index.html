@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>RealTimeRendering笔记 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc：在看实时渲染中做的记录，根据QianMo翻译后的文章进行学习，链接引用, https:&#x2F;&#x2F;github.com&#x2F;QianMo&#x2F;Real-Time-Rendering-3rd-CN-Summary-Ebook 图形渲染管线分为四个阶段：    应用阶段、几何阶段、光栅化阶段、像素处理阶段(RealTimeRenderer4th中的提出)          应用阶段通过软件的方式实现的阶段，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RealTimeRendering笔记">
+<meta property="og:url" content="http://example.com/2022/02/01/Shaders/RealTimeRendering3rd%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc：在看实时渲染中做的记录，根据QianMo翻译后的文章进行学习，链接引用, https:&#x2F;&#x2F;github.com&#x2F;QianMo&#x2F;Real-Time-Rendering-3rd-CN-Summary-Ebook 图形渲染管线分为四个阶段：    应用阶段、几何阶段、光栅化阶段、像素处理阶段(RealTimeRenderer4th中的提出)          应用阶段通过软件的方式实现的阶段，">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/show25.jpg">
+<meta property="og:image" content="http://example.com/showImg/show26.jpg">
+<meta property="og:image" content="http://example.com/showImg/RTR/DepthTest.png">
+<meta property="og:image" content="http://example.com/showImg/Shader/show22.jpg">
+<meta property="og:image" content="http://example.com/showImg/show27.jpg">
+<meta property="og:image" content="http://example.com/showImg/show28.jpg">
+<meta property="og:image" content="http://example.com/showImg/show29.jpg">
+<meta property="og:image" content="http://example.com/showImg/show30.jpg">
+<meta property="og:image" content="http://example.com/showImg/show31.jpg">
+<meta property="og:image" content="http://example.com/showImg/show32.jpg">
+<meta property="og:image" content="http://example.com/showImg/show33.jpg">
+<meta property="og:image" content="http://example.com/showImg/show34.jpg">
+<meta property="og:image" content="http://example.com/showImg/show35.jpg">
+<meta property="og:image" content="http://example.com/showImg/show36.jpg">
+<meta property="og:image" content="http://example.com/showImg/show37.jpg">
+<meta property="og:image" content="http://example.com/showImg/show38.jpg">
+<meta property="og:image" content="http://example.com/showImg/show39.jpg">
+<meta property="og:image" content="http://example.com/showImg/show40.jpg">
+<meta property="og:image" content="http://example.com/showImg/show41.jpg">
+<meta property="og:image" content="http://example.com/showImg/show42.jpg">
+<meta property="og:image" content="http://example.com/showImg/show43.jpg">
+<meta property="og:image" content="http://example.com/showImg/show44.jpg">
+<meta property="og:image" content="http://example.com/showImg/show45.jpg">
+<meta property="og:image" content="http://example.com/showImg/show46.jpg">
+<meta property="article:published_time" content="2022-02-01T15:08:28.000Z">
+<meta property="article:modified_time" content="2024-01-01T13:22:45.696Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="RTR3rd">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/show25.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Shaders/RealTimeRendering3rd笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        RealTimeRendering笔记
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-02-01T15:08:28.000Z" itemprop="datePublished">2022-02-01</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Shader/">Shader</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            11k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="Desc："><a href="#Desc：" class="headerlink" title="Desc："></a>Desc：</h1><p>在看实时渲染中做的记录，根据QianMo翻译后的文章进行学习，链接<a target="_blank" rel="noopener" href="https://github.com/QianMo/Real-Time-Rendering-3rd-CN-Summary-Ebook">引用</a>, <a target="_blank" rel="noopener" href="https://github.com/QianMo/Real-Time-Rendering-3rd-CN-Summary-Ebook">https://github.com/QianMo/Real-Time-Rendering-3rd-CN-Summary-Ebook</a></p>
+<h2 id="图形渲染管线"><a href="#图形渲染管线" class="headerlink" title="图形渲染管线"></a>图形渲染管线</h2><p>分为四个阶段：<br>    应用阶段、几何阶段、光栅化阶段、像素处理阶段(RealTimeRenderer4th中的提出)<br>    <img src="/showImg/show25.jpg" alt="Image text"><br>    <img src="/showImg/show26.jpg" alt="Image text"></p>
+<p><img src="/showImg/RTR/DepthTest.png" alt="Image text"></p>
+<h3 id="应用阶段"><a href="#应用阶段" class="headerlink" title="应用阶段"></a>应用阶段</h3><p>通过软件的方式实现的阶段，开发者能够对该阶段发送的情况完全控制，改变实现方法来改变实际性能。其他阶段，全部或部分建立在硬件基础上，改变实现过程会非常困难</p>
+<p>虽然不能分为若干个子阶段，但是可以在几个并行处理器上同时执行。<br>超标量体系结构，可以在同一阶段实现不同的几件事</p>
+<p>通常实现的方法：<br>    碰撞检测、加速算法、输入检测、动画、力反馈以及纹理动画，变换仿真、几何变形，以及一些不在其他阶段执行的计算（层次视锥裁剪等加速算法）</p>
+<p>主要任务：<br>    末端，将需要在屏幕上显示出来绘制的集合体(图元：点、线、矩形)输入到绘制管线的下一个阶段</p>
+<p>将摄像机位置、光照、模型的图元输出到管线的下一个阶段</p>
+<h3 id="几何阶段"><a href="#几何阶段" class="headerlink" title="几何阶段"></a>几何阶段</h3><p>细分的功能阶段管线：<br>    + 模型视点变换：<br>    + 顶点着色：<br>    + 投影：<br>    + 裁剪：<br>    + 屏幕映射：</p>
+<p>执行计算量非常高的任务，在只有一个光源的情况下，每个顶点大约需要100次左右的精准浮点运算操作</p>
+<ul>
+<li><p>模型和视图变换：<br>  模型和视图变换阶段分为模型变换和视图变换。<br>  模型变换的目的是将模型变换到适 合渲染的空间当中<br>  视图变换的目的是将摄像机放置于坐标原点，方便后续步骤的操作</p>
+</li>
+<li><p>顶点着色：</p>
+<ul>
+<li>对于对象上各个点计算着色方程。片元上的颜色在像素光栅化期间执行。</li>
+<li>在每个顶点处存储各种材料数据，如：点的位置、法线、颜色或计算着色方程需要的其他数字信息。顶点着色结果计算完成后，会发送到光栅化阶段进行插值操作</li>
+</ul>
+</li>
+</ul>
+<p>阶段目的：在于确定模型上顶点处材质的光照效果</p>
+<ul>
+<li>投影：<ul>
+<li>光照处理完之后，进行投影操作。把视体变换到一个对角顶点分别是(-1,-1,-1)和(1,1,1)单位立方体内，这个单位立方体通常也被成为规范立方体(cvv)</li>
+</ul>
+</li>
+</ul>
+<p>a. 投影方法：<br>    i. 正交投影：<br>    ii. 透视投影：<br>    都可以用4x4的矩形来实现，在任何一种变换之后，都可以认为模型位于归一化处理之后的设备坐标系中</p>
+<p>虽然这些矩形变化是从一个可视体变换到另一个，但是他们仍被成为投影，因为在完成显示后，Z坐标不再保存于得到的投影图片中。将模型从三维投影到二维的空间中</p>
+<p>阶段目的：将模型从三维空间投影到二维的空间中</p>
+<ul>
+<li>裁剪：<ul>
+<li>只有当图元完全或者部分存在于视体中时，才需要将其发送到光栅化阶段，这个阶段可以把这些图元在屏幕中绘制出来</li>
+<li>部分存在于视体内部的图元需要进行裁剪操作</li>
+</ul>
+</li>
+</ul>
+<p>阶段目的：对部分处于视体内部的图元进行裁剪操作</p>
+<ul>
+<li>屏幕映射：<ul>
+<li>此时每个图元的x、y坐标变换到屏幕坐标系中，屏幕坐标系连同Z坐标一起成为窗口坐标系</li>
+</ul>
+</li>
+</ul>
+<p>阶段目的：将之前步骤得到的坐标映射到对应的屏幕坐标系中</p>
+<h3 id="光栅化阶段"><a href="#光栅化阶段" class="headerlink" title="光栅化阶段"></a>光栅化阶段</h3><p>给定经过变换和投影之后的顶点，颜色以及纹理贴图(均来自于几何阶段)，给每个像素正确配色，以便正确绘制整幅图像。这个过程叫光栅化或扫描变换，即从二维顶点所处的屏幕空间(所有顶点都包含Z值即深度值，及各种与相关的着色信息)到屏幕上的像素的转换</p>
+<p>功能阶段：<br>    1. 三角形设定阶段：<br>    2. 三角形遍历阶段：<br>    3. 像素着色阶段：<br>    4. 融合阶段：</p>
+<ul>
+<li>三角形设定 Triangle Setup ：<ul>
+<li>主要用来计算三角形表面的差异和三角新表面的其他相关数据。该数据主要用于扫描转换，以及由几何阶段处理的各种着色数据的插值操作所用。该过程在专门为其设计的硬件上执行</li>
+</ul>
+</li>
+<li>三角形遍历 Triangle Traversal：<ul>
+<li>逐像素检查操作，检查该像素处的像素中心是否由三角形覆盖，而对于有三角形部分重合的像素，将在其重合部分生成片段</li>
+<li>找到哪些采样点或像素在三角形中的过程通常叫三角形遍历或扫描转换。每个三角形片段的属性由三个三角形顶点的数据插值而生成。这些属性包括片段的深度，以及来自几何阶段的着色数据</li>
+</ul>
+</li>
+</ul>
+<p><font color=#ffa500>像素检查</font></p>
+<ul>
+<li>计算像素点相对于三个顶点的位置权重，根据叉乘计算三个三角形的面积</li>
+<li>根据重心坐标的定义，当一个点位于三角形内部时，其重心坐标的值满足以下条件：<ul>
+<li>重心坐标的每个分量（例如 alpha、beta 和 gamma）都在 [0, 1] 的范围内。</li>
+<li>三个重心坐标的和等于 1，即 alpha + beta + gamma &#x3D; 1。</li>
+</ul>
+</li>
+</ul>
+<p>公式</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">S = <span class="number">0.5</span> * <span class="built_in">crossProduct</span>(v[<span class="number">1</span>] - v[<span class="number">0</span>], v[<span class="number">2</span>] - v[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">S1 = <span class="number">0.5</span> * <span class="built_in">crossProduct</span>((x, y) - v[<span class="number">1</span>], v[<span class="number">2</span>] - v[<span class="number">1</span>])</span><br><span class="line">S2 = <span class="number">0.5</span> * <span class="built_in">crossProduct</span>((x, y) - v[<span class="number">2</span>], v[<span class="number">0</span>] - v[<span class="number">2</span>])</span><br><span class="line">S3 = <span class="number">0.5</span> * <span class="built_in">crossProduct</span>((x, y) - v[<span class="number">0</span>], v[<span class="number">1</span>] - v[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">alpha = S1 / S</span><br><span class="line">beta = S2 / S</span><br><span class="line">gamma = S3 / S</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> std::tuple&lt;<span class="type">float</span>, <span class="type">float</span>, <span class="type">float</span>&gt; <span class="title">computeBarycentric2D</span><span class="params">(<span class="type">float</span> x, <span class="type">float</span> y, <span class="type">const</span> Vector3f* v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">float</span> c1 = (x*(v[<span class="number">1</span>].<span class="built_in">y</span>() - v[<span class="number">2</span>].<span class="built_in">y</span>()) + (v[<span class="number">2</span>].<span class="built_in">x</span>() - v[<span class="number">1</span>].<span class="built_in">x</span>())*y + v[<span class="number">1</span>].<span class="built_in">x</span>()*v[<span class="number">2</span>].<span class="built_in">y</span>() - v[<span class="number">2</span>].<span class="built_in">x</span>()*v[<span class="number">1</span>].<span class="built_in">y</span>()) / (v[<span class="number">0</span>].<span class="built_in">x</span>()*(v[<span class="number">1</span>].<span class="built_in">y</span>() - v[<span class="number">2</span>].<span class="built_in">y</span>()) + (v[<span class="number">2</span>].<span class="built_in">x</span>() - v[<span class="number">1</span>].<span class="built_in">x</span>())*v[<span class="number">0</span>].<span class="built_in">y</span>() + v[<span class="number">1</span>].<span class="built_in">x</span>()*v[<span class="number">2</span>].<span class="built_in">y</span>() - v[<span class="number">2</span>].<span class="built_in">x</span>()*v[<span class="number">1</span>].<span class="built_in">y</span>());</span><br><span class="line">    <span class="type">float</span> c2 = (x*(v[<span class="number">2</span>].<span class="built_in">y</span>() - v[<span class="number">0</span>].<span class="built_in">y</span>()) + (v[<span class="number">0</span>].<span class="built_in">x</span>() - v[<span class="number">2</span>].<span class="built_in">x</span>())*y + v[<span class="number">2</span>].<span class="built_in">x</span>()*v[<span class="number">0</span>].<span class="built_in">y</span>() - v[<span class="number">0</span>].<span class="built_in">x</span>()*v[<span class="number">2</span>].<span class="built_in">y</span>()) / (v[<span class="number">1</span>].<span class="built_in">x</span>()*(v[<span class="number">2</span>].<span class="built_in">y</span>() - v[<span class="number">0</span>].<span class="built_in">y</span>()) + (v[<span class="number">0</span>].<span class="built_in">x</span>() - v[<span class="number">2</span>].<span class="built_in">x</span>())*v[<span class="number">1</span>].<span class="built_in">y</span>() + v[<span class="number">2</span>].<span class="built_in">x</span>()*v[<span class="number">0</span>].<span class="built_in">y</span>() - v[<span class="number">0</span>].<span class="built_in">x</span>()*v[<span class="number">2</span>].<span class="built_in">y</span>());</span><br><span class="line">    <span class="type">float</span> c3 = (x*(v[<span class="number">0</span>].<span class="built_in">y</span>() - v[<span class="number">1</span>].<span class="built_in">y</span>()) + (v[<span class="number">1</span>].<span class="built_in">x</span>() - v[<span class="number">0</span>].<span class="built_in">x</span>())*y + v[<span class="number">0</span>].<span class="built_in">x</span>()*v[<span class="number">1</span>].<span class="built_in">y</span>() - v[<span class="number">1</span>].<span class="built_in">x</span>()*v[<span class="number">0</span>].<span class="built_in">y</span>()) / (v[<span class="number">2</span>].<span class="built_in">x</span>()*(v[<span class="number">0</span>].<span class="built_in">y</span>() - v[<span class="number">1</span>].<span class="built_in">y</span>()) + (v[<span class="number">1</span>].<span class="built_in">x</span>() - v[<span class="number">0</span>].<span class="built_in">x</span>())*v[<span class="number">2</span>].<span class="built_in">y</span>() + v[<span class="number">0</span>].<span class="built_in">x</span>()*v[<span class="number">1</span>].<span class="built_in">y</span>() - v[<span class="number">1</span>].<span class="built_in">x</span>()*v[<span class="number">0</span>].<span class="built_in">y</span>());</span><br><span class="line">    <span class="keyword">return</span> &#123;c1,c2,c3&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//权重计算</span></span><br><span class="line"><span class="keyword">auto</span> [alpha, beta, gamma] = <span class="built_in">computeBarycentric2D</span>(x + i, y + j, t.v);</span><br><span class="line"><span class="comment">//计算了权重的倒数，用于进行深度值的插值计算</span></span><br><span class="line"><span class="type">float</span> w_reciprocal = <span class="number">1.0</span> / (alpha / v[<span class="number">0</span>].<span class="built_in">w</span>() + beta / v[<span class="number">1</span>].<span class="built_in">w</span>() + gamma / v[<span class="number">2</span>].<span class="built_in">w</span>());</span><br><span class="line"><span class="comment">//根据重心坐标和顶点的透视投影坐标来计算插值后的深度值 </span></span><br><span class="line"><span class="type">float</span> z_interpolated = alpha * v[<span class="number">0</span>].<span class="built_in">z</span>() / v[<span class="number">0</span>].<span class="built_in">w</span>() + beta * v[<span class="number">1</span>].<span class="built_in">z</span>() / v[<span class="number">1</span>].<span class="built_in">w</span>() + gamma * v[<span class="number">2</span>].<span class="built_in">z</span>() / v[<span class="number">2</span>].<span class="built_in">w</span>();</span><br><span class="line">z_interpolated *= w_reciprocal;</span><br></pre></td></tr></table></figure>
+
+<p><font color=#ffa500>判断像素是否在三角形中，通过叉乘的性质</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">bool</span> <span class="title">insideTriangle</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y, <span class="type">const</span> Vector3f* _v)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    <span class="comment">// TODO : Implement this function to check if the point (x, y) is inside the triangle represented by _v[0], _v[1], _v[2]</span></span><br><span class="line"></span><br><span class="line">    Vector3f A = _v[<span class="number">0</span>];</span><br><span class="line">    Vector3f B = _v[<span class="number">1</span>];</span><br><span class="line">    Vector3f C = _v[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    Vector3f AB = B - A;</span><br><span class="line">    Vector3f BC = C - B;</span><br><span class="line">    Vector3f CA = A - C;</span><br><span class="line"></span><br><span class="line">    Vector3f P;</span><br><span class="line">    P &lt;&lt; x, y , A[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">    Vector3f AP = P - A;</span><br><span class="line">    Vector3f BP = P - B;</span><br><span class="line">    Vector3f CP = P - C;</span><br><span class="line"></span><br><span class="line">    Vector3f AB_cross_AP = AB.<span class="built_in">cross</span>(AP);</span><br><span class="line">    Vector3f BC_cross_BP = BC.<span class="built_in">cross</span>(BP);</span><br><span class="line">    Vector3f CA_cross_CP = CA.<span class="built_in">cross</span>(CP);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> AB_cross_AP.<span class="built_in">dot</span>(BC_cross_BP)&gt;<span class="number">0</span> &amp;&amp; </span><br><span class="line">            BC_cross_BP.<span class="built_in">dot</span>(CA_cross_CP)&gt;<span class="number">0</span> &amp;&amp; </span><br><span class="line">            CA_cross_CP.<span class="built_in">dot</span>(AB_cross_AP)&gt;<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当图元通过光栅化阶段后，从相机视点处看到的东西就可以在屏幕上显示出来。为了避免观察者体验到对图元进行处理并发送屏幕的过程，图形系统一般使用了双缓存机制，屏幕绘制是在一个后置缓冲器中以离屏的方式进行。一旦屏幕已在后置缓冲器中绘制，后置缓冲器的内容就不断与已经在屏幕上显示过的前置缓冲器中的内容进行交换。只有当不影响显示的情况，才进行交换</p>
+<p>阶段的主要任务是合成 (当前存储于缓冲器中的由之前的像素着色阶段产生的) 片段颜色。此外还负责可见性问题 (Z缓冲相关) 的处理</p>
+<p>在光栅化阶段，所有图元会被光栅化，进而转换为屏幕上的像素。首先，计算三角形表面的 差异和三角形表面的其他相关数据（三角形设定阶段），然后，找到哪些采样点或像素在三 角形中（三角形遍历阶段），接着计算所有需逐像素计算操作（像素着色阶段），然后，合 成当前储存于缓冲器中的由之前的像素着色阶段产生的片段颜色，可见性问题可通过 Z 缓存 算法解决，随同的还有可选的 alpha 测试和模版测试（融合阶段）。所有对像依次处理，而 最后的图像显示在屏幕上</p>
+<h3 id="像素处理阶段-实时渲染四中，将这部分从光栅化中提出"><a href="#像素处理阶段-实时渲染四中，将这部分从光栅化中提出" class="headerlink" title="像素处理阶段(实时渲染四中，将这部分从光栅化中提出)"></a>像素处理阶段(实时渲染四中，将这部分从光栅化中提出)</h3><ul>
+<li>像素着色 Pixel Shading：<ul>
+<li>所有逐像素的着色计算都在像素着色阶段进行，使用插值得到着色数据作为输入，输出结果为一种或多种将被传送到下一个阶段的颜色信息</li>
+<li>在可编程GPU内执行</li>
+<li>主要目的是计算所有需要逐像素操作的过程</li>
+</ul>
+</li>
+<li>融合 Merging：<ul>
+<li>每个像素的信息都存储在颜色缓冲器中，而颜色缓冲器是一个颜色的矩阵列。</li>
+<li>融合阶段的主要任务是合成当前存储于缓冲器中的 由之前的像素着色阶段产生的片段颜色。不像其他着色阶段，通常运行该阶段的GPU子单元并非完全可编程的，但其高度可配置，可支持多种特效</li>
+<li>负责可见性问题的处理。这意味着当绘制完整场景的时候，颜色缓冲器中应该还包含从相机视点处可以观察到的场景图元。对于大多数图形硬件来说，这个过程是通过Z缓冲(深度缓冲)算法来实现的。Z缓冲算法非常简单，具有O(n)复杂度(n:像素数量)，只要每个图元计算出相应的像素值，就可以使用这种方法，大概内容：Z缓冲器和颜色缓冲器形状大小一致，每个像素都存储一个Z值，这个z值是从相机到最近图元之间的距离。每次将一个图元绘制为相应像素时，需要计算像素位置处图元的z值，并和同一像素处z缓冲器内容进行比较。决定是否更新当前图元的颜色值<br>  <a target="_blank" rel="noopener" href="https://www.zhihu.com/question/60898307/answer/3053080758">为什么半透明模型的渲染要使用深度测试而关闭深度写入？</a><br>  <img src="/showImg/Shader/show22.jpg" alt="Image text"></li>
+<li>Alpha通道和颜色缓冲器联系在一起可以存储一个与每个像素相关的不透明值。可选的alpha通道可在深度测试执行前在传入片段上运行。</li>
+<li>模板缓冲器是用于记录所呈现图元位置的离屏缓存。每个像素通常与占用8个位。图元可使用各种方法渲染到模板缓冲器中，而缓冲器中的内容可以控制颜色缓存和Z缓冲的渲染 (类似遮罩的操作) 模板缓冲器是制作特效的强大工具。而在管线末端的所有这些功能都叫做光栅操作或混合操作</li>
+<li>帧缓冲器通常包含一个系统所具有的所有缓冲器，但有时也可以认为是颜色缓冲器和Z缓冲器的组合</li>
+<li>累计缓冲器 对帧缓冲器的补充。可以用一组操作符对图形进行累计。例如，为了产生运动模糊，可以对一系列物体运动的图像进行累计和平均等 (景深、反走样、软阴影)</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/showImg/show27.jpg" alt="Image text"><br>图形渲染管线的主要功能是在给定虚拟相机、三维物体、光源、照明模式，以及纹理等诸多条件的情况下，生成或绘制一幅二维图像的过程。概念上可以划分为 应用、几何、光栅化阶段</p>
+<h2 id="延迟渲染"><a href="#延迟渲染" class="headerlink" title="延迟渲染"></a>延迟渲染</h2><p><img src="/showImg/show28.jpg" alt="Image text"></p>
+<h3 id="优缺"><a href="#优缺" class="headerlink" title="优缺"></a>优缺</h3><p><img src="/showImg/show29.jpg" alt="Image text"><br><img src="/showImg/show30.jpg" alt="Image text"></p>
+<h3 id="与正向渲染对比"><a href="#与正向渲染对比" class="headerlink" title="与正向渲染对比"></a>与正向渲染对比</h3><p><img src="/showImg/show31.jpg" alt="Image text"><br><img src="/showImg/show32.jpg" alt="Image text"></p>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p><img src="/showImg/show33.jpg" alt="Image text"><br><img src="/showImg/show34.jpg" alt="Image text"></p>
+<h3 id="过程分析"><a href="#过程分析" class="headerlink" title="过程分析"></a>过程分析</h3><p>1、几何处理阶段(Geometry Pass)。这个阶段中，我们获取对象的各种几何信息，并将第二步所需的各种数据储存（也就是渲染）到多个G-buffer中； </p>
+<p>2、光照处理阶段(Lighting Pass)。在这个pass中，我们只需渲染出一个屏幕大小的二维矩形，使用第一步在G-buffer中存储的数据对此矩阵的每一个片段计算场景的光照；光照计算的过程还是和正向渲染以前一样，只是现在我们需要从对应的G-buffer而不是顶点着色器(和一些uniform变量)那里获取输入变量了<br>    <img src="/showImg/show35.jpg" alt="Image text"></p>
+<p>延迟渲染方法一个很大的好处就是能保证在G-buffer中的片段和在屏幕上呈现的像素所包含的片段信息是一样的，因为深度测试已经最终将这里的片段信息作为最顶层的片段。这样保证了对于在光照处理阶段中处理的每一个像素都只处理一次，所以我们能够省下很多无用的渲染调用。除此之外，延迟渲染还允许我们做更多的优化，从而渲染更多的光源。<br>在几何处理阶段中填充G-buffer非常高效，因为我们直接储存位置，颜色，法线等对象信息到帧缓冲中，这个过程几乎不消耗处理时间。 而在此基础上使用多渲染目标(Multiple Render Targets, MRT)技术，我们可以在一个Pass之内完成所有渲染工作</p>
+<p>典型的Deferred Rendering 的渲染流程有两步：<br>《Real-Time Rendering 3rd》 提炼总结 </p>
+<ol>
+<li>几何处理阶段：渲染所有的几何&#x2F;颜色数据到G-buffer </li>
+<li>光照处理阶段：使用G-buffer计算场景的光照</li>
+</ol>
+<h3 id="几何缓冲区"><a href="#几何缓冲区" class="headerlink" title="几何缓冲区"></a>几何缓冲区</h3><p>主要用于存储每个像素对应的位置（Position），法线（Normal），漫反射颜色（Diffuse Color）以及其他有用材质参数。根据这些信息，就可以在像空间（二维空间）中对每个像素进行光照处理<br>    <img src="/showImg/show36.jpg" alt="Image text"></p>
+<h2 id="非真实渲染"><a href="#非真实渲染" class="headerlink" title="非真实渲染"></a>非真实渲染</h2><h3 id="轮廓描边"><a href="#轮廓描边" class="headerlink" title="轮廓描边"></a>轮廓描边</h3><p>视点方向的描边：<br>    基于视点方向的描边方法，使用视点方向和表面法线之间的点乘结果得到轮廓线信息。轮廓线接近于零，可以判定这个表面极大概率侧向视线方向，可以视作轮廓边缘，进行描边</p>
+<p>基于过程集合方法的描边<br>    先渲染正向表面，再渲染背向表面<br>    + 一种方法是仅仅渲染出背向表面的边界线，使用偏置或者其他技术来确保这些线条恰好位于正向表面之前。这样可以将除轮廓线边缘之外的其他所有线条全部隐藏起来，通常会出现无法连接 独立线段的情况，从而造成明现的缝隙<br>    + 另一种方法是将背面表面本身渲染成黑色。但没有任何偏置操作，背向表面就会保持不可见，需要通过偏置将这些背向表面沿屏幕Z方向向前移动<br><img src="/showImg/show37.jpg" alt="Image text"></p>
+<p>基于图形处理的描边<br>    通过在各种缓冲区上执行图像处理技术，来实现非真实渲染的方法。可以将其理解为一种后处理操作。通过寻找相邻Z缓冲数值的不连续性，就可以确定大多数轮廓线的位置。同样，借助邻接表面法线向量的不连续性，可以确定出分界线边缘的位置。</p>
+<p>基于轮廓边缘检测的描边<br>    将轮廓边缘理解为朝向相反的相邻三角形的交接。其中一个三角形是朝向视点，零一个三角形背向视点。<br><img src="/showImg/show38.jpg" alt="Image text"></p>
+<p>混合轮廓描边<br>    结合了图像处理方法和几何要素方法，来渲染轮廓的方法<br>    首先，找到一系列轮廓边缘的列表。其次，渲染出所有物体的三角<br>    形和轮廓边缘，同时为他们指定一个不同的ID值（也就是说，赋予不同的颜色）。接着读取<br>    该ID缓冲器并从中判断出可见的轮廓边缘，随之对这些可见线段进行重叠检测，并将它们连<br>    接起来形成平滑的笔划路径。最后就可以对这些重建起来的路径进行风格化笔划渲染，其<br>    中，这些笔划本身可以用很多方法来进行风格化处理，包括变细、火焰、摆动、淡化等效<br>    果，同时还有深度和距离信息</p>
+<p>纹理调色板<br>    使用屏幕空间坐标来采样纹理，为了增强绘制效果，可以在屏幕空间上所有表面上运用纸纹理</p>
+<p>色调艺术图<br>    通过在纹理之间进行切换形成的硬着色效果和toon着色效果之间的一种混合嫁接</p>
+<p><img src="/showImg/show39.jpg" alt="Image text"></p>
+<h3 id="卡通渲染的具体实现细节"><a href="#卡通渲染的具体实现细节" class="headerlink" title="卡通渲染的具体实现细节"></a>卡通渲染的具体实现细节</h3><p><img src="/showImg/show40.jpg" alt="Image text"></p>
+<h3 id="要素"><a href="#要素" class="headerlink" title="要素"></a>要素</h3><ul>
+<li>锐利的阴影</li>
+<li>少有或者没有高亮的点</li>
+<li>对物体轮廓进行描边</li>
+</ul>
+<h2 id="渲染加速算法"><a href="#渲染加速算法" class="headerlink" title="渲染加速算法"></a>渲染加速算法</h2><h3 id="空间数据结构"><a href="#空间数据结构" class="headerlink" title="空间数据结构"></a>空间数据结构</h3><p>空间数据结构的组织通常是层次结构的。<br>宽泛地说，即最顶层包含它之下的层次，后者又包含更下层的层次，以此类推。<br>因此，这种结构具有嵌套和递归的特点。<br>用层次结构的实现方式对访问速度的提升很有帮助，复杂度可以从O(n)提升到O(log n)。<br>但同时，使用了层次结构的大多数空间数据结构的构造开销都比较大，虽然也可以在实时过程中进行渐进更新，但是通常需要作为一个预处理的过程来完成</p>
+<p><img src="/showImg/show41.jpg" alt="Image text"><br><a href="../../../../../2023/01/02/DataStructure/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">空间数据结构</a></p>
+<h3 id="裁剪技术"><a href="#裁剪技术" class="headerlink" title="裁剪技术"></a>裁剪技术</h3><p><a href="../../../../../2023/05/17/RenderingAcceleration/cullSystem">Cull System</a></p>
+<h3 id="各种层次细节技术"><a href="#各种层次细节技术" class="headerlink" title="各种层次细节技术"></a>各种层次细节技术</h3><p><a href="./../../../../2023/05/28/RenderingAcceleration/lod">LOD</a></p>
+<h2 id="GPU渲染管线与可编程着色器"><a href="#GPU渲染管线与可编程着色器" class="headerlink" title="GPU渲染管线与可编程着色器"></a>GPU渲染管线与可编程着色器</h2><p><img src="/showImg/show42.jpg" alt="Image text"><br>    绿色阶段都是完全可编程<br>    黄色阶段可配置，但不可编程<br>    蓝色的阶段完全固定</p>
+<h3 id="合并阶段"><a href="#合并阶段" class="headerlink" title="合并阶段"></a>合并阶段</h3><p>作为光栅化阶段名义上的最后一个阶段，合并阶段（The Merging Stage）是将像素着色器中生 成的各个片段的深度和颜色与帧缓冲结合在一起的地方。<br>这个阶段也就是进行模板缓冲 （Stencil-Buffer）和 Z 缓冲（Z-buffer）操作的地方。最常用于透明处理（Transparency）和合 成操作（Compositing）的颜色混合（Color Blending）操作也是在这个阶段进行的。<br>虽然合并阶段不可编程，但却是高度可配置的。在合并阶段可以设置颜色混合来执行大量不 同的操作。<br>最常见的是涉及颜色和 Alpha 值的乘法，加法，和减法的组合。其他操作也是可 能的，比如最大值，最小值以及按位逻辑运算</p>
+<h3 id="流输出"><a href="#流输出" class="headerlink" title="流输出"></a>流输出</h3><p>GPU 的管线的标准使用方式是发送数据到顶点着色器，然后对所得到的三角形进行光栅化处理，并在 像素着色器中处理它们。<br>数据总是通过管线传递，无法访问中间结果。流输出的想法在 Shader Model 4.0 中被引入。在顶点着色器（以及可选的几何着色器中）处理顶点之后，除了将数据发送到光栅化 阶段之外，也可以输出到流，也就是一个有序数组中进行处理。<br>事实上，可以完全关掉光栅化，然后 管线纯粹作为非图形流处理器来使用。以这种方式处理的数据可以通过管线回传，从而允许迭代处 理。如原书的第 10.7 节所述，这种操作特别适用于模拟流动的水或其他粒子特效</p>
+<h3 id="几何着色器"><a href="#几何着色器" class="headerlink" title="几何着色器"></a>几何着色器</h3><p>顶点和片段着色器之间的可选着色器</p>
+<p>随着 2006 年底 DirectX 10 的发布被加入到硬件加速图形管线中。几何着色器作为 Shader Model 4.0 的一部分，不能在早期着 色模型（&lt;&#x3D; SM 3.0）中使用</p>
+<p>几何着色器的输入是单个对象及对象相关的顶点，而对象通常是网格中的三角形，线段或简单的点。 另外，扩展的图元可以由几何着色器定义和处理</p>
+<p>几何着色器需要图元作为输入，在处理过程中他可以将这个图元整个丢弃或者输出一个或更多的图元 （也就是说它可以产生比它得到的更多或更少的顶点）。这个能力被叫做几何增长（growing geometry）。如上所述，几何着色器输出的形式只能是点，折线和三角形条</p>
+<h3 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h3><p>顶点着色器属于第一个阶段，可选是在GPU还是CPU上实现。CPU上实现的话，需要将输出数据发送到GPU进行光栅化。目前几乎所有的GPU都支持顶点着色</p>
+<p>顶点着色阶段之前发生了一些数据操作。比如在 DirectX 中叫做输入装配 （Input Assembler）的阶段，会将一些数据流组织在一起，以形成顶点和基元的集合，发送到管线</p>
+<p>传入的每个顶点由顶点着色器程序处理，然后输出一些在三角形或直线上进行插值后获得的值。 顶点着色器既不能创建也不能消除顶点，并且由一个顶点生成的结果不能传递到另一个顶点。由于每 个顶点都被独立处理，所以 GPU 上的任何数量的着色器处理器都可以并行地应用到传入的顶点流 上</p>
+<h3 id="可编程着色模型"><a href="#可编程着色模型" class="headerlink" title="可编程着色模型"></a>可编程着色模型</h3><p>在现代 GPU 上 ，图形运算中常见的运算操作执行速度非常快。通常情况下，最快的操作是标量和向 量的乘法和加法，以及他们的组合，如乘加运算（multiply-add）和点乘 （dot-product）运算。其他 操作，比如倒数（reciprocal）, 平方根（square root），正弦（sine），余弦（cosine），指数 （exponentiation）、对数（logarithm）运算，往往会稍微更加昂贵，但依然相当快捷。<br>纹理操作非常高效，但他们的性能可能受到诸如等待检索结果的时间等因素的限制</p>
+<p>流控制（flow control）是指使用分支指令来改变代码执行流程的操作。这些指令用于实现高级语言结 构，如“if”和“case”语句，以及各种类型的循环。<br>Shader 支持两种类型的流控制。<br>静态流控制 (Static flow control）是基于统一输入的值的。这意味着代码的流在调用时是恒定的。静态流控制的主要好处是允许在不同的情况下使用相同的着色器（例如，不同数量的光源）。<br>动态流控制（Dynamic flow control）基于不同的输入值。但动态流控制远比静态流量控制更强大但同时也需更高的开销，特别是在调用 shader 之间，代码流不规律改变的时候</p>
+<p>评估一个 shader 的性 能，是评估其在一段时间内处理顶点或像素的个数。如果流对某些元素选择“if”分支，而对其他元 素选择“else”分支，这两个分支必须对所有元素进行评估（并且每个元素的未使用分支将被丢弃）</p>
+<p>Shader 程序可以在程序加载或运行时离线编译。和任何编译器一样，有生成不同输出文件和使用不同 优化级别的选项。一个编译过的 Shader 作为字符串或者文本来存储，并通过驱动程序传递给 GPU</p>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>GPU 实现了第二章中描述的几何和光栅化概念管线阶段。其被分为一些不同程度的可配置性和可编程性的硬件阶段<br><img src="/showImg/show43.jpg" alt="Image text"><br>顶点着色器：<br>    完全可编程，顶点着色器可以对每个顶点进行诸如变换和 变形在内的很多操作，提供了修改&#x2F;创建&#x2F;忽略顶点相关属性的功能，这些顶点属性包括颜色、法线、 纹理坐标和位置。顶点着色器的必须完成的任务是将顶点从模型空间转换到齐次裁剪空间</p>
+<p>几何着色器：<br>    允许 GPU 高效地创建和销毁几何图元。几 何着色器是可选的，完全可编程的阶段，主要对图元（点、线、三角形）的顶点进行操作。几何着色 器接收顶点着色器的输出作为输入，通过高效的几何运算，将数据输出，数据随后经过几何阶段和光 栅化阶段的其他处理后，会发送给片段着色器</p>
+<p>裁剪：<br>    属于可配置的功能阶段，在此阶段可选运行的裁剪方式，以及添加自定义的裁剪 面</p>
+<p>屏幕映射（Screen Mapping）、三角形设置（Triangle Setup）和三角形遍历（Triangle Traversal）阶段是 固定功能阶段</p>
+<p>像素着色器：<br>    是完全可编程的阶段，主要作用是进行像素的处理，让复杂的着色方程 在每一个像素上执行</p>
+<p>合并阶段：<br>    处于完全可编程和固定功能之间，尽管不能编程，但是高度可配置，可 以进行一系列的操作。其除了进行合并操作，还分管颜色修改（Color Modifying），Z 缓冲（Zbuffer），混合（Blend），模板（Stencil）和相关缓存的处理</p>
+<h2 id="图形渲染与视觉外观"><a href="#图形渲染与视觉外观" class="headerlink" title="图形渲染与视觉外观"></a>图形渲染与视觉外观</h2><h3 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h3><p>AA:边缘柔化、消除混叠、抗图像折叠有损，反走样灯</p>
+<h4 id="高分辨率抗锯齿-HRAA"><a href="#高分辨率抗锯齿-HRAA" class="headerlink" title="高分辨率抗锯齿 HRAA"></a>高分辨率抗锯齿 HRAA</h4><p>高分辨率抗锯齿方法(High Resolution Anti-Aliasing，简称 HRAA)，也称 Quincunx 方法，也出 自 NVIDIA 公司。<br>“Quincunx”意思是 5 个物体的排列方式，其中 4 个在正方形角上，第五个 在正方形中心，也就是梅花形，很像六边模型上的五点图案模式。此方法中，采样模式是五点梅花状，其中四个样本在像素单元的角上，最后一个在中心</p>
+<h4 id="覆盖采样抗锯齿-CSAA"><a href="#覆盖采样抗锯齿-CSAA" class="headerlink" title="覆盖采样抗锯齿 CSAA"></a>覆盖采样抗锯齿 CSAA</h4><p>CSAA 就是在 MSAA 基础上更进一步的节省显存使用量及带宽，简单说 CSAA 就是将边缘多边形里需要取样的子像素坐标覆盖掉，把原像素坐标强制安置在硬件和驱动程序预先算好的坐标中。<br>这就好比取样标准统一的 MSAA，能够最高效率的执行边缘取样，效能提升非常的显著。比方说 16xCSAA 取样性能下降幅度仅比 4xMSAA 略高一点，处理效果却几乎和 8xMSAA 一样。8xCSAA 有着 4xMSAA 的处理效果，性能消耗却和 2xMSAA 相同</p>
+<h4 id="多重采样抗锯齿-MSAA"><a href="#多重采样抗锯齿-MSAA" class="headerlink" title="多重采样抗锯齿 MSAA"></a>多重采样抗锯齿 MSAA</h4><p>多重采样抗锯齿（Multi Sampling Anti-Aliasing，简称 MSAA），是一种特殊的超级采样抗锯齿 （SSAA）。<br>MSAA 首先来自于 OpenGL。具体是 MSAA 只对 Z 缓存（Z-Buffer）和模板缓存 (Stencil Buffer)中的数据进行超级采样抗锯齿的处理。<br>可以简单理解为只对多边形的边缘进行 抗锯齿处理。这样的话，相比 SSAA 对画面中所有数据进行处理，MSAA 对资源的消耗需求 大大减弱，不过在画质上可能稍有不如 SSAA</p>
+<h4 id="超级采样抗锯齿-SSAA"><a href="#超级采样抗锯齿-SSAA" class="headerlink" title="超级采样抗锯齿 SSAA"></a>超级采样抗锯齿 SSAA</h4><p>先把图像映射到缓存并把它放大，再用超级采样把放大后的像素进行采样，一般选取2个或4个邻近像素，把这些采样混合起来后，生成的最终像素</p>
+<p>令每个像素拥有邻近像素的特诊，像素与像素之间的过渡色彩，就变得近似，令图形的边缘色彩过渡趋于平滑。<br>再把最终像素还原回原来大小的图像，并保存到帧缓存也就是显存中</p>
+<p>这样就等于 把一幅模糊的大图，通过细腻化后再缩小成清晰的小图。如果每帧都进行抗锯齿处理，游戏 或视频中的所有画面都带有抗锯齿效果。 超级采样抗锯齿中使用的采样法一般有两种： </p>
+<ul>
+<li>OGSS，顺序栅格超级采样（Ordered Grid Super-Sampling，简称 OGSS），采样时选取 2 个邻近像素</li>
+<li>RGSS，旋转栅格超级采样（Rotated Grid Super-Sampling，简称 RGSS），采样时选取 4 个邻近像素</li>
+</ul>
+<p>作为概念上最简单的一种超采样方法，全场景抗锯齿（Full-Scene Antialiasing,FSAA） 以较高的分辨率对场景进行绘制，然后对相邻的采样样本进行平均，从而生成一幅新的图像</p>
+<h3 id="曲面细分和三角形划分"><a href="#曲面细分和三角形划分" class="headerlink" title="曲面细分和三角形划分"></a>曲面细分和三角形划分</h3><p>细长三角形的光栅化效率很低，因为在对远处顶点进行插值时，可能会造成瑕疵<br>多边形划分为三角形，（解决算法只能用于凸三角形的情况）</p>
+<ul>
+<li>耳切法，时间复杂度O(n^2)  <ul>
+<li><a target="_blank" rel="noopener" href="https://www.geometrictools.com/Documentation/TriangulationByEarClipping.pdf">TriangulationByEarClipping</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/MauriceJohannssen/EarClipping/tree/main">一个实时破坏的开源项目</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="着色"><a href="#着色" class="headerlink" title="着色"></a>着色</h3><p>漫反射分量：<br>    <img src="/showImg/show44.jpg" alt="Image text"><br>镜面反射分量：<br>    <img src="/showImg/show45.jpg" alt="Image text"></p>
+<p>着色处理方法：<br>    - 平滑着色：<br>        § 一个三角面用同一个颜色。如果三角面的代表顶点恰好被光照成了白色，那么整个面都是白色<br>    - 高洛德着色：<br>        § 每顶点求值后的线性插值结果通常成为高洛德着色。顶点着色器传递世界空间的顶点法线和位置到Shade()函数，然后将结果写入内插值。像素着色器将获取内插值并将其直接写入输出。可以为无光泽表面产生合理的结果，但是对于强高光反射的表面，可能会产生失真<br>    - 冯氏着色：<br>        § 对着色方程进行完全的像素求值。顶点着色器将世界空间法线和位置写入内插值，此值通过像素着色器传递给Shade()函数.而将Shade()函数返回值写入到输出中。即使表面法线在顶点着色器中缩放为长度1，插值也可以改变其长度，因此可能需要在像素着色器中再次执行此归一化操作</p>
+<p><img src="/showImg/show46.jpg" alt="Image text"></p>
+<p>冯氏着色可以说是三者中最接近真实的着色效果，当然开销也是最大的。因为高洛德着色是每个顶点（vertex）计算一次光照，冯氏着色是每个片元（fragment）或者说每像素计算一次光照，点的法向量是通过顶点的法向量插值得到的。所以说不会出现高洛德着色也许会遇到的失真问题</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/02/01/CSharp/"
+      title="C#"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        C#
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/02/01/UGUI/UGUI%E9%87%8D%E5%BB%BA/"
+      title="UGUI重建"
+     >
+
+    <p class="title-text">
+      
+        UGUI重建
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

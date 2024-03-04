@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>配置表工具 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc：使用数据表实现多语言、根据数据表生成相关数据类,数据包相当于一个外部的数据库，数据库中存放着与游戏人物相关的数据，只不过这个数据库里的数据是不能更改的 localization：最开始的思路通过Txt文本存储相关数据，相当于指定一个规则，指定的键对应相关的值，程序根据设定的键去读取，策划对txt修改值的详细数值，同时可以保证多个模块中数据的一致 12m_test&#x3D;213m_npcNum&#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="配置表工具">
+<meta property="og:url" content="http://example.com/2022/01/30/Config/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc：使用数据表实现多语言、根据数据表生成相关数据类,数据包相当于一个外部的数据库，数据库中存放着与游戏人物相关的数据，只不过这个数据库里的数据是不能更改的 localization：最开始的思路通过Txt文本存储相关数据，相当于指定一个规则，指定的键对应相关的值，程序根据设定的键去读取，策划对txt修改值的详细数值，同时可以保证多个模块中数据的一致 12m_test&#x3D;213m_npcNum&#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/show3.jpg">
+<meta property="og:image" content="http://example.com/showImg/show4.jpg">
+<meta property="og:image" content="http://example.com/showImg/show72.png">
+<meta property="og:image" content="http://example.com/showImg/show73.png">
+<meta property="og:image" content="http://example.com/showImg/show74.png">
+<meta property="article:published_time" content="2022-01-30T10:45:08.000Z">
+<meta property="article:modified_time" content="2023-05-21T11:26:11.274Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="配置表">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/show3.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Config" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        配置表工具
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-01-30T10:45:08.000Z" itemprop="datePublished">2022-01-30</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            8.4k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="Desc："><a href="#Desc：" class="headerlink" title="Desc："></a>Desc：</h1><p>使用数据表实现多语言、根据数据表生成相关数据类,数据包相当于一个外部的数据库，数据库中存放着与游戏人物相关的数据，只不过这个数据库里的数据是不能更改的</p>
+<h2 id="localization："><a href="#localization：" class="headerlink" title="localization："></a>localization：</h2><h3 id="最开始的思路"><a href="#最开始的思路" class="headerlink" title="最开始的思路"></a>最开始的思路</h3><p>通过Txt文本存储相关数据，相当于指定一个规则，指定的键对应相关的值，程序根据设定的键去读取，策划对txt修改值的详细数值，同时可以保证多个模块中数据的一致</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m_test=213</span><br><span class="line">m_npcNum=4</span><br></pre></td></tr></table></figure>
+
+<p>数据的读取,在游戏运行时，读取txt，将数据结果通过‘&#x3D;’分割成key、value存入字典中</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">* 初始化数据，存入字典中</span><br><span class="line">TextAsset file=Resources.Load&lt;TextAsset&gt;(path);</span><br><span class="line"><span class="built_in">string</span>[] lines = file.text.Split(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line"><span class="keyword">foreach</span>(<span class="built_in">string</span> line <span class="keyword">in</span> lines)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">string</span>.IsNullOrEmpty(line)) <span class="keyword">continue</span>;<span class="comment">//防止文件有空行或者null</span></span><br><span class="line">    <span class="keyword">if</span> (line.Substring(<span class="number">0</span>, <span class="number">2</span>) == <span class="string">&quot;//&quot;</span>) <span class="keyword">continue</span>;<span class="comment">//除去注释</span></span><br><span class="line">    <span class="built_in">string</span>[] keyValues = line.Split(<span class="string">&#x27;=&#x27;</span>);</span><br><span class="line">    <span class="keyword">if</span> (m_languageDic.ContainsKey(keyValues[<span class="number">0</span>]))</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.LogError(<span class="string">&quot;存在重复的键&quot;</span>);</span><br><span class="line">        <span class="keyword">continue</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    m_languageDic.Add(keyValues[<span class="number">0</span>], keyValues[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">* 接口</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">V_GetValue</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> <span class="keyword">value</span>;</span><br><span class="line">    m_languageDic.TryGetValue(key, <span class="keyword">out</span> <span class="keyword">value</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">value</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">V_GetIntValue</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">string</span> <span class="keyword">value</span> = <span class="keyword">this</span>.V_GetValue(key);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>.Parse(<span class="keyword">value</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="localization-之后的优化"><a href="#localization-之后的优化" class="headerlink" title="localization 之后的优化"></a>localization 之后的优化</h3><p>上面的操作存在一个问题，用字符串去获取另一个字符串，相当于消耗了双份内存。为了表达这串文字的内容，key经常会设的很长，这会导致数据表变得很大，而且内存占用量也会加大很多，因为要存储一份常量的字符串。</p>
+<p>优化方式：<br>    根据这张表，生成特定的一个类去存储，用变量的形式去记录文字的id，通过文字表生成数据表，同时生成数据定义类，使用变量去代表数字</p>
+<pre><code><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">TextKey</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> BattleSceneFightAllianceWin=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">const</span> BattleSceneFightAllianceLose=<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+<p>多语言的情境下：<br>    简单的方式：<br>        制作多个表，每个表一门语言。可以根据不同的语言来获取<br>        如果是一对一键值对，每次修改语言内容就要对所有语言内容进行修改，调试起来比较麻烦。可以采用一对多的形式合并语言内容数据表，把一个表里的一个key值对应多个语言的文字内容写在一个表里</p>
+<p>注意：<br>    如果把所有数据表的数据都集中在一个数据文件里，那么游戏在加载数据表时，就需要在一瞬间集中处理，导致CPU阻塞时间过长，发生卡顿现象<br>        解决方式：<br>            分散读取：<br>            按需读取(但是多数情况下是在某个瞬间需要大部分数据，最好是在加载时指定读取顺序，并隔帧读取)：</p>
+<p>引用<a target="_blank" rel="noopener" href="http://www.luzexi.com/2018/07/17/Unity3D%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B%E4%B9%8B%E8%BF%9B%E9%98%B6%E4%B8%BB%E7%A8%8B-%E6%95%B0%E6%8D%AE%E8%A1%A83">链接</a></p>
+<h2 id="功能的数据表："><a href="#功能的数据表：" class="headerlink" title="功能的数据表："></a>功能的数据表：</h2><p>表选择的是csv格式的文件去纯粹，因为文本是通过’,’进行分割。解析处理方便。正因为如此，数据配表中最好不能出现‘，’，具体解决方式，查询到有相关的，没自己实现过<br>表<img src="/showImg/show3.jpg" alt="Image text"><br>生成的配置类<img src="/showImg/show4.jpg" alt="Image text"></p>
+<p>具体思路：<br>    字符串拼接生成文本，对于ARR类型的数据，当作字符串处理，在解析的时候自己根据类去不同的解析(会导致策划需求变动时，需要经常修改相关表的解析方式，暂时没想好怎么解决)<br>    因为想要通过数据表生成的类去实现数据读取相关的操作，而这个类会随着表修改而自动生成。所以相关操作不能写在类里，我选择通过派生类的特性去解决，把配置表类分为两个文件去解决，一块会程序化自动生成，另一块做为平时开发的类去操作，ConfigBase类实现的功能主要是数据的初始化和提供查询的接口，比如根据id得到相关的数据</p>
+<h1 id="Excel2lua"><a href="#Excel2lua" class="headerlink" title="Excel2lua"></a>Excel2lua</h1><p><a target="_blank" rel="noopener" href="https://github.com/passiony/xlua-framework-unity2018/tree/master/ConfigData/Excel2Lua">来源</a></p>
+<p><img src="/showImg/show72.png" alt="Image text"><br><img src="/showImg/show73.png" alt="Image text"></p>
+<p>第一行 表名<br>第二行 所有列的描述<br>第三行 列名<br>第四行 数据类型</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 遍历第三行的所有列 保存字段名</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, excel_sheet.ncols):</span><br><span class="line">    cell = excel_sheet.cell(<span class="number">2</span>, col)</span><br><span class="line">    col_name_list.append(<span class="built_in">str</span>(cell.value))</span><br><span class="line">    <span class="keyword">if</span> (cell.ctype != <span class="number">1</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;found a invalid col name in col [%d] !~&quot;</span> % (col))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 遍历第四行的所有列 保存数据类型</span></span><br><span class="line"><span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, excel_sheet.ncols):</span><br><span class="line">    cell = excel_sheet.cell(<span class="number">3</span>, col)</span><br><span class="line">    col_val_type_list.append(<span class="built_in">str</span>(cell.value))</span><br><span class="line">    <span class="keyword">if</span> (cell.ctype != <span class="number">1</span>):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;found a invalid col val type in col [%d] !~&quot;</span> % (col))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 剔除表头、字段名和字段类型所在行</span></span><br><span class="line"><span class="comment"># 从第五行开始遍历 构造行数据</span></span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>, excel_sheet.nrows):</span><br><span class="line">    <span class="comment"># 保存数据索引 默认第一列为id</span></span><br><span class="line">    cell_id = excel_sheet.cell(row, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># assert cell_id.ctype == 2, &quot;found a invalid id in row [%d] !~&quot; % (row)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 检查id的唯一性</span></span><br><span class="line">    <span class="keyword">if</span> cell_id.value <span class="keyword">in</span> excel_data_dict:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;[warning] duplicated data id: &quot;%d&quot;, all previous value will be ignored!~&#x27;</span> % (cell_id.value))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># row data list</span></span><br><span class="line">    row_data_list = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存每一行的所有数据</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, excel_sheet.ncols):</span><br><span class="line">        cell = excel_sheet.cell(row, col)</span><br><span class="line">        k = col_name_list[col]</span><br><span class="line">        cell_val_type = col_val_type_list[col]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># ignored the string that start with &#x27;_&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">str</span>(k).startswith(<span class="string">&#x27;_&#x27;</span>):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 根据字段类型去调整数值 如果为空值 依据字段类型 填上默认值</span></span><br><span class="line">        <span class="keyword">if</span> cell_val_type == <span class="string">&#x27;string&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cell.ctype == <span class="number">0</span>:</span><br><span class="line">                v = <span class="string">&#x27;\&#x27;\&#x27;&#x27;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = <span class="string">&#x27;\&#x27;%s\&#x27;&#x27;</span> % (<span class="built_in">str</span>(cell.value))</span><br><span class="line">        <span class="keyword">elif</span> cell_val_type == <span class="string">&#x27;int&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cell.ctype == <span class="number">0</span>:</span><br><span class="line">                v = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = toInt(cell.value)</span><br><span class="line">        <span class="keyword">elif</span> cell_val_type == <span class="string">&#x27;float&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cell.ctype == <span class="number">0</span>:</span><br><span class="line">                v = <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = <span class="built_in">float</span>(cell.value)</span><br><span class="line">        <span class="keyword">elif</span> cell_val_type == <span class="string">&#x27;bool&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cell.ctype == <span class="number">0</span>:</span><br><span class="line">                v = <span class="string">&#x27;false&#x27;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = cell.value</span><br><span class="line">        <span class="keyword">elif</span> cell_val_type == <span class="string">&#x27;table&#x27;</span>:</span><br><span class="line">            <span class="keyword">if</span> cell.ctype == <span class="number">0</span>:</span><br><span class="line">                v = <span class="string">&#x27;&#123;&#125;&#x27;</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                v = cell.value</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            v = cell.value</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 加入列表</span></span><br><span class="line">        row_data_list.append([k, v])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 保存id 和 row data</span></span><br><span class="line">    excel_data_dict[cell_id.value] = row_data_list</span><br></pre></td></tr></table></figure>
+
+<h1 id="ScriptableObject-编辑器"><a href="#ScriptableObject-编辑器" class="headerlink" title="ScriptableObject 编辑器"></a>ScriptableObject 编辑器</h1><p>ScriptableObject：在编辑器下可以保存和存储数据在本地Assets文件下,保存的数据可以共享,可以在当前整个项目进行引用或者其他项目共享。通过将数据存储在ScriptableObject对象中来减少工程以及游戏运行时因拷贝值所造成的内存占用</p>
+<p><img src="/showImg/show74.png" alt="Image text"><br>根据 RPG Builder 插件的工具，学习编辑器编写时顺手写的</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>EditorDataObj：ScriptableObject<br>    定义一系列编辑器的属性</p>
+<p>EditorUtils.cs<br>    提供在编辑器中绘制相关组件的接口和百分比计算相关的接口</p>
+<p>DataCreate.cs<br>    处理面板的逻辑，scriptable的选择，保存和新建</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Texture2D DarkThemeBackground, LightThemeBackground;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> labelFieldWidth = <span class="number">100f</span>, fieldContentWidth = <span class="number">400f</span>, filterLabelFieldWidth = <span class="number">50</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> MinEditorWidth = <span class="number">1050</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> MinEditorHeight = <span class="number">550</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> CategoriesY;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> actionButtonsY;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> ModuleButtonsY = <span class="number">36</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> CategoryWidthPercent, CategoryWidthPercentHover, SubCategoryWidthPercent, SubCategoryWidthPercentHover, ElementListWidthPercent, ViewWidthPercent, FilterWidthPercent, TopBarHeightPercent;</span><br><span class="line"><span class="keyword">public</span> <span class="built_in">float</span> viewSmallFieldHeight, smallButtonHeight;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">StartHorizontalMargin</span>(<span class="params"><span class="built_in">float</span> space, <span class="built_in">bool</span> beginVertical</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    EditorGUILayout.BeginHorizontal();</span><br><span class="line">    GUILayout.Space(space);</span><br><span class="line">    <span class="keyword">if</span> (beginVertical) EditorGUILayout.BeginVertical();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">EndHorizontalMargin</span>(<span class="params"><span class="built_in">float</span> space, <span class="built_in">bool</span> endVertical</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (endVertical) EditorGUILayout.EndVertical();</span><br><span class="line">    GUILayout.Space(space);</span><br><span class="line">    EditorGUILayout.EndHorizontal();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Sprite <span class="title">DrawIconField</span>(<span class="params">Sprite icon, <span class="built_in">float</span> iconSize</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> (Sprite)EditorGUILayout.ObjectField(icon, <span class="keyword">typeof</span>(Sprite), <span class="literal">false</span>, GUILayout.Width(iconSize), GUILayout.Height(iconSize));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">DrawIDField</span>(<span class="params"><span class="built_in">float</span> smallFieldHeight, <span class="built_in">float</span> fieldWidth, <span class="built_in">int</span> id,EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    fieldWidth *= <span class="number">2</span>;</span><br><span class="line">    EditorGUILayout.BeginHorizontal();</span><br><span class="line">    EditorGUI.BeginDisabledGroup(<span class="literal">true</span>);</span><br><span class="line">    EditorGUILayout.LabelField(<span class="string">&quot;ID:&quot;</span>, GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    EditorGUILayout.IntField(id, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    EditorGUI.EndDisabledGroup();</span><br><span class="line">    EditorGUILayout.EndHorizontal();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">DrawHorizontalTextField</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">string</span> content, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GUILayout.BeginHorizontal();</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    content = EditorGUILayout.TextField(content, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    GUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> <span class="title">DrawHorizontalTextField</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">int</span> content, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GUILayout.BeginHorizontal();</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    content = EditorGUILayout.IntField(content, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    GUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">float</span> <span class="title">DrawHorizontalTextField</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">float</span> content, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GUILayout.BeginHorizontal();</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    content = EditorGUILayout.FloatField(content, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    GUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">DrawHorizontalToggle</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">bool</span> toggle, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GUILayout.BeginHorizontal();</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    toggle = EditorGUILayout.Toggle(toggle, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    GUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> toggle;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">DrawFileNameField</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">string</span> content, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    EditorGUILayout.BeginHorizontal();</span><br><span class="line">    EditorGUI.BeginDisabledGroup(<span class="literal">true</span>);</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(editorDataObj.labelFieldWidth), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    content = EditorGUILayout.TextField(content, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    EditorGUI.EndDisabledGroup();</span><br><span class="line">    EditorGUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">DrawHorizontalTextField</span>(<span class="params"><span class="built_in">string</span> labelName, <span class="built_in">string</span> tooltip, <span class="built_in">float</span> smallFieldHeight, <span class="built_in">float</span> width, <span class="built_in">string</span> content, EditorDataObj editorDataObj</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    GUILayout.BeginHorizontal();</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">string</span>.IsNullOrEmpty(labelName)) EditorGUILayout.LabelField(<span class="keyword">new</span> GUIContent(labelName, tooltip), GUILayout.Width(width), GUILayout.Height(smallFieldHeight));</span><br><span class="line">    content = EditorGUILayout.TextField(content, GUILayout.Height(smallFieldHeight));</span><br><span class="line">    GUILayout.EndHorizontal();</span><br><span class="line">    <span class="keyword">return</span> content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/01/30/UGUI/UGUI%E7%BB%84%E4%BB%B6/"
+      title="UGUI组件"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        UGUI组件
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/01/30/Hello-world/"
+      title="Hello World"
+     >
+
+    <p class="title-text">
+      
+        Hello World
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

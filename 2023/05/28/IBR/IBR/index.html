@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>IBR | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="简介关于游戏开发中基于图像的渲染（Image-Based Rendering，简称IBR）技术的方方面面，将总结《RTR3》书中第十章提到的16种常用的IBR渲染技术  渲染谱 The Rendering Spectrum  固定视角的渲染 Fixed-View Rendering  天空盒 Skyboxes  光场渲染 Light Field Rendering  精灵与层 Sprites an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IBR">
+<meta property="og:url" content="http://example.com/2023/05/28/IBR/IBR/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="简介关于游戏开发中基于图像的渲染（Image-Based Rendering，简称IBR）技术的方方面面，将总结《RTR3》书中第十章提到的16种常用的IBR渲染技术  渲染谱 The Rendering Spectrum  固定视角的渲染 Fixed-View Rendering  天空盒 Skyboxes  光场渲染 Light Field Rendering  精灵与层 Sprites an">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/c9b5933401c3fc92deefe9e3e619e754.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/514cc3485f7c24b731867d72f60db19a.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/b4b24b0b45244b0c24ed068f6272449c.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/5f056b22719c32235d5aec6bbfaf71c6.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/488ea9626a214483fe33def051bd7f9e.jpg">
+<meta property="article:published_time" content="2023-05-28T08:55:15.000Z">
+<meta property="article:modified_time" content="2023-08-28T15:03:55.994Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="IBR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/c9b5933401c3fc92deefe9e3e619e754.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-IBR/IBR" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        IBR
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-05-28T08:55:15.000Z" itemprop="datePublished">2023-05-28</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Shader/">Shader</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            7.7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>关于游戏开发中基于图像的渲染（Image-Based Rendering，简称IBR）技术的方方面面，将总结《RTR3》书中第十章提到的16种常用的IBR渲染技术</p>
+<ul>
+<li><p>渲染谱 The Rendering Spectrum</p>
+</li>
+<li><p>固定视角的渲染 Fixed-View Rendering</p>
+</li>
+<li><p>天空盒 Skyboxes</p>
+</li>
+<li><p>光场渲染 Light Field Rendering</p>
+</li>
+<li><p>精灵与层 Sprites and Layers</p>
+</li>
+<li><p>公告板 Billboarding</p>
+  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//ScriptableRenderer.cs</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CalculateBillboardProperties</span>(<span class="params"></span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">in</span> Matrix4x4 worldToCameraMatrix,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">out</span> Vector3 billboardTangent,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">out</span> Vector3 billboardNormal,</span></span></span><br><span class="line"><span class="params"><span class="function">    <span class="keyword">out</span> <span class="built_in">float</span> cameraXZAngle</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Matrix4x4 cameraToWorldMatrix = worldToCameraMatrix;</span><br><span class="line">    cameraToWorldMatrix = cameraToWorldMatrix.transpose;</span><br><span class="line"></span><br><span class="line">    Vector3 cameraToWorldMatrixAxisX = <span class="keyword">new</span> Vector3(cameraToWorldMatrix.m00, cameraToWorldMatrix.m10, cameraToWorldMatrix.m20);</span><br><span class="line">    Vector3 cameraToWorldMatrixAxisY = <span class="keyword">new</span> Vector3(cameraToWorldMatrix.m01, cameraToWorldMatrix.m11, cameraToWorldMatrix.m21);</span><br><span class="line">    Vector3 cameraToWorldMatrixAxisZ = <span class="keyword">new</span> Vector3(cameraToWorldMatrix.m02, cameraToWorldMatrix.m12, cameraToWorldMatrix.m22);</span><br><span class="line"></span><br><span class="line">    Vector3 front = cameraToWorldMatrixAxisZ;</span><br><span class="line"></span><br><span class="line">    Vector3 worldUp = Vector3.up;</span><br><span class="line">    Vector3 cross = Vector3.Cross(front, worldUp);</span><br><span class="line">    billboardTangent = !Mathf.Approximately(cross.sqrMagnitude, <span class="number">0.0f</span>)</span><br><span class="line">        ? cross.normalized</span><br><span class="line">        : cameraToWorldMatrixAxisX;</span><br><span class="line"></span><br><span class="line">    billboardNormal = Vector3.Cross(worldUp, billboardTangent);</span><br><span class="line">    billboardNormal = !Mathf.Approximately(billboardNormal.sqrMagnitude, <span class="number">0.0f</span>)</span><br><span class="line">        ? billboardNormal.normalized</span><br><span class="line">        : cameraToWorldMatrixAxisY;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// SpeedTree generates billboards starting from looking towards X- and rotates counter clock-wisely</span></span><br><span class="line">    Vector3 worldRight = <span class="keyword">new</span> Vector3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="comment">// signed angle is calculated on X-Z plane</span></span><br><span class="line">    <span class="built_in">float</span> s = worldRight.x * billboardTangent.z - worldRight.z * billboardTangent.x;</span><br><span class="line">    <span class="built_in">float</span> c = worldRight.x * billboardTangent.x + worldRight.z * billboardTangent.z;</span><br><span class="line">    cameraXZAngle = Mathf.Atan2(s, c);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// convert to [0,2PI)</span></span><br><span class="line">    <span class="keyword">if</span> (cameraXZAngle &lt; <span class="number">0</span>)</span><br><span class="line">        cameraXZAngle += <span class="number">2</span> * Mathf.PI;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//SpeedTree7BillboardPasses.hlsl</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InitializeData</span>(<span class="params">inout SpeedTreeVertexInput input, <span class="keyword">out</span> half2 outUV, <span class="keyword">out</span> half outHueVariation</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// assume no scaling &amp; rotation</span></span><br><span class="line">    <span class="comment">// 模型在被渲染之前没有进行缩放和旋转变换。在这种情况下，仅通过添加平移信息就可以得到世界坐标。如果模型有缩放或旋转变换，那么世界坐标的计算将更复杂，并涉及到矩阵乘法和向量变换</span></span><br><span class="line">    float3 worldPos = input.vertex.xyz + float3(UNITY_MATRIX_M[<span class="number">0</span>].w, UNITY_MATRIX_M[<span class="number">1</span>].w, UNITY_MATRIX_M[<span class="number">2</span>].w);</span><br><span class="line"></span><br><span class="line"><span class="meta">#ifdef BILLBOARD_FACE_CAMERA_POS</span></span><br><span class="line">    float3 eyeVec = normalize(unity_BillboardCameraPosition - worldPos);</span><br><span class="line">    float3 billboardTangent = normalize(float3(-eyeVec.z, <span class="number">0</span>, eyeVec.x));            <span class="comment">// cross(eyeVec, &#123;0,1,0&#125;)</span></span><br><span class="line">    float3 billboardNormal = float3(billboardTangent.z, <span class="number">0</span>, -billboardTangent.x);    <span class="comment">// cross(&#123;0,1,0&#125;,billboardTangent)</span></span><br><span class="line">    <span class="built_in">float</span> angle = atan2(billboardNormal.z, billboardNormal.x);                     <span class="comment">// signed angle between billboardNormal to &#123;0,0,1&#125;</span></span><br><span class="line">    angle += angle &lt; <span class="number">0</span> ? <span class="number">2</span> * SPEEDTREE_PI : <span class="number">0</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    float3 billboardTangent = unity_BillboardTangent;</span><br><span class="line">    float3 billboardNormal = unity_BillboardNormal;</span><br><span class="line">    <span class="built_in">float</span> angle = unity_BillboardCameraXZAngle;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> widthScale = input.texcoord1.x;</span><br><span class="line">    <span class="built_in">float</span> heightScale = input.texcoord1.y;</span><br><span class="line">    <span class="built_in">float</span> rotation = input.texcoord1.z;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算广告牌在世界空间中的位置（billboardPos），基于输入的纹理坐标（percent）和预定义的广告牌参数</span></span><br><span class="line">    float2 percent = input.texcoord.xy;</span><br><span class="line">    <span class="comment">// 这部分计算使用了纹理坐标的x分量（percent.x）与一些预定义的参数进行乘法和加法运算。首先，percent.x - 0.5f将纹理坐标的x分量从[0, 1]的范围映射到[-0.5, 0.5]的范围。然后，乘以unity_BillboardSize.x和widthScale，这两个参数用于调整广告牌在X轴上的尺寸。最后，乘以billboardTangent，这个切线向量用于确定广告牌在X轴上的位置</span></span><br><span class="line">    float3 billboardPos = (percent.x - <span class="number">0.5f</span>) * unity_BillboardSize.x * widthScale * billboardTangent;</span><br><span class="line">    <span class="comment">// 这部分计算使用了纹理坐标的y分量（percent.y）与一些预定义的参数进行乘法和加法运算。首先，percent.y * unity_BillboardSize.y将纹理坐标的y分量从[0, 1]的范围映射到[0, unity_BillboardSize.y]的范围，其中unity_BillboardSize.y用于调整广告牌在Y轴上的尺寸。然后，加上unity_BillboardSize.z，这个参数用于调整广告牌在Y轴上的偏移量。最后，乘以heightScale，用于进一步调整广告牌在Y轴上的尺寸</span></span><br><span class="line">    billboardPos.y += (percent.y * unity_BillboardSize.y + unity_BillboardSize.z) * heightScale;</span><br><span class="line"></span><br><span class="line"><span class="meta">#ifdef ENABLE_WIND</span></span><br><span class="line">    <span class="keyword">if</span> (_WindQuality * _WindEnabled &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        billboardPos = GlobalWind(billboardPos, worldPos, <span class="literal">true</span>, _ST_WindVector.xyz, input.texcoord1.w);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    input.vertex.xyz += billboardPos;</span><br><span class="line">    input.vertex.w = <span class="number">1.0f</span>;</span><br><span class="line">    input.normal = billboardNormal.xyz;</span><br><span class="line">    input.tangent = float4(billboardTangent.xyz, <span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> slices = unity_BillboardInfo.x;</span><br><span class="line">    <span class="built_in">float</span> invDelta = unity_BillboardInfo.y;</span><br><span class="line">    angle += rotation;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">float</span> imageIndex = fmod(floor(angle * invDelta + <span class="number">0.5f</span>), slices);</span><br><span class="line">    float4 imageTexCoords = unity_BillboardImageTexCoords[imageIndex];</span><br><span class="line">    <span class="keyword">if</span> (imageTexCoords.w &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        outUV = imageTexCoords.xy - imageTexCoords.zw * percent.yx;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        outUV = imageTexCoords.xy + imageTexCoords.zw * percent;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#ifdef EFFECT_HUE_VARIATION</span></span><br><span class="line">    <span class="built_in">float</span> hueVariationAmount = frac(worldPos.x + worldPos.y + worldPos.z);</span><br><span class="line">    outHueVariation = saturate(hueVariationAmount * _HueVariation.a);</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    outHueVariation = <span class="number">0</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>  <img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/c9b5933401c3fc92deefe9e3e619e754.jpg"></p>
+<ul>
+<li>Screen-Aligned Billboard 对齐于屏幕的公告板<ul>
+<li>N:摄像机方向</li>
+<li>U:摄像机Up方向</li>
+</ul>
+</li>
+<li>Axial Billboard 轴向公告板<ul>
+<li>U:受限制的Axial，r&#x3D;U*N，最后再计算一次n’ &#x3D; r * u,即n’才是最后可行的代入M的n,表达了受限的概念。</li>
+</ul>
+</li>
+<li>World-Oriented Billboard 面向世界的公告板<ul>
+<li>World-orientedbillboard就不能直接使用镜头的up做up,因为镜头roll了,并且所画的billboard原本是应该相对世界站立的,按Screen-Aligned的做法就会随镜头旋转,所以此时应该r &#x3D; u * n(u是其在世界上的up,n是镜头视线方向的逆方向),最后再计算一次u &#x3D; r * n,即u’才是最后的up,即非物体本身相对世界的up,亦非镜头的up</li>
+</ul>
+</li>
+<li>实现变体的区别在于：<ul>
+<li>View Oriented&#x2F;View Plane Oriented不同</li>
+<li>Sphere&#x2F;Axial 不同</li>
+<li>Camera Up&#x2F;World Up不同<br>  <img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/514cc3485f7c24b731867d72f60db19a.jpg"></li>
+</ul>
+</li>
+<li>运用上，云、树、草，<a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/utilities/advanced-render-system-77262#description">顶点优化</a></li>
+<li>顶点优化  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">UpdateTexture</span>(<span class="params">Camera renderCamera, <span class="built_in">float</span> distance, <span class="built_in">float</span> cameraFov, TexturesManager texturesManager</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">int</span> textureSize = texturesManager.GetTextureSize(_billboardSize, distance, cameraFov);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (Texture == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        Texture = texturesManager.GetTexture(textureSize);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (textureSize != Texture.width)</span><br><span class="line">    &#123;</span><br><span class="line">        texturesManager.FreeTexture(Texture);</span><br><span class="line">        Texture = texturesManager.GetTexture(textureSize);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">bool</span> enabled = _source.enabled;</span><br><span class="line">    <span class="built_in">int</span> cachedLayer = _source.gameObject.layer;</span><br><span class="line"></span><br><span class="line">    _source.enabled = <span class="literal">true</span>;</span><br><span class="line">    _source.gameObject.layer = _layer;</span><br><span class="line"></span><br><span class="line">    CentralizeCamera(renderCamera, distance);</span><br><span class="line"></span><br><span class="line">    renderCamera.targetTexture = Texture;</span><br><span class="line">    renderCamera.Render();</span><br><span class="line"></span><br><span class="line">    _source.gameObject.layer = cachedLayer;</span><br><span class="line">    _source.enabled = enabled;</span><br><span class="line"></span><br><span class="line">    _billboardRenderer.material.mainTexture = Texture;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">CentralizeCamera</span>(<span class="params">Camera camera, <span class="built_in">float</span> distance</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> size = _sourcesBounds.extents.magnitude * <span class="number">2f</span>;</span><br><span class="line"></span><br><span class="line">    Vector3 cameraDirection = camera.transform.position - _sourcesBounds.center;</span><br><span class="line"></span><br><span class="line">    camera.transform.rotation = Quaternion.LookRotation(-cameraDirection);</span><br><span class="line"></span><br><span class="line">    camera.fieldOfView = <span class="number">2.0f</span> * Mathf.Atan(size / (<span class="number">2.0f</span> * distance)) * (<span class="number">180</span> / Mathf.PI);</span><br><span class="line">    camera.nearClipPlane = Mathf.Max(cameraDirection.magnitude - size, <span class="number">0.01f</span>);</span><br><span class="line">    camera.farClipPlane = cameraDirection.magnitude + size;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>粒子系统 Particle System</p>
+</li>
+<li><p>替代物 Impostors</p>
+</li>
+<li><p>公告板云 Billboard Clouds</p>
+</li>
+<li><p>图像处理 Image Processing</p>
+</li>
+<li><p>颜色校正 Color Correction</p>
+<ul>
+<li>使用一些规则来转化给定的现有图像的每像素颜色到其他颜色的一个过程。颜色校正有很多目的，例如模仿特定类型的电影胶片的色调，在元素之间提供一致的外观，或描绘一种特定的情绪或风格。一般而言，通过颜色校正，游戏画面会获得更好的表现效果</li>
+<li><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/b4b24b0b45244b0c24ed068f6272449c.jpg"></li>
+<li>LUT(查找表)，由于从内存中提取数值经常要比复杂的计算速度快很多，所以使用查找表进行颜色校正操作，速度提升是很显著的</li>
+<li><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/5f056b22719c32235d5aec6bbfaf71c6.jpg"><br>  URP中，在摄像机开启 PostProcessEnabled 后，对添加 colorGradingLutPass 进行颜色校正  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">float4 _Lut_Params;         </span><br><span class="line"><span class="comment">// x: lut_height, y: 0.5 / lut_width, z: 0.5 / lut_height, w: lut_height / lut_height - 1</span></span><br><span class="line"><span class="function">real3 <span class="title">GetLutStripValue</span><span class="params">(float2 uv, float4 params)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//在二维条形格式的颜色查找表中，每个像素的坐标都是整数，而一个像素的中心坐标通常不是整数。因此，要获得一个像素的中心坐标，需要将其坐标加上半个像素的大小，即 0.5 / lut_width。这样偏移后的坐标就能够准确地对应到该像素的中心位置，从而能够正确地计算出在该位置上对应的默认颜色值</span></span><br><span class="line">    uv -= params.yz;</span><br><span class="line">    real3 color;</span><br><span class="line">    color.r = <span class="built_in">frac</span>(uv.x * params.x);</span><br><span class="line">    color.b = uv.x - color.r / params.x;</span><br><span class="line">    color.g = uv.y;</span><br><span class="line">    <span class="keyword">return</span> color * params.w;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>色调映射 Tone Mapping</p>
+<ul>
+<li>色调映射要解决的问题是进行大幅度的对比度衰减将场景亮度变换到可以显示的范围，同时要保持图像细节与颜色等表现原始场景的重要信息</li>
+<li><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost09/media/488ea9626a214483fe33def051bd7f9e.jpg"></li>
+<li>颜色分级，将输入的颜色从LUT空间转换到线性空间，然后在LMS空间中进行白平衡调整。在进行对数对比度调整时，根据是否选择了ACES tonemapper，会分别进行不同的转换。接着应用色彩滤镜，并进行通道混合、阴影、中间调和高光调整，以及提亮、伽马和增益调整。在HSV操作中，进行色相饱和度调整，并根据全局饱和度进行调整。最后进行YRGB曲线调整，最终输出颜色值  <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">float3 gradedColor = <span class="built_in">ColorGrade</span>(colorLutSpace);</span><br><span class="line">gradedColor = <span class="built_in">Tonemap</span>(gradedColor);</span><br><span class="line"></span><br><span class="line"><span class="function">float3 <span class="title">Tonemap</span><span class="params">(float3 colorLinear)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="meta">#<span class="keyword">if</span> _TONEMAP_NEUTRAL</span></span><br><span class="line">    &#123;</span><br><span class="line">        colorLinear = <span class="built_in">NeutralTonemap</span>(colorLinear);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">elif</span> _TONEMAP_ACES</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// Note: input is actually ACEScg (AP1 w/ linear encoding)</span></span><br><span class="line">        float3 aces = <span class="built_in">ACEScg_to_ACES</span>(colorLinear);</span><br><span class="line">        colorLinear = <span class="built_in">AcesTonemap</span>(aces);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">elif</span> _TONEMAP_GranTurismo</span></span><br><span class="line">    &#123;</span><br><span class="line">        colorLinear = <span class="built_in">GranTurismoTonemap</span>(colorLinear);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> colorLinear;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>镜头眩光和泛光 Lens Flare and Bloom</p>
+<ul>
+<li>镜头眩光</li>
+<li>泛光</li>
+</ul>
+</li>
+<li><p>景深 Depth of Field</p>
+</li>
+<li><p>运动模糊 Motion Blur</p>
+</li>
+<li><p>体渲染 Volume Rendering</p>
+</li>
+</ul>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/06/03/Unity/Ps5Controller/"
+      title="Ps5手柄"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        Ps5手柄
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/05/28/RenderingAcceleration/lod/"
+      title="Level of Detail"
+     >
+
+    <p class="title-text">
+      
+        Level of Detail
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>PRTGI | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="简介记录 Precomputed Radiance Transfer Global Illumination 的研究 预览 你的浏览器不支持播放该视频    来源预计算辐照度全局光照（PRTGI）从理论到实战 - AKG4e3的文章 - 知乎Unity移动端可用实时GI方案细节补充 - 方木君的文章 - 知乎10.3 球面函数和半球函数 - Justin的文章 - 知乎体探针漏光解决方案 - ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PRTGI">
+<meta property="og:url" content="http://example.com/2023/07/12/Shaders/PRTGI/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="简介记录 Precomputed Radiance Transfer Global Illumination 的研究 预览 你的浏览器不支持播放该视频    来源预计算辐照度全局光照（PRTGI）从理论到实战 - AKG4e3的文章 - 知乎Unity移动端可用实时GI方案细节补充 - 方木君的文章 - 知乎10.3 球面函数和半球函数 - Justin的文章 - 知乎体探针漏光解决方案 - ja">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/GI/show26.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show27.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show28.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show29.jpg">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-19472bb94fac419ad8685b2ee0d7f1c3_720w.webp">
+<meta property="og:image" content="https://pic4.zhimg.com/80/v2-114fe3edd3a6cf4fbffe832fc2a8a0b3_720w.webp">
+<meta property="og:image" content="http://example.com/showImg/GI/show16.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show17.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show18.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show19.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show20.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show21.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show22.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show23.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show24.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show25.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-0f0bf2c06dd0f05e1f7a9147edf2f7d4_720w.webp">
+<meta property="og:image" content="https://pic1.zhimg.com/80/v2-9433b525a25a10807eba8861ba22956c_720w.webp">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-d4e89f420284a1e8f909c80eaffaec66_720w.webp">
+<meta property="og:image" content="http://example.com/showImg/GI/show31.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show32.jpg">
+<meta property="article:published_time" content="2023-07-12T13:51:18.000Z">
+<meta property="article:modified_time" content="2023-09-13T14:36:55.030Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="GI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/GI/show26.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Shaders/PRTGI" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        PRTGI
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-07-12T13:51:18.000Z" itemprop="datePublished">2023-07-12</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Shader/">Shader</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            14k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>记录 Precomputed Radiance Transfer Global Illumination 的研究</p>
+<h2 id="预览"><a href="#预览" class="headerlink" title="预览"></a>预览</h2><video width="700" src="/showImg/GI/20230716_222937.mp4" controls="controls">
+你的浏览器不支持播放该视频
+</video>
+
+<p><img src="/showImg/GI/show26.jpg" alt="Image text"><br><img src="/showImg/GI/show27.jpg" alt="Image text"><br><img src="/showImg/GI/show28.jpg" alt="Image text"><br><img src="/showImg/GI/show29.jpg" alt="Image text"></p>
+<h2 id="来源"><a href="#来源" class="headerlink" title="来源"></a>来源</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/571673961">预计算辐照度全局光照（PRTGI）从理论到实战 - AKG4e3的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/654050347">Unity移动端可用实时GI方案细节补充 - 方木君的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/396012248">10.3 球面函数和半球函数 - Justin的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/493995107">体探针漏光解决方案 - jackie 偶尔不帅的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://github.com/ElvisQin/thegibook">全局光照技术：从离线到实时渲染</a></p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><ul>
+<li>场景几何信息<ul>
+<li>探针获取 CubeMap，存储的数据过大，通过只存储指定数量的 Surfel 数据节省内存</li>
+</ul>
+</li>
+<li>实时光照计算<ul>
+<li>运行时计算每个 Surfel 受到的 radiance</li>
+<li>为了计算屏幕像素得到光照，而不是单个 Surfel 的光照，需要将 Surfel 代表的环境光照信息编码到 Probe 上，像素着色时访问 Probe 得到其周围环境光照信息</li>
+</ul>
+</li>
+<li>光照信息编码<ul>
+<li>通过球谐函数和球谐系数和构成函数，可以得到给定方向上的光照颜色（对 radiance 进行编码）</li>
+<li>根据 “当进行球面对称的核函数与原始信号函数的卷积时，可以等价为核函数球谐系数与原始信号函数的球谐系数进行乘法操作”</li>
+<li>通过计算 radiance 的球谐系数，简单的和传输函数的球谐系数相乘，再乘以一个固定倍率，就可以得到对应的 irradiance</li>
+</ul>
+</li>
+<li>radiance 球谐系数的计算<ul>
+<li>使用蒙特卡洛法估算数值</li>
+</ul>
+</li>
+<li>优化<ul>
+<li>漏光<ul>
+<li>在计算亮度贡献时，将【像素到探针方向】与【像素法线】Dot 得到权重</li>
+</ul>
+</li>
+<li>解决只计算光反射一次<ul>
+<li>将上一次的光追结果汇入本次光线追踪中。计算每个 Surfel 的直接光照。也用该 Surfel 世界坐标采样上一帧球谐系数并重建光照</li>
+</ul>
+</li>
+<li>探针数据混合<ul>
+<li>传统前向渲染中，通过设置 Per Object 的四个 Probe，然后在四面体插值得到每个像素的光照信息，在物体特别大并横跨多个四面体时，这种做法会导致错误</li>
+<li><img src="https://pic4.zhimg.com/80/v2-19472bb94fac419ad8685b2ee0d7f1c3_720w.webp" alt="Image text"></li>
+<li>将所有 Probe 的球谐系数 Pack 到一张 Buffer上，运行时通过世界坐标找到对应的体素网格，并访问距离最近8个 Probe 进行颜色的混合</li>
+<li><img src="https://pic4.zhimg.com/80/v2-114fe3edd3a6cf4fbffe832fc2a8a0b3_720w.webp" alt="Image text"></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="步骤记录"><a href="#步骤记录" class="headerlink" title="步骤记录"></a>步骤记录</h2><h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>关闭Unity默认的环境光项<br><img src="/showImg/GI/show16.jpg" alt="Image text"><br>结果<br><img src="/showImg/GI/show17.jpg" alt="Image text"></p>
+<h3 id="场景几何信息"><a href="#场景几何信息" class="headerlink" title="场景几何信息"></a>场景几何信息</h3><ol>
+<li>通过摄像机，捕获 Probe 的Cube信息，包括世界空间坐标、法线、Albedo<br><img src="/showImg/GI/show18.jpg" alt="Image text"></li>
+</ol>
+<details>
+<summary>Probe.cs</summary>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Camera <span class="title">CreateCamera</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    GameObject cameraGo = <span class="keyword">new</span> GameObject(<span class="string">&quot;CubeMapCamera&quot;</span>);</span><br><span class="line">    cameraGo.transform.SetLocalPositionAndRotation(transform.position, Quaternion.identity);</span><br><span class="line">    Camera camera = cameraGo.AddComponent&lt;Camera&gt;();</span><br><span class="line">    camera.clearFlags = CameraClearFlags.SolidColor;</span><br><span class="line">    camera.backgroundColor = <span class="keyword">new</span> Color(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">return</span> camera;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">BatchGBufferData</span>(<span class="params">Camera camera</span>)</span> &#123;</span><br><span class="line">    GameObject[] objects = FindObjectsOfType(<span class="keyword">typeof</span>(GameObject)) <span class="keyword">as</span> GameObject[];</span><br><span class="line">    BatchSetShader(objects, Shader.Find(<span class="string">&quot;PRTGI/GBufferWorldPos&quot;</span>));</span><br><span class="line">    camera.RenderToCubemap(RT_WorldPos);</span><br><span class="line">    BatchSetShader(objects,Shader.Find(<span class="string">&quot;PRTGI/GBufferNormal&quot;</span>));</span><br><span class="line">    camera.RenderToCubemap(RT_Normal);</span><br><span class="line">    BatchSetShader(objects,Shader.Find(<span class="string">&quot;Universal Render Pipeline/Unlit&quot;</span>));</span><br><span class="line">    camera.RenderToCubemap(RT_Albedo);</span><br><span class="line"></span><br><span class="line">    BatchSetShader(objects,Shader.Find(<span class="string">&quot;Universal Render Pipeline/Lit&quot;</span>));</span><br><span class="line">    DestroyImmediate(camera.gameObject);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">BatchSetShader</span>(<span class="params">GameObject[] objs, Shader shader</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> k = <span class="number">0</span>; k &lt; objs.Length; k++) &#123;</span><br><span class="line">        GameObject go = objs[k];</span><br><span class="line">        MeshRenderer meshRenderer = go.GetComponent&lt;MeshRenderer&gt;();</span><br><span class="line">        <span class="keyword">if</span> (meshRenderer) &#123;</span><br><span class="line">            meshRenderer.sharedMaterial.shader = shader;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">CaptureGBufferCubeMaps</span>()</span> &#123;</span><br><span class="line">    Camera camera= CreateCamera();</span><br><span class="line">    <span class="keyword">if</span> (camera == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    BatchGBufferData(camera);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</details>
+<details>
+<summary>GBufferWorldPos\GBufferNormal</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">float4</span>(o.worldPos,<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">float4</span>(<span class="built_in">normalize</span>(o.normal),<span class="number">1</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<ol start="2">
+<li>用 Surfel 数组存储从 CubeMap 中采样到的 worldPos\normal\albedo\skyMask 信息，压缩数据<br><img src="/showImg/GI/show19.jpg" alt="Image text"><br><img src="/showImg/GI/show20.jpg" alt="Image text"><br>NormalCubemap的w值，可以得到表面的不透明度，在 GBufferNormal.shader 中，法线的 w 项统一返回1</li>
+</ol>
+<details>
+<summary>Surfel 数据获取</summary>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> Surfel[] readBackBuffer;</span><br><span class="line"><span class="keyword">public</span> ComputeBuffer surfels;</span><br><span class="line"><span class="keyword">public</span> ComputeShader surfelSampleCS;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> RenderTexture RT_WorldPos;</span><br><span class="line"><span class="keyword">public</span> RenderTexture RT_Normal;</span><br><span class="line"><span class="keyword">public</span> RenderTexture RT_Albedo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Surfel </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> Vector3 position;</span><br><span class="line">    <span class="keyword">public</span> Vector3 normal;</span><br><span class="line">    <span class="keyword">public</span> Vector3 albedo;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> skyMask;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">通过 ComputeShader 从 Cubemap 中随机选取一部分像素作为光线追踪的采样点</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">SampleSurfels</span>(<span class="params">RenderTexture worldPosCubeMap, RenderTexture normalCubeMap, RenderTexture albedoCubeMap</span>)</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> kid = surfelSampleCS.FindKernel(<span class="string">&quot;CSMain&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Vector3 p = gameObject.transform.position;</span><br><span class="line">    surfelSampleCS.SetVector(<span class="string">&quot;_probePos&quot;</span>, <span class="keyword">new</span> Vector4(p.x, p.y, p.z, <span class="number">1f</span>));</span><br><span class="line">    surfelSampleCS.SetFloat(<span class="string">&quot;_randSeed&quot;</span>, UnityEngine.Random.Range(<span class="number">0.0f</span>, <span class="number">1f</span>));</span><br><span class="line">    surfelSampleCS.SetTexture(kid, <span class="string">&quot;_worldPosCubemap&quot;</span>, worldPosCubeMap);</span><br><span class="line">    surfelSampleCS.SetTexture(kid, <span class="string">&quot;_normalCubemap&quot;</span>, normalCubeMap);</span><br><span class="line">    surfelSampleCS.SetTexture(kid, <span class="string">&quot;_albedoCubemap&quot;</span>, albedoCubeMap);</span><br><span class="line">    surfelSampleCS.SetBuffer(kid, <span class="string">&quot;_surfels&quot;</span>, surfels);</span><br><span class="line"></span><br><span class="line">    surfelSampleCS.Dispatch(kid, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">    surfels.GetData(readBackBuffer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</details>
+
+<details>
+<summary>SurfelSampleCS.cs</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// ref: https://stackoverflow.com/questions/4200224/random-noise-functions-for-glsl</span></span><br><span class="line"><span class="comment">// 根据UV生成随机数</span></span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">rand</span><span class="params">(float2 uv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">frac</span>(<span class="built_in">sin</span>(<span class="built_in">dot</span>(uv, <span class="built_in">float2</span>(<span class="number">12.9898</span>, <span class="number">78.233</span>))) * <span class="number">43758.5453</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在球面上均匀采样点</span></span><br><span class="line"><span class="comment">// ref: Unreal Engine 4, MonteCarlo.ush</span></span><br><span class="line"><span class="function">float3 <span class="title">UniformSphereSample</span><span class="params">(<span class="type">float</span> u, <span class="type">float</span> v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">const</span> <span class="type">float</span> C_PI = <span class="number">3.14159265359f</span>;</span><br><span class="line">    <span class="type">float</span> phi = <span class="built_in">degrees</span>(<span class="number">2.0</span> * C_PI * u);</span><br><span class="line">    <span class="type">float</span> cosine_theta = <span class="number">1.0</span> - <span class="number">2.0</span> * v;</span><br><span class="line">    <span class="type">float</span> sine_theta = <span class="built_in">sqrt</span>(<span class="number">1.0</span> - cosine_theta * cosine_theta);</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> x = sine_theta * <span class="built_in">cos</span>(phi);</span><br><span class="line">    <span class="type">float</span> y = sine_theta * <span class="built_in">sin</span>(phi);</span><br><span class="line">    <span class="type">float</span> z = cosine_theta;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">float3</span>(x, y, z);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[<span class="built_in">numthreads</span>(<span class="number">32</span>,<span class="number">16</span>,<span class="number">1</span>)]</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CSMain</span> <span class="params">(uint3 id : SV_DispatchThreadID)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    float2 xy = <span class="built_in">float2</span>(id.x, id.y) / <span class="built_in">float2</span>(<span class="number">32</span>, <span class="number">16</span>);</span><br><span class="line">    xy += <span class="built_in">float2</span>(<span class="number">1</span>, <span class="number">1</span>) * _randSeed;</span><br><span class="line"></span><br><span class="line">    <span class="type">float</span> u = <span class="built_in">rand</span>(xy * <span class="number">1.0</span>);</span><br><span class="line">    <span class="type">float</span> v = <span class="built_in">rand</span>(xy * <span class="number">2.0</span>);</span><br><span class="line">    float3 dir = <span class="built_in">UniformSphereSample</span>(u,v);</span><br><span class="line"></span><br><span class="line">    Surfel result;</span><br><span class="line"></span><br><span class="line">    result.position = _worldPosCubemap.<span class="built_in">SampleLevel</span>(sampler_point_clamp, dir, <span class="number">0</span>).rgb;</span><br><span class="line">    result.albedo = _albedoCubemap.<span class="built_in">SampleLevel</span>(sampler_point_clamp, dir, <span class="number">0</span>).rgb;</span><br><span class="line"></span><br><span class="line">    float4 normal_and_mask = _normalCubemap.<span class="built_in">SampleLevel</span>(sampler_point_clamp, dir, <span class="number">0</span>);</span><br><span class="line">    result.normal = normal_and_mask.xyz;</span><br><span class="line">    result.skyMask = <span class="built_in">saturate</span>(<span class="number">1.0</span> - normal_and_mask.w);</span><br><span class="line"></span><br><span class="line">    result.position += (_probePos.xyz + dir) * result.skyMask;</span><br><span class="line"></span><br><span class="line">    uint surfelIndex = id.x * <span class="number">16</span> + id.y;</span><br><span class="line">    _surfels[surfelIndex] = result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<ol start="3">
+<li>Radiance 的计算</li>
+</ol>
+<details>
+<summary>Radiance 计算</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">uint surfelIndex = id.x * <span class="number">16</span> + id.y;</span><br><span class="line">Surfel surfel = _surfels[surfelIndex];</span><br><span class="line"></span><br><span class="line">Light mainLight = <span class="built_in">GetMainLight</span>();</span><br><span class="line">float4 shadowCoord = <span class="built_in">TransformWorldToShadowCoord</span>(surfel.position);</span><br><span class="line"><span class="type">float</span> atten = <span class="built_in">SampleShadowmap</span>(<span class="built_in">TEXTURE2D_ARGS</span>(_MainLightShadowmapTexture, sampler_MainLightShadowmapTexture),</span><br><span class="line">    shadowCoord, <span class="built_in">GetMainLightShadowSamplingData</span>(), <span class="built_in">GetMainLightShadowParams</span>(), <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> NdotL = <span class="built_in">saturate</span>(<span class="built_in">dot</span>(surfel.normal, mainLight.direction));</span><br><span class="line">float3 radiance = surfel.albedo * mainLight.color * NdotL * atten * (<span class="number">1.0</span> - surfel.skyMask);</span><br><span class="line"></span><br><span class="line">float3 dir = <span class="built_in">normalize</span>(surfel.position - _probePos.xyz);</span><br><span class="line"></span><br><span class="line">float3 skyColor = <span class="built_in">SAMPLE_TEXTURECUBE_LOD</span>(_GlossyEnvironmentCubeMap, sampler_GlossyEnvironmentCubeMap, dir, <span class="number">0</span>).xyz;</span><br><span class="line">radiance += skyColor * surfel.skyMask * _skyLightIntensity;</span><br></pre></td></tr></table></figure>
+
+</details>
+
+<p><img src="/showImg/GI/show21.jpg" alt="Image text"></p>
+<ol start="4">
+<li>Irradiance 的计算<br><img src="/showImg/GI/show22.jpg" alt="Image text"></li>
+</ol>
+<details>
+<summary>SHDebug.shader</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 使用定点数存储小数, 因为 compute shader 的 InterlockedAdd 不支持 float</span></span><br><span class="line"><span class="comment">// array size: 3x9=27</span></span><br><span class="line"><span class="built_in">CBUFFER_START</span>(UnityPerMaterial)</span><br><span class="line">    StructuredBuffer&lt;<span class="type">int</span>&gt; _coefficientSH9; </span><br><span class="line">CBUFFER_END</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">float3 dir = i.normal;</span><br><span class="line"><span class="comment">// decode sh</span></span><br><span class="line">float3 c[<span class="number">9</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    c[i].x = <span class="built_in">DecodeFloatFromInt</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">0</span>]);</span><br><span class="line">    c[i].y = <span class="built_in">DecodeFloatFromInt</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">1</span>]);</span><br><span class="line">    c[i].z = <span class="built_in">DecodeFloatFromInt</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">2</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// decode irradiance</span></span><br><span class="line">float3 irradiance = <span class="built_in">IrradianceSH9</span>(c, dir);</span><br><span class="line">float3 Lo = irradiance / PI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">float4</span>(Lo, <span class="number">1.0</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">MeshRenderer meshRenderer = gameObject.GetComponent&lt;MeshRenderer&gt;();</span><br><span class="line">meshRenderer.sharedMaterial.shader = Shader.Find(<span class="string">&quot;CasualPRT/SHDebug&quot;</span>);</span><br><span class="line">matPropBlock.SetBuffer(<span class="string">&quot;_coefficientSH9&quot;</span>, coefficientSH9);</span><br><span class="line">meshRenderer.SetPropertyBlock(matPropBlock);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// SH projection</span></span><br><span class="line"><span class="type">const</span> <span class="type">float</span> N = <span class="number">32</span> * <span class="number">16</span>;</span><br><span class="line">float3 c[<span class="number">9</span>];</span><br><span class="line">c[<span class="number">0</span>] = <span class="built_in">SH</span>(<span class="number">0</span>,  <span class="number">0</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">1</span>] = <span class="built_in">SH</span>(<span class="number">1</span>, <span class="number">-1</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">2</span>] = <span class="built_in">SH</span>(<span class="number">1</span>,  <span class="number">0</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">3</span>] = <span class="built_in">SH</span>(<span class="number">1</span>,  <span class="number">1</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">4</span>] = <span class="built_in">SH</span>(<span class="number">2</span>, <span class="number">-2</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">5</span>] = <span class="built_in">SH</span>(<span class="number">2</span>, <span class="number">-1</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">6</span>] = <span class="built_in">SH</span>(<span class="number">2</span>,  <span class="number">0</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">7</span>] = <span class="built_in">SH</span>(<span class="number">2</span>,  <span class="number">1</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line">c[<span class="number">8</span>] = <span class="built_in">SH</span>(<span class="number">2</span>,  <span class="number">2</span>, dir) * radiance * <span class="number">4.0</span> * PI / N;</span><br><span class="line"></span><br><span class="line"><span class="comment">// atom write result to buffer</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>; i&lt;<span class="number">9</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">InterlockedAdd</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">0</span>], <span class="built_in">EncodeFloatToInt</span>(c[i].x));</span><br><span class="line">    <span class="built_in">InterlockedAdd</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">1</span>], <span class="built_in">EncodeFloatToInt</span>(c[i].y));</span><br><span class="line">    <span class="built_in">InterlockedAdd</span>(_coefficientSH9[i*<span class="number">3</span>+<span class="number">2</span>], <span class="built_in">EncodeFloatToInt</span>(c[i].z));</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+</details>
+
+
+<ol start="5">
+<li>通过过世界坐标找到对应的体素网格，并访问距离最近8个 Probe 进行颜色的混合<br><img src="/showImg/GI/show23.jpg" alt="Image text"></li>
+</ol>
+<details>
+<summary>颜色的混合</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">float3 <span class="title">SampleSHVoxel</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 worldPos,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float3 albedo,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float3 normal,</span></span></span><br><span class="line"><span class="params"><span class="function">    in StructuredBuffer&lt;<span class="type">int</span>&gt; _coefficientVoxel,</span></span></span><br><span class="line"><span class="params"><span class="function">    in <span class="type">float</span> _coefficientVoxelGridSize,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 _coefficientVoxelCorner,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 _coefficientVoxelSize</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// probe grid index for current fragment</span></span><br><span class="line">    int3 probeIndex3 = <span class="built_in">GetProbeIndex3DFromWorldPos</span>(worldPos, _coefficientVoxelSize, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">    int3 offset[<span class="number">8</span>] = &#123;</span><br><span class="line">        <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    float3 c[<span class="number">9</span>];</span><br><span class="line">    float3 Lo[<span class="number">8</span>] = &#123; <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), &#125;;</span><br><span class="line">    float3 BRDF = albedo / PI;</span><br><span class="line">    <span class="type">float</span> weight = <span class="number">0.0005</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// near 8 probes</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int3 idx3 = probeIndex3 + offset[i];</span><br><span class="line">        <span class="type">bool</span> isInsideVoxel = <span class="built_in">IsIndex3DInsideVoxel</span>(idx3, _coefficientVoxelSize);</span><br><span class="line">        <span class="keyword">if</span> (!isInsideVoxel)</span><br><span class="line">        &#123;</span><br><span class="line">            Lo[i] = <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// normal weight blend</span></span><br><span class="line">        float3 probePos = <span class="built_in">GetProbePositionFromIndex3D</span>(idx3, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">        float3 dir = <span class="built_in">normalize</span>(probePos - worldPos.xyz);</span><br><span class="line">        <span class="type">float</span> normalWeight = <span class="built_in">saturate</span>(<span class="built_in">dot</span>(dir, normal));</span><br><span class="line">        weight += normalWeight;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// decode SH9</span></span><br><span class="line">        <span class="type">int</span> probeIndex = <span class="built_in">GetProbeIndex1DFromIndex3D</span>(idx3, _coefficientVoxelSize);</span><br><span class="line">        <span class="built_in">DecodeSHCoefficientFromVoxel</span>(c, _coefficientVoxel, probeIndex);</span><br><span class="line">        Lo[i] = <span class="built_in">IrradianceSH9</span>(c, normal) * BRDF * normalWeight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// trilinear interpolation</span></span><br><span class="line">    float3 minCorner = <span class="built_in">GetProbePositionFromIndex3D</span>(probeIndex3, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">    float3 maxCorner = minCorner + <span class="built_in">float3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>) * _coefficientVoxelGridSize;</span><br><span class="line">    float3 rate = (worldPos - minCorner) / _coefficientVoxelGridSize;</span><br><span class="line">    float3 color = <span class="built_in">TrilinearInterpolationFloat3</span>(Lo, rate) / weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> color;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">float3 gi = <span class="built_in">SampleSHVoxel</span>(worldPos, albedo, normal,</span><br><span class="line">    _coefficientVoxel, _coefficientVoxelGridSize, _coefficientVoxelCorner, _coefficientVoxelSize);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<p><img src="/showImg/GI/show24.jpg" alt="Image text"><br>地面的黑暗是由于只计算光反射一次的结果</p>
+<ol start="6">
+<li>保存上一帧的数据，并用于下一帧的计算</li>
+</ol>
+<p><img src="/showImg/GI/show25.jpg" alt="Image text"></p>
+<details>
+<summmary></summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function">float3 <span class="title">SampleSHVoxel</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 worldPos,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float3 albedo,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float3 normal,</span></span></span><br><span class="line"><span class="params"><span class="function">    in StructuredBuffer&lt;<span class="type">int</span>&gt; _coefficientVoxel,</span></span></span><br><span class="line"><span class="params"><span class="function">    in <span class="type">float</span> _coefficientVoxelGridSize,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 _coefficientVoxelCorner,</span></span></span><br><span class="line"><span class="params"><span class="function">    in float4 _coefficientVoxelSize</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// probe grid index for current fragment</span></span><br><span class="line">    int3 probeIndex3 = <span class="built_in">GetProbeIndex3DFromWorldPos</span>(worldPos, _coefficientVoxelSize, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">    int3 offset[<span class="number">8</span>] = &#123;</span><br><span class="line">        <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">        <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>), <span class="built_in">int3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    float3 c[<span class="number">9</span>];</span><br><span class="line">    float3 Lo[<span class="number">8</span>] = &#123; <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>), &#125;;</span><br><span class="line">    float3 BRDF = albedo / PI;</span><br><span class="line">    <span class="type">float</span> weight = <span class="number">0.0005</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// near 8 probes</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int3 idx3 = probeIndex3 + offset[i];</span><br><span class="line">        <span class="type">bool</span> isInsideVoxel = <span class="built_in">IsIndex3DInsideVoxel</span>(idx3, _coefficientVoxelSize);</span><br><span class="line">        <span class="keyword">if</span> (!isInsideVoxel)</span><br><span class="line">        &#123;</span><br><span class="line">            Lo[i] = <span class="built_in">float3</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// normal weight blend</span></span><br><span class="line">        float3 probePos = <span class="built_in">GetProbePositionFromIndex3D</span>(idx3, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">        float3 dir = <span class="built_in">normalize</span>(probePos - worldPos.xyz);</span><br><span class="line">        <span class="type">float</span> normalWeight = <span class="built_in">saturate</span>(<span class="built_in">dot</span>(dir, normal));</span><br><span class="line">        weight += normalWeight;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// decode SH9</span></span><br><span class="line">        <span class="type">int</span> probeIndex = <span class="built_in">GetProbeIndex1DFromIndex3D</span>(idx3, _coefficientVoxelSize);</span><br><span class="line">        <span class="built_in">DecodeSHCoefficientFromVoxel</span>(c, _coefficientVoxel, probeIndex);</span><br><span class="line">        Lo[i] = <span class="built_in">IrradianceSH9</span>(c, normal) * BRDF * normalWeight;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// trilinear interpolation</span></span><br><span class="line">    float3 minCorner = <span class="built_in">GetProbePositionFromIndex3D</span>(probeIndex3, _coefficientVoxelGridSize, _coefficientVoxelCorner);</span><br><span class="line">    float3 maxCorner = minCorner + <span class="built_in">float3</span>(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>) * _coefficientVoxelGridSize;</span><br><span class="line">    float3 rate = (worldPos - minCorner) / _coefficientVoxelGridSize;</span><br><span class="line">    float3 color = <span class="built_in">TrilinearInterpolationFloat3</span>(Lo, rate) / weight;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> color;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// radiance from last frame</span></span><br><span class="line">float3 history = <span class="built_in">SampleSHVoxel</span>(</span><br><span class="line">    <span class="built_in">float4</span>(surfel.position, <span class="number">1.0</span>),</span><br><span class="line">    surfel.albedo,</span><br><span class="line">    surfel.normal,</span><br><span class="line">    _lastFrameCoefficientVoxel,</span><br><span class="line">    _coefficientVoxelGridSize,</span><br><span class="line">    _coefficientVoxelCorner,</span><br><span class="line">    _coefficientVoxelSize</span><br><span class="line">);</span><br><span class="line">radiance += history * _giIntensity;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<ol start="7">
+<li>Surfel数据在运行时会被清空，使用 ScriptableObject 存储数据，在 Start 时，进行数据的加载</li>
+</ol>
+<details>
+<summary>ProbeVolumeData.cs</summary>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Collections;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> System;</span><br><span class="line"></span><br><span class="line">[Serializable]</span><br><span class="line">[<span class="built_in">CreateAssetMenu</span>(fileName = <span class="string">&quot;ProbeVolumeData&quot;</span>, menuName = <span class="string">&quot;ProbeVolumeData&quot;</span>)]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ProbeVolumeData</span> : ScriptableObject</span><br><span class="line">&#123;</span><br><span class="line">    [SerializeField]</span><br><span class="line">    <span class="keyword">public</span> Vector3 volumePosition;</span><br><span class="line"></span><br><span class="line">    [SerializeField]</span><br><span class="line">    <span class="keyword">public</span> <span class="type">float</span>[] surfelStorageBuffer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// pack all probe&#x27;s data to 1D array</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">StorageSurfelData</span><span class="params">(ProbeVolume volume)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">int</span> probeNum = volume.probeSizeX * volume.probeSizeY * volume.probeSizeZ;</span><br><span class="line">        <span class="type">int</span> surfelPerProbe = <span class="number">512</span>;</span><br><span class="line">        <span class="type">int</span> floatPerSurfel = <span class="number">10</span>;</span><br><span class="line">        Array.<span class="built_in">Resize</span>&lt;<span class="type">float</span>&gt;(ref surfelStorageBuffer, probeNum * surfelPerProbe * floatPerSurfel);</span><br><span class="line">        <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; volume.probes.Length; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            Probe probe = volume.probes[i].<span class="built_in">GetComponent</span>&lt;Probe&gt;();</span><br><span class="line">            foreach (var surfel in probe.readBackBuffer)</span><br><span class="line">            &#123;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.position.x;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.position.y;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.position.z;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.normal.x;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.normal.y;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.normal.z;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.albedo.x;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.albedo.y;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.albedo.z;</span><br><span class="line">                surfelStorageBuffer[j++] = surfel.skyMask;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        volumePosition = volume.gameObject.transform.position;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// save</span></span><br><span class="line">        <span class="comment">//EditorUtility.SetDirty(volumePosition);</span></span><br><span class="line">        <span class="comment">//EditorUtility.SetDirty(surfelStorageBuffer);</span></span><br><span class="line">        EditorUtility.<span class="built_in">SetDirty</span>(<span class="keyword">this</span>);</span><br><span class="line">        UnityEditor.AssetDatabase.<span class="built_in">SaveAssets</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// load surfel data from storage</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="type">void</span> <span class="title">TryLoadSurfelData</span><span class="params">(ProbeVolume volume)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="type">int</span> probeNum = volume.probeSizeX * volume.probeSizeY * volume.probeSizeZ;</span><br><span class="line">        <span class="type">int</span> surfelPerProbe = <span class="number">512</span>;</span><br><span class="line">        <span class="type">int</span> floatPerSurfel = <span class="number">10</span>;</span><br><span class="line">        <span class="type">bool</span> dataDirty = surfelStorageBuffer.Length != probeNum * surfelPerProbe * floatPerSurfel;</span><br><span class="line">        <span class="type">bool</span> posDirty = volume.gameObject.transform.position != volumePosition;</span><br><span class="line">        <span class="keyword">if</span> (posDirty || dataDirty)</span><br><span class="line">        &#123;</span><br><span class="line">            Debug.<span class="built_in">LogWarning</span>(<span class="string">&quot;volume data is old! please re capture!&quot;</span>);</span><br><span class="line">            Debug.<span class="built_in">LogWarning</span>(<span class="string">&quot;探针组数据需要重新捕获&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> j = <span class="number">0</span>;</span><br><span class="line">        foreach (var go in volume.probes)</span><br><span class="line">        &#123;</span><br><span class="line">            Probe probe = go.<span class="built_in">GetComponent</span>&lt;Probe&gt;();</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; probe.readBackBuffer.Length; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                probe.readBackBuffer[i].position.x = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].position.y = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].position.z = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].normal.x = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].normal.y = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].normal.z = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].albedo.x = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].albedo.y = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].albedo.z = surfelStorageBuffer[j++];</span><br><span class="line">                probe.readBackBuffer[i].skyMask = surfelStorageBuffer[j++];</span><br><span class="line">            &#125;</span><br><span class="line">            probe.surfels.<span class="built_in">SetData</span>(probe.readBackBuffer);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+<ol start="8">
+<li>漏光问题<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/493995107">体探针漏光解决方案 - jackie 偶尔不帅的文章 - 知乎</a><br><img src="https://pic1.zhimg.com/80/v2-0f0bf2c06dd0f05e1f7a9147edf2f7d4_720w.webp" alt="Image text"></li>
+</ol>
+<ul>
+<li>计算模型的BentNormal，写入到顶点色中，这个数据在采样体素贴图时对位置进行偏移<br><img src="https://pic1.zhimg.com/80/v2-9433b525a25a10807eba8861ba22956c_720w.webp" alt="Image text"><ul>
+<li>黑色的mesh与绿色mesh相交,那么 露出的顶点 显示的红色bentnormal方向是对的,但是最右边的顶点,因为在物体内部 所以他没有计算出bentnormal,这样导致,渲染的黄色部分,bentnormal是 左右2个顶点插值的结果,这样就导致黄色的bentnormal 偏移角度不够,依然会插值到 绿色框内部或右面的探针,产生漏光<br>  解决方式：不要原点发射方向,而是沿着射线方向偏移一点再发射<br>  <img src="https://pic3.zhimg.com/80/v2-d4e89f420284a1e8f909c80eaffaec66_720w.webp" alt="Image text"></li>
+</ul>
+</li>
+</ul>
+<ol start="9">
+<li>全局光照的割裂<br>去除法线计算贡献值权重<br>对比：</li>
+</ol>
+<p><img src="/showImg/GI/show31.jpg" alt="Image text"><br><img src="/showImg/GI/show32.jpg" alt="Image text"></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/07/23/Unity/Procedural-Animation/"
+      title="程序动画"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        程序动画
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/07/09/Shaders/SpriteShader/"
+      title="SpriteShader"
+     >
+
+    <p class="title-text">
+      
+        SpriteShader
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

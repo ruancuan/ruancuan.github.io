@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>Ps5手柄 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="简介刚买了ps5，试试在Unity中的支持 链接Unity-Technologies&#x2F;InputSystemDualSenseGamepadHIDInputSystemSony DeveloperSDKGithub 常用接口前置准备 1234567DualSenseGamepadHID pad;private void Awake()&#123;    pad &#x3D; (DualSenseG">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ps5手柄">
+<meta property="og:url" content="http://example.com/2023/06/03/Unity/Ps5Controller/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="简介刚买了ps5，试试在Unity中的支持 链接Unity-Technologies&#x2F;InputSystemDualSenseGamepadHIDInputSystemSony DeveloperSDKGithub 常用接口前置准备 1234567DualSenseGamepadHID pad;private void Awake()&#123;    pad &#x3D; (DualSenseG">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/Input/Show1.jpg">
+<meta property="og:image" content="http://example.com/showImg/Input/Show2.jpg">
+<meta property="og:image" content="http://example.com/showImg/Input/Show3.png">
+<meta property="article:published_time" content="2023-06-03T09:48:26.000Z">
+<meta property="article:modified_time" content="2023-06-13T15:46:20.992Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Input">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/Input/Show1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Unity/Ps5Controller" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        Ps5手柄
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-06-03T09:48:26.000Z" itemprop="datePublished">2023-06-03</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Unity/">Unity</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            14k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>刚买了ps5，试试在Unity中的支持</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p><a target="_blank" rel="noopener" href="https://github.dev/Unity-Technologies/InputSystem/blob/develop/Packages/com.unity.inputsystem/InputSystem/Plugins/DualShock/DualShockGamepadHID.cs">Unity-Technologies&#x2F;InputSystem</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.5/api/UnityEngine.InputSystem.DualShock.DualSenseGamepadHID.html?q=DualSenseGamepadHID">DualSenseGamepadHID</a><br><a target="_blank" rel="noopener" href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.4/manual/Gamepad.html">InputSystem</a><br><a target="_blank" rel="noopener" href="https://developer.sony.com/">Sony Developer</a><br><a target="_blank" rel="noopener" href="https://www.interhaptics.com/blog/documentation/sdk/interhaptics-ps5-sdk-21900/">SDK</a><br><a target="_blank" rel="noopener" href="https://github.com/Ohjurot/DualSense-Windows">Github</a></p>
+<h2 id="常用接口"><a href="#常用接口" class="headerlink" title="常用接口"></a>常用接口</h2><p>前置准备</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DualSenseGamepadHID pad;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    pad = (DualSenseGamepadHID)Gamepad.current;</span><br><span class="line">    <span class="comment">// pad.OnStateEvent</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/showImg/Input/Show1.jpg" alt="Image text"><br><img src="/showImg/Input/Show2.jpg" alt="Image text"><br><img src="/showImg/Input/Show3.png" alt="Image text"></p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p><font color=#ffa500>Dualshock 4 上的功能SetMotorSpeeds(Single, Single)是使用 IOCTL 命令实现的，因此如果快速连续调用任一方法，很可能只有第一个命令会成功完成。其他命令将被删除。如果需要同时设置灯条颜色和隆隆声电机速度，请使用该SetMotorSpeedsAndLightBarColor(Single, Single, Color)方法</font></p>
+<h3 id="设置颜色"><a href="#设置颜色" class="headerlink" title="设置颜色"></a>设置颜色</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">pad.SetLightBarColor(gamePadColor);</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置震动"><a href="#设置震动" class="headerlink" title="设置震动"></a>设置震动</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">lowFrequency:低频</span></span><br><span class="line"><span class="comment">heightFrequency:高频</span></span><br><span class="line"><span class="comment">设置震动，范围0-1</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line">pad.SetMotorSpeeds(lowFrequency, heightFrequency);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">PauseHaptics</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!m_LowFrequencyMotorSpeed.HasValue &amp;&amp; !m_HighFrequenceyMotorSpeed.HasValue)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    SetMotorSpeedsAndLightBarColor(<span class="number">0.0f</span>, <span class="number">0.0f</span>, m_LightBarColor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ResetHaptics</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!m_LowFrequencyMotorSpeed.HasValue &amp;&amp; !m_HighFrequenceyMotorSpeed.HasValue)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    m_HighFrequenceyMotorSpeed = <span class="literal">null</span>;</span><br><span class="line">    m_LowFrequencyMotorSpeed = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    SetMotorSpeedsAndLightBarColor(m_LowFrequencyMotorSpeed, m_HighFrequenceyMotorSpeed, m_LightBarColor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">ResumeHaptics</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!m_LowFrequencyMotorSpeed.HasValue &amp;&amp; !m_HighFrequenceyMotorSpeed.HasValue)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    SetMotorSpeedsAndLightBarColor(m_LowFrequencyMotorSpeed, m_HighFrequenceyMotorSpeed, m_LightBarColor);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="自适应扳机"><a href="#自适应扳机" class="headerlink" title="自适应扳机"></a>自适应扳机</h2><h2 id="陀螺仪"><a href="#陀螺仪" class="headerlink" title="陀螺仪"></a>陀螺仪</h2><p>InputSystem只支持安卓和IOS的陀螺仪<br>索索的SDK要以公司名义申请账号，算了算了</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/nullkal/UniSense">UniSense</a></p>
+<ol>
+<li>InputSystem的拓展，可以在Unity中直接设置Ps5手柄的相关属性<br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/343528597/answer/2441567712">InputSystem方面的拓展</a></li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ohjurot/DualSense-Windows">Github DualSense-Windows</a><br>2. Github上调用手柄的接口,C++库</p>
+<details>
+<summary>细节</summary>
+
+<p>Ps5手柄库</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">数据的获取输出</span><br><span class="line"></span><br><span class="line"><span class="comment">// State object</span></span><br><span class="line">DS5W::DS5InputState inState;</span><br><span class="line">DS5W::DS5OutputState outState;</span><br><span class="line"><span class="built_in">ZeroMemory</span>(&amp;inState, <span class="built_in">sizeof</span>(DS5W::DS5InputState));</span><br><span class="line"><span class="built_in">ZeroMemory</span>(&amp;outState, <span class="built_in">sizeof</span>(DS5W::DS5OutputState));</span><br><span class="line"></span><br><span class="line">DS5W::<span class="built_in">setDeviceOutputState</span>(&amp;con, &amp;outState);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>能够获取的属性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// &lt;summary&gt;</span></span><br><span class="line"><span class="comment">/// Input state of the controler</span></span><br><span class="line"><span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_DS5InputState</span> &#123;</span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Position of left stick</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    AnalogStick leftStick;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Posisiton of right stick</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    AnalogStick rightStick;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Left trigger position</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> leftTrigger;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Right trigger position</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> rightTrigger;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Buttons and dpad bitmask DS5W_ISTATE_BTX_?? and DS5W_ISTATE_DPAD_?? indices check with if(buttonsAndDpad &amp; DS5W_ISTATE_DPAD_??)...</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> buttonsAndDpad;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Button bitmask A (DS5W_ISTATE_BTN_A_??)</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> buttonsA;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Button bitmask B (DS5W_ISTATE_BTN_B_??)</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> buttonsB;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Accelerometer</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Vector3 accelerometer;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Gyroscope  (Currently only raw values will be dispayed! Probably needs calibration (Will be done within the lib in the future))</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Vector3 gyroscope;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// First touch point</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Touch touchPoint1;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Second touch point</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Touch touchPoint2;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Battery information</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Battery battery;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Indicates the connection of headphone</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">bool</span> headPhoneConnected;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// EXPERIMAENTAL: Feedback of the left adaptive trigger (only when trigger effect is active)</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> leftTriggerFeedback;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// EXPERIMAENTAL: Feedback of the right adaptive trigger (only when trigger effect is active)</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> rightTriggerFeedback;</span><br><span class="line">&#125; DS5InputState;</span><br></pre></td></tr></table></figure>
+
+<p>能够设置的属性</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">_DS5OutputState</span> &#123;</span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Left / Hard rumbel motor</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> leftRumble;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Right / Soft rumbel motor</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">unsigned</span> <span class="type">char</span> rightRumble;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// State of the microphone led</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    MicLed microphoneLed;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Diables all leds</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    <span class="type">bool</span> disableLeds;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Player leds</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    PlayerLeds playerLeds;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Color of the lightbar</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    Color lightbar;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Effect of left trigger</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    TriggerEffect leftTriggerEffect;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/// &lt;summary&gt;</span></span><br><span class="line">    <span class="comment">/// Effect of right trigger</span></span><br><span class="line">    <span class="comment">/// &lt;/summary&gt;</span></span><br><span class="line">    TriggerEffect rightTriggerEffect;</span><br><span class="line"></span><br><span class="line">&#125; DS5OutputState;</span><br></pre></td></tr></table></figure>
+
+<p><font color=#ffa500>判断当前连接方式</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">builder &lt;&lt; <span class="string">L&quot;DS5 (&quot;</span>;</span><br><span class="line"><span class="keyword">if</span> (con._internal.connection == DS5W::DeviceConnection::BT) &#123;</span><br><span class="line">    builder &lt;&lt; <span class="string">L&quot;BT&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    builder &lt;&lt; <span class="string">L&quot;USB&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p><font color=#ffa500>设备的获取和释放</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Enum all controllers presentf</span></span><br><span class="line">DS5W::DeviceEnumInfo infos[<span class="number">16</span>];</span><br><span class="line"><span class="type">unsigned</span> <span class="type">int</span> controllersCount = <span class="number">0</span>;</span><br><span class="line">DS5W_ReturnValue rv = DS5W::<span class="built_in">enumDevices</span>(infos, <span class="number">16</span>, &amp;controllersCount);</span><br><span class="line"></span><br><span class="line"><span class="comment">// check size</span></span><br><span class="line"><span class="keyword">if</span> (controllersCount == <span class="number">0</span>) &#123;</span><br><span class="line">    console.<span class="built_in">writeLine</span>(<span class="string">L&quot;No DualSense controller found!&quot;</span>);</span><br><span class="line">    <span class="built_in">system</span>(<span class="string">&quot;pause&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">DS5W_SUCCESS</span>(DS5W::<span class="built_in">initDeviceContext</span>(&amp;infos[<span class="number">0</span>], &amp;con))) &#123;</span><br><span class="line">    console.<span class="built_in">writeLine</span>(<span class="string">L&quot;DualSense controller connected&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    builder &lt;&lt; <span class="string">L&quot;) Press L1 and R1 to exit&quot;</span>;</span><br><span class="line">    <span class="comment">// Application infinity loop</span></span><br><span class="line">    <span class="keyword">while</span> (!(inState.buttonsA &amp; DS5W_ISTATE_BTN_A_LEFT_BUMPER &amp;&amp; inState.buttonsA &amp; DS5W_ISTATE_BTN_A_RIGHT_BUMPER)) &#123;</span><br><span class="line">        <span class="comment">// Get input state</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">DS5W_SUCCESS</span>(DS5W::<span class="built_in">getDeviceInputState</span>(&amp;con, &amp;inState))) &#123;		</span><br><span class="line"></span><br><span class="line">            DS5W::<span class="built_in">setDeviceOutputState</span>(&amp;con, &amp;outState);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Device disconnected show error and try to reconnect</span></span><br><span class="line">            console.<span class="built_in">writeLine</span>(<span class="string">L&quot;Device removed!&quot;</span>);</span><br><span class="line">            DS5W::<span class="built_in">reconnectDevice</span>(&amp;con);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Free state</span></span><br><span class="line">    DS5W::<span class="built_in">freeDeviceContext</span>(&amp;con);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p><font color=#ffa500>触摸板</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//触摸板当前是否被按下</span></span><br><span class="line">inState.buttonsB &amp; DS5W_ISTATE_BTN_B_PAD_BUTTON</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//在触摸板上的位置(好像最多支持两个位置)</span></span><br><span class="line">inState.touchPoint1.x</span><br><span class="line">inState.touchPoint1.y</span><br><span class="line"></span><br><span class="line">inState.touchPoint2.x</span><br><span class="line">inState.touchPoint2.x</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><font color=#ffa500>自适应扳机</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//值</span></span><br><span class="line">(<span class="type">int</span>)inState.<span class="built_in">leftTrigger</span> </span><br><span class="line">(<span class="type">int</span>)inState.rightTrigger</span><br><span class="line"></span><br><span class="line"> 扳机是否被按下</span><br><span class="line"> inState.buttonsA &amp; DS5W_ISTATE_BTN_A_LEFT_TRIGGER</span><br><span class="line"> inState.buttonsA &amp; DS5W_ISTATE_BTN_A_RIGHT_TRIGGER</span><br><span class="line"> </span><br><span class="line"> 肩键是否按下</span><br><span class="line"> inState.buttonsA &amp; DS5W_ISTATE_BTN_A_LEFT_BUMPER </span><br><span class="line"> inState.buttonsA &amp; DS5W_ISTATE_BTN_A_RIGHT_BUMPER</span><br><span class="line"></span><br><span class="line">自适应扳机类型</span><br><span class="line"><span class="comment">//截面阻力</span></span><br><span class="line">DS5W::TriggerEffectType::SectionResitance</span><br><span class="line">outState.leftTriggerEffect.Section.startPosition = <span class="number">0x00</span>;</span><br><span class="line">outState.leftTriggerEffect.Section.endPosition = <span class="number">0x60</span>;</span><br><span class="line">设置截面的值</span><br><span class="line"></span><br><span class="line"><span class="comment">//连贯的阻力，力的大小，开始的位置</span></span><br><span class="line">DS5W::TriggerEffectType::ContinuousResitance;</span><br><span class="line">outState.rightTriggerEffect.Continuous.force = <span class="number">0xFF</span>;</span><br><span class="line">outState.rightTriggerEffect.Continuous.startPosition = <span class="number">0x00</span>;			</span><br><span class="line"></span><br><span class="line"><span class="comment">//没有阻力</span></span><br><span class="line">DS5W::TriggerEffectType::NoResitance</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">outState.leftTriggerEffect.effectType = DS5W::TriggerEffectType::SectionResitance;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><font color=#ffa500>LED</font></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 麦克风LED Mic led</span></span><br><span class="line"><span class="keyword">if</span> (inState.buttonsB &amp; DS5W_ISTATE_BTN_B_MIC_BUTTON) &#123;</span><br><span class="line">    outState.microphoneLed = DS5W::MicLed::ON;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (inState.buttonsB &amp; DS5W_ISTATE_BTN_B_PLAYSTATION_LOGO) &#123;</span><br><span class="line">    outState.microphoneLed = DS5W::MicLed::OFF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</details>
+
+
+<hr>
+<p>Unity中检测当前平台是否支持陀螺仪功能</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//检查是否支持陀螺仪</span></span><br><span class="line"><span class="keyword">if</span> (SystemInfo.supportsGyroscope)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//启用陀螺仪</span></span><br><span class="line">    Input.gyro.enabled = <span class="literal">true</span>;</span><br><span class="line">    <span class="comment">//获取陀螺仪的信息</span></span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//提示不支持陀螺仪</span></span><br><span class="line">    Debug.Log(<span class="string">&quot;Gyroscope is not supported on this platform.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="摇杆输入获取"><a href="#摇杆输入获取" class="headerlink" title="摇杆输入获取"></a>摇杆输入获取</h3><p>根据左右摇杆控制镜头旋转和位移</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> InputAction moveAction;</span><br><span class="line"><span class="keyword">public</span> InputAction lookAction;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">new</span> <span class="keyword">void</span> <span class="title">OnEnable</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (m_Visualization == Mode.None)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (s_EnabledInstances == <span class="literal">null</span>)</span><br><span class="line">        s_EnabledInstances = <span class="keyword">new</span> List&lt;InputControlVisualizer&gt;();</span><br><span class="line">    <span class="keyword">if</span> (s_EnabledInstances.Count == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//注册设备改动监听</span></span><br><span class="line">        InputSystem.onDeviceChange += OnDeviceChange;</span><br><span class="line">        <span class="comment">//注册输入事件监听</span></span><br><span class="line">        InputSystem.onEvent += OnEvent;</span><br><span class="line">    &#125;</span><br><span class="line">    s_EnabledInstances.Add(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line">    ResolveControl();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">base</span>.OnEnable();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">new</span> <span class="keyword">void</span> <span class="title">OnDisable</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (m_Visualization == Mode.None)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    s_EnabledInstances.Remove(<span class="keyword">this</span>);</span><br><span class="line">    <span class="keyword">if</span> (s_EnabledInstances.Count == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">//移除监听</span></span><br><span class="line">        InputSystem.onDeviceChange -= OnDeviceChange;</span><br><span class="line">        InputSystem.onEvent -= OnEvent;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    m_Control = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">base</span>.OnDisable();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnDeviceChange</span>(<span class="params">InputDevice device, InputDeviceChange change</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (change != InputDeviceChange.Added &amp;&amp; change != InputDeviceChange.Removed)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; s_EnabledInstances.Count; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> component = s_EnabledInstances[i];</span><br><span class="line">        <span class="keyword">if</span> (change == InputDeviceChange.Removed &amp;&amp; component.m_Control != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">            component.m_Control.device == device)</span><br><span class="line">            component.ResolveControl();</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (change == InputDeviceChange.Added)</span><br><span class="line">            component.ResolveControl();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">OnEvent</span>(<span class="params">InputEventPtr eventPtr, InputDevice device</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Ignore very first update as we usually get huge lag spikes and event count</span></span><br><span class="line">    <span class="comment">// spikes in it from stuff that has accumulated while going into play mode or</span></span><br><span class="line">    <span class="comment">// starting up the player.</span></span><br><span class="line">    <span class="keyword">if</span> (InputState.updateCount &lt;= <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (InputState.currentUpdateType == InputUpdateType.Editor)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!eventPtr.IsA&lt;StateEvent&gt;() &amp;&amp; !eventPtr.IsA&lt;DeltaStateEvent&gt;())</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; s_EnabledInstances.Count; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> component = s_EnabledInstances[i];</span><br><span class="line">        <span class="keyword">if</span> (component.m_Control?.device != device || component.m_Visualizer == <span class="literal">null</span>)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line"></span><br><span class="line">        component.OnEventImpl(eventPtr, device);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//值的获取方式</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">unsafe</span> <span class="keyword">void</span> <span class="title">OnEventImpl</span>(<span class="params">InputEventPtr eventPtr, InputDevice device</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">switch</span> (m_Visualization)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">case</span> Mode.Value:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> statePtr = m_Control.GetStatePtrFromStateEvent(eventPtr);</span><br><span class="line">            <span class="keyword">if</span> (statePtr == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span>; <span class="comment">// No value for control in event.</span></span><br><span class="line">            <span class="keyword">var</span> <span class="keyword">value</span> = m_Control.ReadValueFromStateAsObject(statePtr);</span><br><span class="line">            m_Visualizer.AddSample(<span class="keyword">value</span>, eventPtr.time);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> Mode.Events:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> visualizer = (VisualizationHelpers.TimelineVisualizer)m_Visualizer;</span><br><span class="line">            <span class="keyword">var</span> frame = (<span class="built_in">int</span>)InputState.updateCount;</span><br><span class="line">            <span class="keyword">ref</span> <span class="keyword">var</span> valueRef = <span class="keyword">ref</span> visualizer.GetOrCreateSample(<span class="number">0</span>, frame);</span><br><span class="line">            <span class="keyword">var</span> <span class="keyword">value</span> = valueRef.ToInt32() + <span class="number">1</span>;</span><br><span class="line">            valueRef = <span class="keyword">value</span>;</span><br><span class="line">            visualizer.limitsY =</span><br><span class="line">                <span class="keyword">new</span> Vector2(<span class="number">0</span>, Mathf.Max(<span class="keyword">value</span>, visualizer.limitsY.y));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> Mode.MaximumLag:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> visualizer = (VisualizationHelpers.TimelineVisualizer)m_Visualizer;</span><br><span class="line">            <span class="keyword">var</span> lag = (Time.realtimeSinceStartup - eventPtr.time) * <span class="number">1000</span>; <span class="comment">// In milliseconds.</span></span><br><span class="line">            <span class="keyword">var</span> frame = (<span class="built_in">int</span>)InputState.updateCount;</span><br><span class="line">            <span class="keyword">ref</span> <span class="keyword">var</span> valueRef = <span class="keyword">ref</span> visualizer.GetOrCreateSample(<span class="number">0</span>, frame);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (lag &gt; valueRef.ToDouble())</span><br><span class="line">            &#123;</span><br><span class="line">                valueRef = lag;</span><br><span class="line">                <span class="keyword">if</span> (lag &gt; visualizer.limitsY.y)</span><br><span class="line">                    visualizer.limitsY = <span class="keyword">new</span> Vector2(<span class="number">0</span>, Mathf.Ceil((<span class="built_in">float</span>)lag));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> Mode.Bytes:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">var</span> visualizer = (VisualizationHelpers.TimelineVisualizer)m_Visualizer;</span><br><span class="line">            <span class="keyword">var</span> frame = (<span class="built_in">int</span>)InputState.updateCount;</span><br><span class="line">            <span class="keyword">ref</span> <span class="keyword">var</span> valueRef = <span class="keyword">ref</span> visualizer.GetOrCreateSample(<span class="number">0</span>, frame);</span><br><span class="line">            <span class="keyword">var</span> <span class="keyword">value</span> = valueRef.ToInt32() + eventPtr.sizeInBytes;</span><br><span class="line">            valueRef = <span class="keyword">value</span>;</span><br><span class="line">            visualizer.limitsY =</span><br><span class="line">                <span class="keyword">new</span> Vector2(<span class="number">0</span>, Mathf.Max(<span class="keyword">value</span>, visualizer.limitsY.y));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> Mode.DeviceCurrent:</span><br><span class="line">        &#123;</span><br><span class="line">            m_Visualizer.AddSample(device, eventPtr.time);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Update</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> look = lookAction.ReadValue&lt;Vector2&gt;();</span><br><span class="line">    <span class="keyword">var</span> move = moveAction.ReadValue&lt;Vector2&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Update orientation first, then move. Otherwise move orientation will lag</span></span><br><span class="line">    <span class="comment">// behind by one frame.</span></span><br><span class="line">    Look(look);</span><br><span class="line">    Move(move);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Move</span>(<span class="params">Vector2 direction</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (direction.sqrMagnitude &lt; <span class="number">0.01</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> scaledMoveSpeed = moveSpeed * Time.deltaTime;</span><br><span class="line">    <span class="comment">// For simplicity&#x27;s sake, we just keep movement in a single plane here. Rotate</span></span><br><span class="line">    <span class="comment">// direction according to world Y rotation of player.</span></span><br><span class="line">    <span class="keyword">var</span> move = Quaternion.Euler(<span class="number">0</span>, transform.eulerAngles.y, <span class="number">0</span>) * <span class="keyword">new</span> Vector3(direction.x, <span class="number">0</span>, direction.y);</span><br><span class="line">    transform.position += move * scaledMoveSpeed;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Look</span>(<span class="params">Vector2 rotate</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (rotate.sqrMagnitude &lt; <span class="number">0.01</span>)</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">var</span> scaledRotateSpeed = rotateSpeed * Time.deltaTime;</span><br><span class="line">    m_Rotation.y += rotate.x * scaledRotateSpeed;</span><br><span class="line">    m_Rotation.x = Mathf.Clamp(m_Rotation.x - rotate.y * scaledRotateSpeed, <span class="number">-89</span>, <span class="number">89</span>);</span><br><span class="line">    transform.localEulerAngles = m_Rotation;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="按钮输入获取"><a href="#按钮输入获取" class="headerlink" title="按钮输入获取"></a>按钮输入获取</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">public</span> InputAction fireAction;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Awake</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// We could use `fireAction.triggered` in Update() but that makes it more difficult to</span></span><br><span class="line">    <span class="comment">// implement the charging mechanism. So instead we use the `started`, `performed`, and</span></span><br><span class="line">    <span class="comment">// `canceled` callbacks to run the firing logic right from within the action.</span></span><br><span class="line"></span><br><span class="line">    fireAction.performed +=</span><br><span class="line">        ctx =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ctx.interaction <span class="keyword">is</span> SlowTapInteraction)</span><br><span class="line">        &#123;</span><br><span class="line">            StartCoroutine(BurstFire((<span class="built_in">int</span>)(ctx.duration * burstSpeed)));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            Fire();</span><br><span class="line">        &#125;</span><br><span class="line">        m_Charging = <span class="literal">false</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    fireAction.started +=</span><br><span class="line">        ctx =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (ctx.interaction <span class="keyword">is</span> SlowTapInteraction)</span><br><span class="line">            m_Charging = <span class="literal">true</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    fireAction.canceled +=</span><br><span class="line">        ctx =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        m_Charging = <span class="literal">false</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> IEnumerator <span class="title">BurstFire</span>(<span class="params"><span class="built_in">int</span> burstAmount</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; burstAmount; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        Fire();</span><br><span class="line">        <span class="function"><span class="keyword">yield</span> <span class="keyword">return</span> <span class="keyword">new</span> <span class="title">WaitForSeconds</span>(<span class="params"><span class="number">0.1f</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Fire</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> transform = <span class="keyword">this</span>.transform;</span><br><span class="line">    <span class="keyword">var</span> newProjectile = Instantiate(projectile);</span><br><span class="line">    newProjectile.transform.position = transform.position + transform.forward * <span class="number">0.6f</span>;</span><br><span class="line">    newProjectile.transform.rotation = transform.rotation;</span><br><span class="line">    <span class="keyword">var</span> size = <span class="number">1</span>;</span><br><span class="line">    newProjectile.transform.localScale *= size;</span><br><span class="line">    newProjectile.GetComponent&lt;Rigidbody&gt;().mass = Mathf.Pow(size, <span class="number">3</span>);</span><br><span class="line">    newProjectile.GetComponent&lt;Rigidbody&gt;().AddForce(transform.forward * <span class="number">20f</span>, ForceMode.Impulse);</span><br><span class="line">    newProjectile.GetComponent&lt;MeshRenderer&gt;().material.color =</span><br><span class="line">        <span class="keyword">new</span> Color(Random.<span class="keyword">value</span>, Random.<span class="keyword">value</span>, Random.<span class="keyword">value</span>, <span class="number">1.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="模拟鼠标输入"><a href="#模拟鼠标输入" class="headerlink" title="模拟鼠标输入"></a>模拟鼠标输入</h2><p>VirtualMouseInput.cs<br>定义 InputActionProperty 行为</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> InputActionProperty scrollWheelAction</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">get</span> =&gt; m_ScrollWheelAction;</span><br><span class="line">    <span class="keyword">set</span> =&gt; SetAction(<span class="keyword">ref</span> m_ScrollWheelAction, <span class="keyword">value</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SetAction</span>(<span class="params"><span class="keyword">ref</span> InputActionProperty field, InputActionProperty <span class="keyword">value</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> oldValue = field;</span><br><span class="line">    field = <span class="keyword">value</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (oldValue.reference == <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> oldAction = oldValue.action;</span><br><span class="line">        <span class="keyword">if</span> (oldAction != <span class="literal">null</span> &amp;&amp; oldAction.enabled)</span><br><span class="line">        &#123;</span><br><span class="line">            oldAction.Disable();</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">value</span>.reference == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">value</span>.action?.Enable();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="轮询"><a href="#轮询" class="headerlink" title="轮询"></a>轮询</h2><p>在 Windows（仅限 XInput 控制器）、通用 Windows 平台 (UWP) 和 Switch 上，Unity 显式轮询游戏手柄，而不是将更新作为事件传递。<br>可以手动控制轮询频率。默认轮询频率为 60 Hz。用于InputSystem.pollingFrequency获取或设置频率</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Poll gamepads at 120 Hz.</span></span><br><span class="line">InputSystem.pollingFrequency = <span class="number">120</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>增加频率会导致相应设备上的事件数量增加。事件上提供的时间戳应大致遵循轮询频率规定的间隔。但是请注意，异步后台轮询取决于操作系统线程调度，并且可能会有所不同。</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/06/12/Log/OpenWorld/"
+      title="开放世界记录"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        开放世界记录
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/05/28/IBR/IBR/"
+      title="IBR"
+     >
+
+    <p class="title-text">
+      
+        IBR
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

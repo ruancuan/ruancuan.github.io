@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>BehaviorTree | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc:行为树是一种用于编写智能行为的图形化编程语言和框架。它是一种树状结构，其中每个节点表示一个行为或一个行为组合，并按照特定的规则组织起来。 行为树的根节点通常表示整个行为树，而叶子节点则表示最基本的行为。每个节点可以包含一个或多个子节点，这些子节点也可以是行为节点或组合节点。行为节点可以表示简单的行为，如移动、攻击、躲避等，而组合节点则可以将多个行为节点组合成更复杂的行为。 行为树的执行是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BehaviorTree">
+<meta property="og:url" content="http://example.com/2023/03/19/Battle/BehaviorTree/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc:行为树是一种用于编写智能行为的图形化编程语言和框架。它是一种树状结构，其中每个节点表示一个行为或一个行为组合，并按照特定的规则组织起来。 行为树的根节点通常表示整个行为树，而叶子节点则表示最基本的行为。每个节点可以包含一个或多个子节点，这些子节点也可以是行为节点或组合节点。行为节点可以表示简单的行为，如移动、攻击、躲避等，而组合节点则可以将多个行为节点组合成更复杂的行为。 行为树的执行是">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/NodeCanvas/show1.jpg">
+<meta property="article:published_time" content="2023-03-19T07:58:17.000Z">
+<meta property="article:modified_time" content="2023-05-21T11:25:04.902Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="BehaviorTree">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/NodeCanvas/show1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Battle/BehaviorTree" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        BehaviorTree
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-03-19T07:58:17.000Z" itemprop="datePublished">2023-03-19</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">游戏框架</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h3 id="Desc"><a href="#Desc" class="headerlink" title="Desc:"></a>Desc:</h3><p>行为树是一种用于编写智能行为的图形化编程语言和框架。它是一种树状结构，其中每个节点表示一个行为或一个行为组合，并按照特定的规则组织起来。</p>
+<p>行为树的根节点通常表示整个行为树，而叶子节点则表示最基本的行为。每个节点可以包含一个或多个子节点，这些子节点也可以是行为节点或组合节点。行为节点可以表示简单的行为，如移动、攻击、躲避等，而组合节点则可以将多个行为节点组合成更复杂的行为。</p>
+<p>行为树的执行是从根节点开始的，然后按照一定的规则遍历每个节点。节点的执行结果可以影响到其父节点和兄弟节点的执行。例如，如果一个行为节点返回失败，则可以触发其父节点中的备选行为，或者如果一个组合节点的一个子节点返回失败，则可以直接返回整个行为树的失败状态。</p>
+<p>行为树在游戏开发、机器人控制、智能体控制等领域广泛应用，可以有效地组织和管理复杂的行为逻辑，并提供一种可扩展、易于理解和修改的编程方式</p>
+<hr>
+<h3 id="行为树节点"><a href="#行为树节点" class="headerlink" title="行为树节点"></a>行为树节点</h3><p><a target="_blank" rel="noopener" href="https://nodecanvas.paradoxnotion.com/documentation/?section=behaviour-trees">NodeCanvas</a></p>
+<h4 id="叶子节点"><a href="#叶子节点" class="headerlink" title="叶子节点"></a>叶子节点</h4><p>叶节点没有子节点，它们是行为树刻度的最终目的地，因此得名。最常见的叶节点将检查条件；游戏状态，或执行动作，改变游戏状态</p>
+<ul>
+<li>Action Node 动作节点<br>表示具体的动作，例如移动、攻击、发射子弹等</li>
+<li>Condition Node 条件节点<br>表示状态检查，例如检查生命值、检查距离等</li>
+</ul>
+<details>
+<summary>Action Node</summary>
+动作节点将执行分配的动作任务。Action 节点将返回 Running，直到 Action Task 完成，此时它将根据分配的 Action Task 返回 Success 或 Failure
+
+<h5 id="常用动作节点"><a href="#常用动作节点" class="headerlink" title="常用动作节点"></a>常用动作节点</h5><ul>
+<li>SendEvent<br>事件派发</li>
+<li>SetFloat<br>设置黑板数据</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ActionNode</span> : <span class="title">BTNode</span>, <span class="title">ITaskAssignable</span>&lt;<span class="title">ActionTask</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> ActionTask _action;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ActionTask</span>&lt;<span class="title">T</span>&gt; : <span class="title">ActionTask</span> <span class="keyword">where</span> <span class="title">T</span> : <span class="keyword">class</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">sealed</span> <span class="keyword">public</span> <span class="keyword">override</span> Type agentType &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> <span class="keyword">typeof</span>(T); &#125; &#125;</span><br><span class="line">    <span class="keyword">new</span> <span class="keyword">public</span> T agent &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> <span class="keyword">base</span>.agent <span class="keyword">as</span> T; &#125; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DebugLogText</span> : <span class="title">ActionTask</span>&lt;<span class="title">Transform</span>&gt;&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> labelYOffset = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">float</span> secondsToRun = <span class="number">1f</span>;</span><br><span class="line">    <span class="keyword">public</span> VerboseMode verboseMode;</span><br><span class="line">    <span class="keyword">public</span> LogMode logMode;</span><br><span class="line">    <span class="keyword">public</span> CompactStatus finishStatus = CompactStatus.Success;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnExecute</span>()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> ( verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.LogOnly ) &#123;</span><br><span class="line">        <span class="keyword">var</span> label = <span class="built_in">string</span>.Format(<span class="string">&quot;(&lt;b&gt;&#123;0&#125;&lt;/b&gt;) &#123;1&#125;&quot;</span>, agent.gameObject.name, log.<span class="keyword">value</span>);</span><br><span class="line">        <span class="keyword">if</span> ( logMode == LogMode.Log ) &#123;</span><br><span class="line">            ParadoxNotion.Services.Logger.Log(label, LogTag.EXECUTION, <span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( logMode == LogMode.Warning ) &#123;</span><br><span class="line">            ParadoxNotion.Services.Logger.LogWarning(label, LogTag.EXECUTION, <span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> ( logMode == LogMode.Error ) &#123;</span><br><span class="line">            ParadoxNotion.Services.Logger.LogError(label, LogTag.EXECUTION, <span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ( verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.DisplayLabelOnly ) &#123;</span><br><span class="line">        <span class="keyword">if</span> ( secondsToRun &gt; <span class="number">0</span> ) &#123;</span><br><span class="line">            MonoManager.current.onGUI += OnGUI;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnStop</span>()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> ( verboseMode == VerboseMode.LogAndDisplayLabel || verboseMode == VerboseMode.DisplayLabelOnly ) &#123;</span><br><span class="line">        <span class="keyword">if</span> ( secondsToRun &gt; <span class="number">0</span> ) &#123;</span><br><span class="line">            MonoManager.current.onGUI -= OnGUI;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">override</span> <span class="keyword">void</span> <span class="title">OnUpdate</span>()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> ( elapsedTime &gt;= secondsToRun ) &#123;</span><br><span class="line">        EndAction(finishStatus == CompactStatus.Success ? <span class="literal">true</span> : <span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+
+
+<details>
+<summary>Condition Node</summary>
+条件节点将执行条件任务并根据该条件任务返回成功或失败，可以有多个条件任务
+
+<h5 id="常用动作节点-1"><a href="#常用动作节点-1" class="headerlink" title="常用动作节点"></a>常用动作节点</h5><ul>
+<li>CheckEvent<br>监听事件</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConditionNode</span> : <span class="title">BTNode</span>, <span class="title">ITaskAssignable</span>&lt;<span class="title">ConditionTask</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SerializeField</span>]</span><br><span class="line">    <span class="keyword">private</span> ConditionTask _condition;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ConditionTask</span>&lt;<span class="title">T</span>&gt; : <span class="title">ConditionTask</span> <span class="keyword">where</span> <span class="title">T</span> : <span class="keyword">class</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">sealed</span> <span class="keyword">public</span> <span class="keyword">override</span> Type agentType &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> <span class="keyword">typeof</span>(T); &#125; &#125;</span><br><span class="line">    <span class="keyword">new</span> <span class="keyword">public</span> T agent &#123; <span class="keyword">get</span> &#123; <span class="keyword">return</span> <span class="keyword">base</span>.agent <span class="keyword">as</span> T; &#125; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//当监听到对应的事件时，保存值</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">CheckEvent</span>&lt;<span class="title">T</span>&gt; : <span class="title">ConditionTask</span>&lt;<span class="title">GraphOwner</span>&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">RequiredField</span>]</span><br><span class="line">    <span class="keyword">public</span> BBParameter&lt;<span class="built_in">string</span>&gt; eventName;</span><br><span class="line">    [<span class="meta">BlackboardOnly</span>]</span><br><span class="line">    <span class="keyword">public</span> BBParameter&lt;T&gt; saveEventValue;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">OnCustomEvent</span>(<span class="params"><span class="built_in">string</span> eventName, IEventData data</span>)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> ( eventName.Equals(<span class="keyword">this</span>.eventName.<span class="keyword">value</span>, System.StringComparison.OrdinalIgnoreCase) ) &#123;</span><br><span class="line">            <span class="keyword">if</span> ( data <span class="keyword">is</span> EventData&lt;T&gt; ) &#123; <span class="comment">//avoid boxing if able</span></span><br><span class="line">                saveEventValue.<span class="keyword">value</span> = ( (EventData&lt;T&gt;)data ).<span class="keyword">value</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( data.valueBoxed <span class="keyword">is</span> T ) &#123; </span><br><span class="line">                saveEventValue.<span class="keyword">value</span> = (T)data.valueBoxed;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            YieldReturn(<span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</details>
+
+<h4 id="组合节点"><a href="#组合节点" class="headerlink" title="组合节点"></a>组合节点</h4><p>复合节点的存在主要是为了确定行为的流程，例如控制将要执行哪些叶节点或以什么顺序执行。因此，复合节点可能有任意数量的子节点，它们将“询问”如何进行。Composite 节点中最基本的是Sequencer，它按顺序执行其所有子节点，直到一个Fails，以及Selector，它按顺序执行其所有子节点，直到一个Succeed</p>
+<ul>
+<li>Selector Node 选择节点<br>从它的子节点中选择第一个成功的节点执行</li>
+<li>Sequence Node 顺序节点<br>从它的子节点中按顺序执行所有节点</li>
+<li>Parallel Node 并行节点<br>同时执行它的所有子节点，直到达到某个条件</li>
+<li>Probability Selector<br>将根据其被选中的机会来选择并执行子节点。如果选定的孩子返回成功，则概率选择器也将返回成功。但是，如果它返回失败，则会选择一个新的孩子（类似于普通的选择器）。如果所有孩子都返回失败，则概率选择器将返回失败，或者如果引入“失败机会”，则概率选择器可能会立即返回失败</li>
+<li>Priority Selector<br>执行具有最高效用权重的孩子，如果另一个孩子已经在运行，则中断该孩子。如果选定的孩子失败，优先级选择器将移动到下一个效用权重最高的孩子，直到一个成功（类似于普通选择器）</li>
+<li>Flip Selector<br>翻转选择器的工作方式与普通选择器类似，但一旦子节点返回Success，它就会移动到末尾（右侧）。因此，以前失败的子项总是首先执行，最近成功的子项是最后执行</li>
+<li>Switch<br>Switch 组合可以切换 Enum 或 Integer 值。根据当前枚举或整数值是什么，它将执行相应的子节点并返回其状态。如果另一个子节点已经在运行，除非启用动态选项，否则它不会被中断。连接将读取每个孩子的整数或枚举值。<br>该节点对于创建类似状态的行为并在它们之间切换非常有用</li>
+<li>Step Sequencer<br>与执行其所有子级直到一个失败的普通音序器相比，步进音序器在每次步进音序器执行时一个接一个地执行其子级。无论成功或失败，都返回已执行的子状态</li>
+</ul>
+<h4 id="装饰节点"><a href="#装饰节点" class="headerlink" title="装饰节点"></a>装饰节点</h4><p>装饰器节点在每个节点的功能上都是特殊的，但一般来说，它们的存在是为了以某种方式改变或附加到它们可以拥有的唯一一个子节点的功能。常见的装饰器包括多次循环子节点、限制对子节点的访问或中断子节点的执行等等</p>
+<ul>
+<li>ConditionalEvaluator<br>只有当分配的条件为真时，条件才会执行其子节点，然后返回子节点返回的任何内容。如果条件为假且子节点尚未运行，它将返回 Failure ，除非启用动态选项，在这种情况下，每个滴答重新评估条件，如果失败，子节点将被中断</li>
+<li>Interruptor<br>中断器被分配了一个条件任务。如果条件为真或变为真，子节点如果Running就会被中断，Interruptor会返回Failure。否则，中断器将返回子节点返回的任何内容</li>
+<li>Inverter<br>会将其子节点返回的 Success 和 Failure 重新映射到相反的位置</li>
+<li>Repeater<br>将重复其子节点Number of Times，或者直到它返回特定状态，或者Forever</li>
+<li>Filters<br>以特定的次数 或每隔特定的时间量（如Cooldown）过滤其子节点的访问。默认情况下，如果此节点被过滤，则此节点将被视为关于其父节点的可选节点。取消选中此选项将返回失败</li>
+<li>Iterator<br>迭代器将迭代从黑板上获取的列表。在每次迭代中，当前迭代的元素可以存储在黑板变量中，子节点将执行。可以将迭代器设置为具有以下策略之一：<br>第一次成功。一旦子返回 Success，将跳出迭代并返回 Success。<br>第一次失败。一旦孩子返回失败，就会中断迭代并返回失败。<br>没有任何。将始终迭代整个列表。在这种情况下，迭代器将在最后一次迭代时返回其子状态</li>
+<li>Timeout<br> 如果 Running 的时间超过以秒为单位指定的时间，则 Timeout 装饰器将中断子节点。否则，它将返回子节点返回的任何内容</li>
+<li>Wait Until<br>Wait Until 将返回 Running，直到分配的条件任务变为真。如果孩子被勾选后条件变为假，则不会中断它。仅当子项尚未运行时才检查条件。</li>
+<li>Monitor<br>将监视从孩子返回的状态，并根据该状态执行分配的操作任务。返回的最终状态可以是原始装饰子状态，也可以是新的动作任务状态</li>
+<li>Optional Decorator<br>执行装饰后的子项并将 Status.Optional 返回给父项，从而使子项在其成功或失败方面成为可选的</li>
+<li>Guard<br>如果另一个具有相同指定令牌的 Guard 已经在保护（运行）该令牌，​​则保护装饰的孩子免于运行。对于为同一代理运行的所有行为树，保护是全局的。<br>当受保护时，它可以设置为返回失败或运行</li>
+<li>Override Agent<br>将从此时开始为行为树的其余部分设置另一个 Agent。这意味着这个装饰器下面的每个节点现在都将被勾选为新代理，并且每个任务“Self”参数都将使用该新代理。您也可以稍后使用另一个覆盖代理并选择“恢复为原始”选项恢复为原始代理</li>
+</ul>
+<h4 id="子树节点"><a href="#子树节点" class="headerlink" title="子树节点"></a>子树节点</h4><p>表示嵌套其他行为树,子图是对其他整个图的引用，用于组织、可重用性和行为模块化</p>
+<ul>
+<li>SubTree<br>子树是一个完整的其他行为树。子树节点将返回分配的行为树的根节点（“开始”）返回的任何内容。<br>代理和游戏对象 Blackboard 将向下传递到 SubTree，因此根 BehaviourTreeOwner 上的所有游戏对象 blackboard 变量也将可用于 SubTree。请记住，您还可以使用变量映射功能将局部子图变量映射到父图变量！</li>
+<li>SubFSM<br>可以为 SubFSM 分配一个完整的 FSM。执行时，FSM 将启动。只要 SubFSM 正在运行，SubFSM 节点就会返回 Running。您可以为成功指定 FSM 的一种状态，为失败指定另一种状态。一旦 SubFSM 进入这些状态中的任何一个，它将停止并且该节点将相应地返回成功或失败。否则，当 SubFSM 以某种方式完成时，它将返回 Success。<br>代理和游戏对象 Blackboard 将被传递给 SubFSM，因此根 BehaviourTreeowner 的所有游戏对象 blackboard 变量也将对 SubFSM 可用。请记住，您还可以使用变量映射功能将局部子图变量映射到父图变量！</li>
+<li>SubDialogue<br>可以为 SubDialogue 分配整个对话树。执行时，对话将开始。只要 SubDialogue 正在运行，SubDialogue 节点就会返回 Running。您可以使用对话中的“完成”对话树节点将成功或失败返回到行为树。请记住，如果没有留下任何节点供其执行，对话树默认以成功完成。<br>代理和游戏对象 Blackboard 将被传递到 SubDialogue，因此根 BehaviourTreeowner 的所有游戏对象 blackboard 变量也将可用于 SubDialogue。请记住，您还可以使用变量映射功能将局部子图变量映射到父图变量！</li>
+</ul>
+<hr>
+<h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>如前所述，每个节点都返回一个 Status。以下是节点可以返回&#x2F;处于的可能状态及其用途的参考</p>
+<ul>
+<li>Resting，是一个标记节点为“就绪”的状态，它是树重置时每次遍历后节点重置到的状态。您通常不应返回 Status.Resting</li>
+<li>Success，表示节点成功完成其任务</li>
+<li>Failure，表示节点在其任务中失败</li>
+<li>Running，表示节点仍在运行，最终状态尚未确定</li>
+<li>Error，是通常在执行错误时返回的状态（例如未设置所需的引用）。Status.Error 未被父节点处理（既不是成功，也不是失败），这意味着父节点将继续执行，就好像返回 Status.Error 的节点根本不存在一样</li>
+<li>Optional，与上面的类似，它也是未处理的，意味着父节点将继续执行，就好像返回 Status.Optional 的节点从未存在过一样。当然，与 Status.Error 的不同之处在于 Status.Optional 是故意可选的</li>
+</ul>
+<hr>
+<h3 id="节点图"><a href="#节点图" class="headerlink" title="节点图"></a>节点图</h3><p>事件监听和派发<br><img src="/showImg/NodeCanvas/show1.jpg" alt="Image text"></p>
+<hr>
+<h3 id="行为树存在重复子树逻辑要如何解决"><a href="#行为树存在重复子树逻辑要如何解决" class="headerlink" title="行为树存在重复子树逻辑要如何解决"></a>行为树存在重复子树逻辑要如何解决</h3><p>重复子树是指在同一个行为树中，多次出现相同的子树结构。这种情况可能会导致代码重复，难以维护和修改。</p>
+<p>为了解决重复子树的问题，可以将这些子树提取出来，形成一个独立的子行为树。然后，在需要使用该子树的地方，可以使用一个 Subtree 节点来引用该子树。</p>
+<p>例如，假设我们有一个包含多个行为树的主行为树，并且这些子行为树中存在重复的子树结构。我们可以把这些子树提取出来，形成独立的子行为树，并在需要的地方使用 Subtree 节点引用这些子行为树。这样做可以避免代码的重复，提高代码的复用性和可维护性。</p>
+<p>除了使用 Subtree 节点外，还可以使用其他技术来避免重复子树。例如，可以使用状态机来代替部分行为树结构，或者使用基于规则的系统来处理一些简单的行为逻辑。这些技术都可以帮助我们更好地组织和管理行为逻辑，提高代码的可读性、可维护性和可扩展性</p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/03/27/GrassEditor/GrassEditor/"
+      title="草地编辑器-草数据的读写"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        草地编辑器-草数据的读写
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/01/23/SC2/"
+      title="SC2"
+     >
+
+    <p class="title-text">
+      
+        SC2
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

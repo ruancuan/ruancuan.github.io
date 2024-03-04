@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>开放世界记录 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="简介开始尝试做开放世界游戏，记录用的插件和要考虑的东西 地形切割world-streamer-2  提供对于Unity Terrain组件进行切割，并生成多级Low网格 在设定区域内使用Terrain，区域外则使用Mesh渲染处理后的Low网格   地形会切割成多个场景，提供场景流式加载 场景的异步加载  1234567891011121314151617181920212223242526272">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开放世界记录">
+<meta property="og:url" content="http://example.com/2023/06/12/Log/OpenWorld/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="简介开始尝试做开放世界游戏，记录用的插件和要考虑的东西 地形切割world-streamer-2  提供对于Unity Terrain组件进行切割，并生成多级Low网格 在设定区域内使用Terrain，区域外则使用Mesh渲染处理后的Low网格   地形会切割成多个场景，提供场景流式加载 场景的异步加载  1234567891011121314151617181920212223242526272">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/OpenWorld/show7.jpg">
+<meta property="og:image" content="https://inresin.files.wordpress.com/2020/04/01.gif?w=800">
+<meta property="og:image" content="http://example.com/showImg/GDC2023/show1.jpg">
+<meta property="og:image" content="http://example.com/showImg/GDC2023/show2.png">
+<meta property="og:image" content="http://example.com/showImg/OpenWorld/show1.jpg">
+<meta property="og:image" content="http://example.com/showImg/GrassEditor/show13.jpg">
+<meta property="og:image" content="http://example.com/showImg/OpenWorld/show4.jpg">
+<meta property="og:image" content="http://example.com/showImg/OpenWorld/show6.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show28.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/show29.jpg">
+<meta property="og:image" content="http://example.com/showImg/GI/4DCE1E6C5684624BCDF6A8FD7FAB83D9.png">
+<meta property="og:image" content="http://example.com/showImg/GI/37828A711C9EF01D14D97E02380D40BA.png">
+<meta property="article:published_time" content="2023-06-12T14:25:59.000Z">
+<meta property="article:modified_time" content="2024-03-04T12:30:44.900Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="log">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/OpenWorld/show7.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Log/OpenWorld" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        开放世界记录
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-06-12T14:25:59.000Z" itemprop="datePublished">2023-06-12</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Unity/">Unity</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            4.1k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/log/" rel="tag">log</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>开始尝试做开放世界游戏，记录用的插件和要考虑的东西</p>
+<h3 id="地形切割"><a href="#地形切割" class="headerlink" title="地形切割"></a>地形切割</h3><p><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/terrain/world-streamer-2-176482">world-streamer-2</a></p>
+<ul>
+<li>提供对于Unity Terrain组件进行切割，并生成多级Low网格<br><img src="/showImg/OpenWorld/show7.jpg" alt="Image text"><ul>
+<li>在设定区域内使用Terrain，区域外则使用Mesh渲染处理后的Low网格</li>
+</ul>
+</li>
+<li>地形会切割成多个场景，提供场景流式加载<ul>
+<li>场景的异步加载  <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IEnumerator <span class="title">LoadAsync</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// yield return new WaitForSeconds(0.5f);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//Debug.Log(&quot;scenesToLoad &quot; + scenesToLoad.Count);</span></span><br><span class="line">    <span class="built_in">int</span>[] sceneLoadIndexes = <span class="keyword">new</span> <span class="built_in">int</span>[scenesToLoad.Count];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; scenesToLoad.Count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">int</span> sceneID = SceneManager.sceneCount;</span><br><span class="line">        SceneSplit split = scenesToLoad[i];</span><br><span class="line">        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(split.sceneName, LoadSceneMode.Additive);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        asyncOperation.completed += (operation) =&gt;</span><br><span class="line">        &#123;</span><br><span class="line"></span><br><span class="line">            SceneLoadComplete(sceneID, split);</span><br><span class="line">            OnOperationDone(operation);</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        asyncOperations.Add(asyncOperation);</span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    scenesToLoad.Clear();</span><br><span class="line">    <span class="comment">//Debug.Log(&quot;Load finished &quot; + asyncOperations.Count);</span></span><br><span class="line">    operationStarted = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">IEnumerator <span class="title">UnloadAsync</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Debug.Log(asyncOperations.Count);</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; scenesToUnload.Count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        AsyncOperation asyncOperation = SceneManager.UnloadSceneAsync(scenesToUnload[i]);</span><br><span class="line">        asyncOperation.completed += OnOperationDone;</span><br><span class="line">        asyncOperations.Add(asyncOperation);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">yield</span> <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    scenesToUnload.Clear();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//Debug.Log(&quot;Unload finished &quot; + asyncOperations.Count);</span></span><br><span class="line">    operationStarted = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>浮点数错误修复系统，根据设置，在移动指定数量格子后，将整体位置移动到原点，不会产生，浮点数过大导致的浮点数精度问题</li>
+</ul>
+<p><a href="/demo/WorldStream/WorldStreamPC.rar">worldstreamer</a></p>
+<h3 id="地形贴图混合"><a href="#地形贴图混合" class="headerlink" title="地形贴图混合"></a>地形贴图混合</h3><p><a target="_blank" rel="noopener" href="https://github.com/haolange/InfinityTerrain">Virtual Texture</a><br><a target="_blank" rel="noopener" href="https://inresin.wordpress.com/2020/04/03/terrain-and-mesh-blending-in-unity/">地形和Mesh混合</a><br><img src="https://inresin.files.wordpress.com/2020/04/01.gif?w=800"><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/637812792">图形引擎实战：移动端URP地形贴图融合与HBAO实现 - 搜狐畅游引擎部的文章 - 知乎</a></p>
+<h3 id="地形LOD的poping问题"><a href="#地形LOD的poping问题" class="headerlink" title="地形LOD的poping问题"></a>地形LOD的poping问题</h3><blockquote>
+<p>为了避免两个LOD级别之间的突变,可以使用简单的线性插值，通过线性插值因子从0-1的变换，实现LOD的变换</p>
+</blockquote>
+<dl>
+    <dt>CDLOD</dt>
+    <dl>        
+    基于使用在顶点着色器中置换的固定网格网格来直接从高度图数据源渲染地形
+    </dl>
+
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/536751271">Continuous Distance-Dependent Level of Detail for Rendering Heightmaps (CDLOD) - 生鱼片的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/Mt2XDc">ShaderToy</a></p>
+<dt>CDLOD过渡算法</dt>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">const</span> float2 g_gridDim = <span class="built_in">float2</span>( <span class="number">64</span>, <span class="number">64</span> );</span><br><span class="line"><span class="function">float2 <span class="title">morphVertex</span><span class="params">( float2 gridPos, float2 vertex, <span class="type">float</span> morphK )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    float2 fracPart = <span class="built_in">frac</span>( gridPos.xy * g_gridDim.xy * <span class="number">0.5</span> ) * <span class="number">2.0</span> / g_gridDim.xy;</span><br><span class="line">    <span class="keyword">return</span> vertex.xy - fracPart * g_quadScale.xy * morphK;</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+
+<video width="700" src="/showImg/OpenWorld/20240227_232033.mp4" controls="controls">
+你的浏览器不支持播放该视频
+</video>
+
+</dl>
+
+
+<h4 id="PCA压缩"><a href="#PCA压缩" class="headerlink" title="PCA压缩"></a>PCA压缩</h4><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/426251364">地表贴图压缩：7通道2采样→4通道1采样 - profhua的文章 - 知乎</a><br>使用PCA，对贴图进行压缩<br>网易GDC2023中提到将 PBR 所需要的 diffuse(rgb)、normal(xyz)、ao、roughness、metallic，总共九个通道，通过 PCA 压缩成 一张具有4通道的贴图<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/622915974">【GDC2023干货分享】90帧高质量写实手游的程序实现与美术设计 - 网易游学的文章 - 知乎</a></p>
+<p><img src="/showImg/GDC2023/show1.jpg" alt="Image text"><br><img src="/showImg/GDC2023/show2.png" alt="Image text"></p>
+<h3 id="大片草地"><a href="#大片草地" class="headerlink" title="大片草地"></a>大片草地</h3><p><a target="_blank" rel="noopener" href="https://www.patreon.com/posts/grass-geometry-2-40077798">草地编辑器</a><br><img src="/showImg/OpenWorld/show1.jpg" alt="Image text"><br><font color=#ffa500>插件存在的问题</font></p>
+<ul>
+<li>剔除操作是对所有存储在显存中的草数据，对做一遍视锥体裁剪，开销比较大<ul>
+<li>优化方式 1：<a target="_blank" rel="noopener" href="https://github.com/ColinLeung-NiloCat/UnityURP-MobileDrawMeshInstancedIndirectExample">UnityURP-MobileDrawMeshInstancedIndirectExample</a> 里用到的裁剪方式，将草根据位置划分为一个个AABB，CPU计算AABB的裁剪结果，然后传递给GPU，ComputeShader只需要计算通过视锥裁剪的草数据，而不是全部数据</li>
+<li>优化方法 2：<a target="_blank" rel="noopener" href="https://www.patreon.com/posts/basic-quad-for-1-80481278">作者后续更新</a>，通过四叉树对空间进行划分成AABB，然后进行剔除，和方式1一样</li>
+</ul>
+</li>
+<li>交互方式上，只是根据传递的角色位置，顶点进行相应偏移，不适用于多个移动物体<ul>
+<li>优化方式：<a target="_blank" rel="noopener" href="https://github.com/ColinLeung-NiloCat/UnityURP-MobileDrawMeshInstancedIndirectExample">UnityURP-MobileDrawMeshInstancedIndirectExample</a> 中，将角色运动轨迹用LineRenderer保存，将这个结果存为一张RT图，保存法线信息，采样这张RT图可以得到相应路线结果，可以设置相关参数控制草地从被压扁到恢复的时间</li>
+</ul>
+</li>
+<li>没有写入深度，会导致渲染时结果被覆盖</li>
+</ul>
+<p><a href="../../../../../2023/04/30/GrassEditor/GrassOptimize/">细节记录</a></p>
+<p>草地和地形贴图混合<br><img src="/showImg/GrassEditor/show13.jpg" alt="Image text"></p>
+<h3 id="大气渲染"><a href="#大气渲染" class="headerlink" title="大气渲染"></a>大气渲染</h3><p><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/altos-volumetric-clouds-dynamic-skybox-and-day-night-cycle-221227">altos</a><br>可以提供动态日夜切换，指定太阳、月亮贴图，提供体积云，并有次表面散射效果<br><a href="../../../../../2023/06/10/Shaders/Sky/">细节记录</a></p>
+<p><img src="/showImg/OpenWorld/show4.jpg" alt="Image text"><br><font color=#ffa500>问题：云的结果把草的结果覆盖了</font><br>原因：草地编辑器没有写入深度法线信息，需要添加对应的Pass<br>解决后效果</p>
+<p><img src="/showImg/OpenWorld/show6.jpg" alt="Image text"></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">Pass</span><br><span class="line">&#123;</span><br><span class="line">    Name <span class="string">&quot;DepthNormals&quot;</span></span><br><span class="line">    Tags&#123;<span class="string">&quot;LightMode&quot;</span> = <span class="string">&quot;DepthNormals&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">    ZWrite On</span><br><span class="line">    Cull[_Cull]</span><br><span class="line"></span><br><span class="line">    HLSLPROGRAM</span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> exclude_renderers gles gles3 glcore</span></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> target 4.5</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> vertex vert</span></span><br><span class="line">    <span class="meta">#<span class="keyword">pragma</span> fragment DepthNormalsFragment</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//因为是自己计算生成的Mesh，不需要考虑法线贴图的采样以及透明度的混合</span></span><br><span class="line">    <span class="comment">// -------------------------------------</span></span><br><span class="line">    <span class="comment">// Material Keywords</span></span><br><span class="line">    <span class="comment">// #pragma shader_feature_local _NORMALMAP</span></span><br><span class="line">    <span class="comment">// #pragma shader_feature_local _PARALLAXMAP</span></span><br><span class="line">    <span class="comment">// #pragma shader_feature_local _ _DETAIL_MULX2 _DETAIL_SCALED</span></span><br><span class="line">    <span class="comment">// #pragma shader_feature_local_fragment _ALPHATEST_ON</span></span><br><span class="line">    <span class="comment">// #pragma shader_feature_local_fragment _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//--------------------------------------</span></span><br><span class="line">    <span class="comment">// GPU Instancing</span></span><br><span class="line">    <span class="comment">// #pragma multi_compile_instancing</span></span><br><span class="line">    <span class="comment">// #pragma multi_compile _ DOTS_INSTANCING_ON</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="keyword">include</span> <span class="string">&quot;Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl&quot;</span></span></span><br><span class="line">    <span class="comment">// #include &quot;Packages/com.unity.render-pipelines.universal/Shaders/LitDepthNormalsPass.hlsl&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    float4 <span class="built_in">DepthNormalsFragment</span>(v2f input) : SV_TARGET</span><br><span class="line">    &#123;</span><br><span class="line">        half3 normalWS = input.normalWS;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">half4</span>(<span class="built_in">NormalizeNormalPerPixel</span>(normalWS), <span class="number">0.0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ENDHLSL</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局光照"><a href="#全局光照" class="headerlink" title="全局光照"></a>全局光照</h3><p>使用天空盒或固定颜色实现的环境光不能有效的适应周边环境和动态光源，可以通过预辐射度全局光照实现</p>
+<p><a href="../../../../../2023/07/12/Shaders/PRTGI/">PRTGI 细节记录</a><br><img src="/showImg/GI/show28.jpg" alt="Image text"><br><img src="/showImg/GI/show29.jpg" alt="Image text"></p>
+<blockquote>
+<p>Unity自带的实时全局光照，目前仅支持Buildin，SRP计划在Unity2024后支持<br><img src="/showImg/GI/4DCE1E6C5684624BCDF6A8FD7FAB83D9.png" alt="Image text"><br><img src="/showImg/GI/37828A711C9EF01D14D97E02380D40BA.png" alt="Image text"></p>
+</blockquote>
+<h3 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h3><p>用的Unity自带的级联阴影，四级感觉够了，八级感觉没必要，根本看不到</p>
+<h3 id="动物生态"><a href="#动物生态" class="headerlink" title="动物生态"></a>动物生态</h3><p>计划用行为树简单的实现，主要包括以下行为</p>
+<ul>
+<li>行为模拟，食物搜索、躲避捕食者</li>
+<li>领地模拟，动物在领地之间会产生相互竞争和冲突</li>
+<li>群体行为，模拟动物群体间的领导、集体防御行为</li>
+<li>环境交互，对环境的交互性，包括地形、季节、气候的处理，饮水、觅食</li>
+</ul>
+<blockquote>
+<p>Boids算法，可以实现集群行为.将个体行为分为规避、结盟、凝聚共同作用。<br>Vector3 direction &#x3D; separation+ alignment + (cohesion - boid.position).normalized;</p>
+</blockquote>
+<video width="700" src="/showImg/OpenWorld/Boids.mov" controls="controls">
+你的浏览器不支持播放该视频
+</video>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/SebLague/Boids">Boids</a></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/07/02/UGUI/TextAnimation/"
+      title="TextAnimation"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        TextAnimation
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/06/03/Unity/Ps5Controller/"
+      title="Ps5手柄"
+     >
+
+    <p class="title-text">
+      
+        Ps5手柄
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

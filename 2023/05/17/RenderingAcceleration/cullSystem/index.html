@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>裁剪技术 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="简介记录常用的剔除技术 链接AssetStore一篇文章彻底弄懂齐次裁剪 - Clawko的文章 - 知乎  齐次空间下的裁剪CSDNGithub 浅墨 游戏开发中的渲染加速算法总结 背面裁剪背面裁剪是一种渲染性能优化的技术，它是将背向视点的物体或多边形删除，避免进行不必要的光栅化和深度测试。背面裁剪可以根据多边形的法向量或顶点的索引顺序来判断是否背向视点。背面裁剪是一种非常简单直观的操作，只能一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="裁剪技术">
+<meta property="og:url" content="http://example.com/2023/05/17/RenderingAcceleration/cullSystem/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="简介记录常用的剔除技术 链接AssetStore一篇文章彻底弄懂齐次裁剪 - Clawko的文章 - 知乎  齐次空间下的裁剪CSDNGithub 浅墨 游戏开发中的渲染加速算法总结 背面裁剪背面裁剪是一种渲染性能优化的技术，它是将背向视点的物体或多边形删除，避免进行不必要的光栅化和深度测试。背面裁剪可以根据多边形的法向量或顶点的索引顺序来判断是否背向视点。背面裁剪是一种非常简单直观的操作，只能一">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/QianMo/Game-Programmer-Study-Notes/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/966760d5def6a518d9d0b26d1f4a2482.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/ecd5347e24a3def949585440c73463b8.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/5bc065899184a23ac95778a586db1651.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/9d3a0bd5ebdd5d3560f27035eb5c8296.jpg">
+<meta property="og:image" content="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/6890224ea8733ab7349ed33ca2b6e62d.jpg">
+<meta property="og:image" content="http://example.com/showImg/Cull/show1.jpg">
+<meta property="article:published_time" content="2023-05-17T14:12:48.000Z">
+<meta property="article:modified_time" content="2023-05-28T08:38:43.119Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Cull">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/QianMo/Game-Programmer-Study-Notes/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/966760d5def6a518d9d0b26d1f4a2482.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-RenderingAcceleration/cullSystem" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        裁剪技术
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2023-05-17T14:12:48.000Z" itemprop="datePublished">2023-05-17</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/RenderingAcceleration/">RenderingAcceleration</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            2.9k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>记录常用的剔除技术</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><a target="_blank" rel="noopener" href="https://assetstore.unity.com/packages/tools/utilities/advanced-culling-system-157875">AssetStore</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/102758967">一篇文章彻底弄懂齐次裁剪 - Clawko的文章 - 知乎  齐次空间下的裁剪</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/chenweiyu11962/article/details/118032517">CSDN</a><br><a target="_blank" rel="noopener" href="https://github.com/QianMo/Game-Programmer-Study-Notes/tree/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11">Github 浅墨 游戏开发中的渲染加速算法总结</a></p>
+<h3 id="背面裁剪"><a href="#背面裁剪" class="headerlink" title="背面裁剪"></a>背面裁剪</h3><p>背面裁剪是一种渲染性能优化的技术，它是将背向视点的物体或多边形删除，避免进行不必要的光栅化和深度测试。<br>背面裁剪可以根据多边形的法向量或顶点的索引顺序来判断是否背向视点。<br>背面裁剪是一种非常简单直观的操作，只能一次一对个单一多边形进行操作。</p>
+<p>一般在光栅化阶段进行，在顶点着色器输出的顶点转换为片元的过程中，根据三角形的顶点顺序和法向量来判断哪些片元是背面，然后丢弃他们，减少片元着色器的工作量</p>
+<p>根据三角形的三个顶点计算法向量，摄像机和三角形任意顶点的向量，点乘结果正负判断正面背面</p>
+<h3 id="视锥裁剪"><a href="#视锥裁剪" class="headerlink" title="视锥裁剪"></a>视锥裁剪</h3><p>利用空间数据结构，可以分层地来应用这种裁剪。例如，对于层次包围体BVH来说，从根节点进行先序遍历（Preorder Transversal），就可以完成这一任务<br><img src="https://raw.githubusercontent.com/QianMo/Game-Programmer-Study-Notes/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/966760d5def6a518d9d0b26d1f4a2482.jpg" alt="Iamge text"></p>
+<p>除了层次包围体，其他的空间数据结构同样也可以用于视锥裁剪，包括上文提到的八叉树和BSP树。但是当渲染动态场景时，这些方法便会显得不够灵活,不如层次包围体</p>
+<p>在位于视锥外面，则会被视锥剔除掉。如果不进行剔除的话，则绿色的球会被传到GPU端进行渲染。<br>但实际其并不会被显示，对它的计算是浪费的。如何判断一个对象在不在视锥体外面，最简单的方法是判断该对象的包围盒是不是在视锥的外面，视锥是由六个面组成，可以判断对象包围盒与六个面之间的关系来进行剔除计算。<br>视锥剔除可以大大的提高图形的显示效率。成熟的图形引擎应该都有视锥剔除，如Hoops，VTK等，对于一个大场景我们放大视图，视图越大，可以发现缩放等操作会更加流畅</p>
+<h3 id="遮挡剔除"><a href="#遮挡剔除" class="headerlink" title="遮挡剔除"></a>遮挡剔除</h3><p>这种用来避免低效率的算法可以带来速度上的补偿，具体可以将这些方法归类为遮挡裁剪算法（Occlusion Culling Algorithms），因为它们都试图裁剪掉被遮挡的部分，也就是被场景中其他物体遮挡的物体，最优的遮挡裁剪算法只选择其中可见得的部分。有两种主要形式的遮挡裁剪算法，分别是基于点的遮挡裁剪和基于单元的遮挡裁剪<br><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/ecd5347e24a3def949585440c73463b8.jpg" alt="Image text"></p>
+<p>遮挡地平线算法是基于点的可见性来判断的。有些时候采用基于单元的可见性方法更合适，但基于单元通常比基于点的可见性计算复杂度要高得多。Wonka等人提出了一种称为遮挡物收缩（Occluder Shrinking）的方法，可以使用基于点的遮挡算法来生成基于单元的可见性，根据给定的量来缩小场景中所有遮挡物来达到延伸有效可见点的目的。他们也提出了一种视锥扩张（Frustum Growing）技术，通常与Occluder Shrinking算法一起配合使用</p>
+<p><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/5bc065899184a23ac95778a586db1651.jpg" alt="Image text"></p>
+<ol>
+<li><p><font color=#ffa500>Hardware Occlusion Queries 硬件遮挡查询</font><br> 当和Z缓冲器中内容进行比较时，用户可以通过查询硬件来找到一组多边形是否可见的，且这些多边形通常是复杂物体的包围体（如长方体或者k-DOP）。如果其中没有多边形可见，那么便可将这个物体裁剪掉。硬件实现对查询的多边形进行光栅化，并且将其深度和Z缓冲器进行比较</p>
+</li>
+<li><p><font color=#ffa500>Hierarchical Z-Buffering 层次Z缓冲</font></p>
+<ul>
+<li>尽管其在CPU上很少使用，但该算法是GPU上做Z-Culling（深度裁剪）的基础</li>
+<li>层次Z-缓冲算法用八叉树来维护场景模型，并将画面的Z缓冲器作为图像金字塔（也称为Z-金字塔（Z-pyramid）），该算法因此在图像空间中进行操作。其中，八叉树能够对场景的遮挡区域进行层次剔除，而Z-金字塔则可以对单个基元和边界体积进行层次Z缓冲。 因此Z-金字塔可以作为此算法的遮挡表示</li>
+<li><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/9d3a0bd5ebdd5d3560f27035eb5c8296.jpg" alt="Image text"></li>
+<li>在这个例子中，遮挡八叉树节点的裁剪可以将深度复杂度从84，降低到了2.5</li>
+</ul>
+</li>
+<li><p><font color=#ffa500>Occlusion Horizons 遮挡地平线</font></p>
+<ul>
+<li>基本思想是裁剪掉位于地平线之间和之下的物体。 这种类型的算法经常被用来高效绘制如城市和村庄一样的城市环境。</li>
+<li>通过从前到后渲染一个场景，我们可以定位到地平线在哪里进行渲染，而任何在当前地平线之后和之下的物体都可以被裁剪掉</li>
+</ul>
+</li>
+<li><p><font color=#ffa500>Occluder Shrinking 遮挡物收缩</font></p>
+</li>
+<li><p><font color=#ffa500>Frustum Growing视锥扩张</font></p>
+</li>
+<li><p><font color=#ffa500>Virtual occluder 虚拟遮挡物算法</font></p>
+</li>
+<li><p><font color=#ffa500>Shaft Occlusion Culling 轴遮挡裁剪</font></p>
+</li>
+<li><p><font color=#ffa500>The HOM algorithm 层次遮挡映射算法</font></p>
+<ul>
+<li>类似层次Z缓冲算法，是一种启用分层图像空间剔除的方法。但其也不同于层次Z缓冲，因为它提供了使用近似遮挡剔除的能力。 HOM算法的基本思想是，每帧建立一个分层深度缓冲区，用于遮挡测试。并且在每个级别使用不透明度阈值来确定是否有足够的要渲染的对象是可见的。如果只有一小部分的对象是可见的，那么该对象被剔除。但作为一个基于CPU的算法系统，这个算法已经不受欢迎了</li>
+</ul>
+</li>
+<li><p><font color=#ffa500>Ray Space Occlusion Culling 射线空间遮挡剔除</font></p>
+</li>
+</ol>
+<h3 id="像素裁剪"><a href="#像素裁剪" class="headerlink" title="像素裁剪"></a>像素裁剪</h3><p>像素剔除又称为距离剔除，其原理就是当我们缩放视图时，对于离我们相机很远的物体，则不绘制。当物体很远时，我们肉眼已经很难分辨出来，再绘制它其实也是白白浪费GPU计算资源</p>
+<p>像素剔除的计算有两种策略：第一，每次Render时， 先计算一遍所有物体包围盒在屏幕上的投影大小，算出其投影占据的面积，用像素表示，用户可以给定一个可以显示的最小像素阈值。<br>小于该阈值的则不需要进行绘制。第二种，每次Render前计算出物体与相机位置之间的距离L，同时与计算出物体的包围球的直径R，计算出其直径R与距离L的比值ratio &#x3D; R&#x2F;L。同时给定一个阈值，当比值小于该阈值时则不进行绘制。<br>相比于第一种计算投影面积的像素，第二种方法更高效，像素剔除对于场景中有<br>很多小物体会很有用，比如智慧城市中的树木，机械装配体中的小零件，BIM中的管道接头等。Hoops引擎中自带像素剔除的功能</p>
+<h3 id="层次视锥裁剪"><a href="#层次视锥裁剪" class="headerlink" title="层次视锥裁剪"></a>层次视锥裁剪</h3><p>略</p>
+<h3 id="入口裁剪"><a href="#入口裁剪" class="headerlink" title="入口裁剪"></a>入口裁剪</h3><p>对建筑物模型来说，很多裁剪方面的算法可以归结为入口裁剪（Protal Culling）。在这个方向，最早的算法由Airey提出，随后Teller和Sequin，以及Teller和Hanrahan构造出了更高效，更复杂的算法。入口裁剪算法的基本思想是，在室内场景中，建筑物墙面通常充当大的遮挡物，通过每个入口（如门或者窗户）进行视锥裁剪。<br>当遍历入口的时候，就减小视锥。使得与入口尽可能紧密贴合。因此，可以将入口裁减算法看作是视锥裁剪算法的一种扩展，且需将位于视锥之外的入口丢弃。需要考虑反射(反射区域内的物体不被裁剪)<br><img src="https://github.com/QianMo/Game-Programmer-Study-Notes/raw/master/Content/%E3%80%8AReal-Time%20Rendering%203rd%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/Content/BlogPost11/media/6890224ea8733ab7349ed33ca2b6e62d.jpg" alt="Image text"></p>
+<h3 id="细节裁剪"><a href="#细节裁剪" class="headerlink" title="细节裁剪"></a>细节裁剪</h3><p>通过牺牲质量换取速度的技术。其基本原理是，当视点处于运动的时候，场景中的微小细节对渲染出的图像贡献甚微。，当视点停下来的时候，通常禁止细节裁剪。<br>考虑一个具有包围体的问题，将这个包围体投射到投影平面，然后以像素为单位来估算投影面积，如果像素的数量小于用户定义的阈值，那么不对这个物体进行进一步处理。基于这个原因，细节裁剪也往往被称为屏幕尺寸裁剪（Screen-Size Culling）。细节裁剪也可以在场景图上以层次形式来实现，几何阶段和光栅阶段都可以从这个算法中受益。<br>另外，细节裁剪还可以作为一种简化的LOD技术来实现，其中一个LOD是整个模型，另外一个LOD是空物体<br><img src="/showImg/Cull/show1.jpg" alt="Image text"></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2023/05/28/RenderingAcceleration/lod/"
+      title="Level of Detail"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        Level of Detail
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/05/17/Shaders/gameOptimize/"
+      title="GDC2023"
+     >
+
+    <p class="title-text">
+      
+        GDC2023
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>基于物理渲染 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc：记录阅读 build in 中关于BRDF的笔记 法线分布项 多次表面反射微表面BRDF不考虑从微表面多次反射(“反弹”)的光。 这种简化会导致一些能量损失和过度暗化，特别是对于粗糙金属  薄膜干涉常见的是用MatCap方式实现波动光学BRDF模型ShaderToyShaderToy如何在UE5中做出带薄膜干涉的油污地面 - 落月满江树的文章 反射项：123456789101112131">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于物理渲染">
+<meta property="og:url" content="http://example.com/2022/02/01/Shaders/%E5%9F%BA%E4%BA%8E%E7%89%A9%E7%90%86%E6%B8%B2%E6%9F%93/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc：记录阅读 build in 中关于BRDF的笔记 法线分布项 多次表面反射微表面BRDF不考虑从微表面多次反射(“反弹”)的光。 这种简化会导致一些能量损失和过度暗化，特别是对于粗糙金属  薄膜干涉常见的是用MatCap方式实现波动光学BRDF模型ShaderToyShaderToy如何在UE5中做出带薄膜干涉的油污地面 - 落月满江树的文章 反射项：123456789101112131">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/Shader/show13.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-6817ccdac6fb739e945d6cfd306239ac_b.jpg">
+<meta property="og:image" content="https://pic1.zhimg.com/v2-3fe10ed9209177b17abb5a298410aaa4_b.jpg">
+<meta property="og:image" content="https://pic2.zhimg.com/v2-7bfed96d69115605fc63060c0ead6735_b.png">
+<meta property="og:image" content="http://example.com/showImg/Shader/show14.jpg">
+<meta property="og:image" content="http://example.com/showImg/Shader/show15.jpg">
+<meta property="og:image" content="https://pic3.zhimg.com/80/v2-2d95a219f6050c73dcfd7c5c1e3bc936_720w.webp">
+<meta property="og:image" content="http://example.com/showImg/show66.jpg">
+<meta property="article:published_time" content="2022-02-01T15:10:18.000Z">
+<meta property="article:modified_time" content="2023-10-15T13:31:43.614Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="PBR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/Shader/show13.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Shaders/基于物理渲染" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        基于物理渲染
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-02-01T15:10:18.000Z" itemprop="datePublished">2022-02-01</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Shader/">Shader</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            3.5k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="Desc："><a href="#Desc：" class="headerlink" title="Desc："></a>Desc：</h1><p>记录阅读 build in 中关于BRDF的笔记</p>
+<h2 id="法线分布项"><a href="#法线分布项" class="headerlink" title="法线分布项"></a>法线分布项</h2><p><img src="/showImg/Shader/show13.jpg" alt="Image text"><br><img src="https://pic1.zhimg.com/v2-6817ccdac6fb739e945d6cfd306239ac_b.jpg"></p>
+<h2 id="多次表面反射"><a href="#多次表面反射" class="headerlink" title="多次表面反射"></a>多次表面反射</h2><p><img src="https://pic1.zhimg.com/v2-3fe10ed9209177b17abb5a298410aaa4_b.jpg"><br>微表面BRDF不考虑从微表面多次反射(“反弹”)的光。 这种简化会导致一些能量损失和过度暗化，特别是对于粗糙金属<br><img src="https://pic2.zhimg.com/v2-7bfed96d69115605fc63060c0ead6735_b.png"></p>
+<p><img src="/showImg/Shader/show14.jpg" alt="Image text"><br><img src="/showImg/Shader/show15.jpg" alt="Image text"></p>
+<h2 id="薄膜干涉"><a href="#薄膜干涉" class="headerlink" title="薄膜干涉"></a>薄膜干涉</h2><p>常见的是用MatCap方式实现<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/395543759">波动光学BRDF模型</a><br><img src="https://pic3.zhimg.com/80/v2-2d95a219f6050c73dcfd7c5c1e3bc936_720w.webp"><br><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/mlBXDR">ShaderToy</a><br><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/ld3SDl">ShaderToy</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/658890051">如何在UE5中做出带薄膜干涉的油污地面 - 落月满江树的文章</a></p>
+<h2 id="反射项："><a href="#反射项：" class="headerlink" title="反射项："></a>反射项：</h2><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 法线分布函数(各向同性)</span></span><br><span class="line"><span class="function">inline <span class="built_in">float</span> <span class="title">GGXTerm</span> (<span class="params"><span class="built_in">float</span> NdotH, <span class="built_in">float</span> roughness</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">float</span> a2 = roughness * roughness;</span><br><span class="line">    <span class="built_in">float</span> d = (NdotH * a2 - NdotH) * NdotH + <span class="number">1.0f</span>; <span class="comment">// 2 mad</span></span><br><span class="line">    <span class="keyword">return</span>  a2 /( (d * d + <span class="number">1e-7</span>f)*PI ); <span class="comment">// This function is not intended to be running on Mobile,</span></span><br><span class="line">                                            <span class="comment">// therefore epsilon is smaller than what can be represented by half</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment">* @brief GGX Anisotropic Distribution</span></span><br><span class="line"><span class="comment">* @param alpha_t   Roughness in   tangent direction</span></span><br><span class="line"><span class="comment">* @param alpha_b   Roughness in bitangent direction</span></span><br><span class="line"><span class="comment">* @param ToH       Dot product between   tangent vector and halfvector</span></span><br><span class="line"><span class="comment">* @param BoH       Dot product between bitangent vector and halfvector</span></span><br><span class="line"><span class="comment">* @param NoH       Dot product between    normal vector and halfvector</span></span><br><span class="line"><span class="comment">* </span></span><br><span class="line"><span class="comment">* \f$ D(h;\alpha_t,\alpha_b) = \frac&#123;1&#125;&#123;\pi\alpha_t\alpha_b&#125;\frac&#123;1&#125;&#123; \big( (n\cdot h)^2 + \frac&#123;(t \cdot h)^2&#125;&#123;\alpha_t^2&#125; + \frac&#123;(b\cdot h)^2&#125;&#123;\alpha_b^2&#125; \big)^2 &#125; \f$</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="built_in">float</span> <span class="title">ggx_anisotropic_ndf</span>(<span class="params"><span class="built_in">float</span> alpha_t, <span class="built_in">float</span> alpha_b,</span></span></span><br><span class="line"><span class="params"><span class="function">                        <span class="built_in">float</span> ToH, <span class="built_in">float</span> BoH, <span class="built_in">float</span> NoH</span>)</span> </span><br><span class="line">&#123;</span><br><span class="line">    vec3 v = vec3(alpha_b*ToH,alpha_t*BoH, alpha_t*alpha_b*NoH);</span><br><span class="line">    <span class="built_in">float</span> v2 = dot(v,v);</span><br><span class="line">    <span class="built_in">float</span> a2 = alpha_t*alpha_b;</span><br><span class="line">    <span class="built_in">float</span> w2 = a2/v2;</span><br><span class="line">    <span class="keyword">return</span>( a2*w2*w2*m_i_pi );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 菲涅尔方程</span></span><br><span class="line"><span class="function">inline half3 <span class="title">FresnelTerm</span> (<span class="params">half3 F0, half cosA</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    half t = Pow5 (<span class="number">1</span> - cosA);   <span class="comment">// ala Schlick interpoliation</span></span><br><span class="line">    <span class="keyword">return</span> F0 + (<span class="number">1</span>-F0) * t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="comment">// Ref: http://jcgt.org/published/0003/02/03/paper.pdf</span></span><br><span class="line"><span class="function">inline <span class="built_in">float</span> <span class="title">SmithJointGGXVisibilityTerm</span> (<span class="params"><span class="built_in">float</span> NdotL, <span class="built_in">float</span> NdotV, <span class="built_in">float</span> roughness</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">if</span> 0</span></span><br><span class="line">    <span class="comment">// Original formulation:</span></span><br><span class="line">    <span class="comment">//  lambda_v    = (-1 + sqrt(a2 * (1 - NdotL2) / NdotL2 + 1)) * 0.5f;</span></span><br><span class="line">    <span class="comment">//  lambda_l    = (-1 + sqrt(a2 * (1 - NdotV2) / NdotV2 + 1)) * 0.5f;</span></span><br><span class="line">    <span class="comment">//  G           = 1 / (1 + lambda_v + lambda_l);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Reorder code to be more optimal</span></span><br><span class="line">    half a          = roughness;</span><br><span class="line">    half a2         = a * a;</span><br><span class="line"></span><br><span class="line">    half lambdaV    = NdotL * sqrt((-NdotV * a2 + NdotV) * NdotV + a2);</span><br><span class="line">    half lambdaL    = NdotV * sqrt((-NdotL * a2 + NdotL) * NdotL + a2);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Simplify visibility term: (2.0f * NdotL * NdotV) /  ((4.0f * NdotL * NdotV) * (lambda_v + lambda_l + 1e-5f));</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5f</span> / (lambdaV + lambdaL + <span class="number">1e-5</span>f);  <span class="comment">// This function is not intended to be running on Mobile,</span></span><br><span class="line">                                                <span class="comment">// therefore epsilon is smaller than can be represented by half</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="comment">// Approximation of the above formulation (simplify the sqrt, not mathematically correct but close enough)</span></span><br><span class="line">    <span class="built_in">float</span> a = roughness;</span><br><span class="line">    <span class="built_in">float</span> lambdaV = NdotL * (NdotV * (<span class="number">1</span> - a) + a);</span><br><span class="line">    <span class="built_in">float</span> lambdaL = NdotV * (NdotL * (<span class="number">1</span> - a) + a);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">if</span> defined(SHADER_API_SWITCH)</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5f</span> / (lambdaV + lambdaL + <span class="number">1e-4</span>f); <span class="comment">// work-around against hlslcc rounding error</span></span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5f</span> / (lambdaV + lambdaL + <span class="number">1e-5</span>f);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="built_in">float</span> <span class="title">CookTorranceBRDF</span>(<span class="params">Surface surface,BRDF brdf,Light light</span>)</span>&#123;</span><br><span class="line">    float3 HalfDir=normalize(surface.viewDirection+light.direction);</span><br><span class="line">    <span class="built_in">float</span> NdotH=saturate(dot(HalfDir,surface.normal));</span><br><span class="line">    <span class="built_in">float</span> LdotH=saturate(dot(light.direction,HalfDir));</span><br><span class="line">    <span class="built_in">float</span> NdotV=saturate(dot(surface.normal,surface.viewDirection));</span><br><span class="line">    <span class="built_in">float</span> NdotL=saturate(dot(surface.normal,light.direction));</span><br><span class="line">    <span class="built_in">float</span> D=GGXTerm(NdotH,brdf.roughness);</span><br><span class="line">    <span class="built_in">float</span> F=FresnelTerm(brdf.specular,LdotH);</span><br><span class="line">    <span class="built_in">float</span> V = SmithJointGGXVisibilityTerm (LdotH, NdotV, brdf.roughness);</span><br><span class="line">    <span class="built_in">float</span> specularTerm=V*D*PI;</span><br><span class="line">    specularTerm=max(<span class="number">0</span>,specularTerm*LdotH);</span><br><span class="line">    <span class="keyword">return</span> specularTerm*F;<span class="comment">//+brdf.diffuse;</span></span><br><span class="line">    <span class="comment">//return (D*F*G)/(4*dot(surface.normal,light.direction)*dot(surface.normal,surface.viewDirection));//;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<p>总颜色计算</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">float3 <span class="title">GetCookTorranceLighting</span>(<span class="params">Surface surface,BRDF brdf,Light light</span>)</span>&#123;</span><br><span class="line">    float3 incomingLight=IncomingLight(surface,light);</span><br><span class="line">    <span class="built_in">float</span> brdfLight=CookTorranceBRDF(surface,brdf,light);</span><br><span class="line">    <span class="keyword">return</span> incomingLight*brdfLight+incomingLight*surface.color;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="/showImg/show66.jpg" alt="Image text"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/21376124">基于物理着色：BRDF</a><br><a target="_blank" rel="noopener" href="https://blog.selfshadow.com/publications/">SIGGRAPH </a><br><a target="_blank" rel="noopener" href="http://graphicrants.blogspot.com/2013/08/specular-brdf-reference.html">D、F、G 公式</a><br><a target="_blank" rel="noopener" href="https://seblagarde.wordpress.com/2012/06/03/spherical-gaussien-approximation-for-blinn-phong-phong-and-fresnel/">球面高斯近似</a><br><a target="_blank" rel="noopener" href="https://seblagarde.wordpress.com/2011/08/17/hello-world/">基于物理的着色模型</a><br><a target="_blank" rel="noopener" href="https://seblagarde.wordpress.com/2011/08/17/feeding-a-physical-based-lighting-mode/">基于物理的着色模型</a><br><a target="_blank" rel="noopener" href="https://blog.selfshadow.com/publications/s2013-shading-course/">SIGGRAPH 2013</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/272553650">光照模型 PBR</a><br><a target="_blank" rel="noopener" href="https://seblagarde.wordpress.com/2012/06/03/spherical-gaussien-approximation-for-blinn-phong-phong-and-fresnel/">球面高斯近似</a><br><a target="_blank" rel="noopener" href="https://www.shadertoy.com/view/NtlyWX">shadertoy</a></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/02/01/Battle/%E6%88%98%E6%96%97%E7%B3%BB%E7%BB%9F/"
+      title="战斗系统"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        战斗系统
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/02/01/Shaders/Outline/"
+      title="后处理描边"
+     >
+
+    <p class="title-text">
+      
+        后处理描边
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>

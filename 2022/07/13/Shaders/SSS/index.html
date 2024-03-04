@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>次表面散射 | 星光咖啡馆</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="Desc:皮肤渲染的渲染过程可由两个分量组成：    镜面反射+次表面散射 镜面反射项（specular reflection） 相对而言很简单，Gems 3中推荐Kelemen and Szirmay-Kalos specular BRDF用于皮肤镜面反射项的计算。因为Kelemen and Szirmay-Kalos specular BRDF在实现和Torrance-Sparrow模型一样的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="次表面散射">
+<meta property="og:url" content="http://example.com/2022/07/13/Shaders/SSS/index.html">
+<meta property="og:site_name" content="星光咖啡馆">
+<meta property="og:description" content="Desc:皮肤渲染的渲染过程可由两个分量组成：    镜面反射+次表面散射 镜面反射项（specular reflection） 相对而言很简单，Gems 3中推荐Kelemen and Szirmay-Kalos specular BRDF用于皮肤镜面反射项的计算。因为Kelemen and Szirmay-Kalos specular BRDF在实现和Torrance-Sparrow模型一样的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/showImg/show67.jpg">
+<meta property="og:image" content="http://example.com/showImg/show68.jpg">
+<meta property="article:published_time" content="2022-07-13T14:21:13.000Z">
+<meta property="article:modified_time" content="2023-05-21T11:26:09.660Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="SSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/showImg/show67.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="星光咖啡馆" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="/img/blog_top.png" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>星光咖啡馆 </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=/img/head.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">泥头车 </div>
+      <div class="dot"></div>
+      <div class="subtitle">若无闲事挂心头，便是人间好时节 </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://twitter.com/yHjoXasQ7ntcYs8" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://steamcommunity.com/id/ruanchuan/" title="Steam"><i class="fa-brands fa-steam"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://github.com/ruancuan" title="Github"><i class="fa-brands fa-github"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Categories</h3>
+      <div class="category-box">
+            <a class="category-link" href="/categories/C/">
+                C#
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+                开发工具
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
+                实时渲染4
+                <div class="category-count">6</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%8E%A9/">
+                玩
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Unity/">
+                Unity
+                <div class="category-count">16</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+                空间数据结构
+                <div class="category-count">3</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Math/">
+                Math
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
+            </a>
+        
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Sync/">
+                Sync
+                <div class="category-count">1</div>
+            </a>
+        </div>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Animation/" rel="tag">Animation</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Atmospheric/" rel="tag">Atmospheric</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/BehaviorTree/" rel="tag">BehaviorTree</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Bump/" rel="tag">Bump</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/C/" rel="tag">C#</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Clound/" rel="tag">Clound</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Cull/" rel="tag">Cull</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/DataStructure/" rel="tag">DataStructure</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Engine/" rel="tag">Engine</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/FrameSync/" rel="tag">FrameSync</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GI/" rel="tag">GI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Game/" rel="tag">Game</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Grass/" rel="tag">Grass</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/GrassEditor/" rel="tag">GrassEditor</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/HotUpdate/" rel="tag">HotUpdate</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/IBR/" rel="tag">IBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Input/" rel="tag">Input</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Live2d/" rel="tag">Live2d</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Math/" rel="tag">Math</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Matrix/" rel="tag">Matrix</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/NPR/" rel="tag">NPR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Optimize/" rel="tag">Optimize</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Outline/" rel="tag">Outline</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PBR/" rel="tag">PBR</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/PostProcessing/" rel="tag">PostProcessing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Quaternion/" rel="tag">Quaternion</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RTR3rd/" rel="tag">RTR3rd</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/RayTracing/" rel="tag">RayTracing</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/ResourceCtrl/" rel="tag">ResourceCtrl</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SC2/" rel="tag">SC2</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SDF/" rel="tag">SDF</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SRP/" rel="tag">SRP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Shader/" rel="tag">Shader</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/UGUI/" rel="tag">UGUI</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/URP/" rel="tag">URP</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Vector/" rel="tag">Vector</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/XLua/" rel="tag">XLua</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/egret/" rel="tag">egret</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/log/" rel="tag">log</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/novelai/" rel="tag">novelai</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%88%98%E6%96%97/" rel="tag">战斗</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/" rel="tag">树莓派</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E7%90%86%E8%AE%BA/" rel="tag">理论</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E9%85%8D%E7%BD%AE%E8%A1%A8/" rel="tag">配置表</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-Shaders/SSS" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        次表面散射
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2022-07-13T14:21:13.000Z" itemprop="datePublished">2022-07-13</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+  <a class="meta-cate-link" href="/categories/Shader/">Shader</a>
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            10k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSS/" rel="tag">SSS</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <h1 id="Desc"><a href="#Desc" class="headerlink" title="Desc:"></a>Desc:</h1><p>皮肤渲染的渲染过程可由两个分量组成：<br>    镜面反射+次表面散射</p>
+<p>镜面反射项（specular reflection） 相对而言很简单，Gems 3中推荐Kelemen and Szirmay-Kalos specular BRDF用于皮肤镜面反射项的计算。因为Kelemen and Szirmay-Kalos specular BRDF在实现和Torrance-Sparrow模型一样的渲染效果时，计算量要小得多。而现阶段基于物理的一些其他高光模型或改进方案也应该会得到不错的效果</p>
+<p>次表面散射麻烦很多</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/15719431.html">总纲</a></p>
+<h2 id="现在学会的方式："><a href="#现在学会的方式：" class="headerlink" title="现在学会的方式："></a>现在学会的方式：</h2><h3 id="预积分的皮肤渲染（Pre-Integrated-Skin-Rendering）"><a href="#预积分的皮肤渲染（Pre-Integrated-Skin-Rendering）" class="headerlink" title="预积分的皮肤渲染（Pre-Integrated Skin Rendering）"></a>预积分的皮肤渲染（Pre-Integrated Skin Rendering）</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35628106">来源</a><br><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1st4y1h7yD/">实现效果</a><br><img src="/showImg/show67.jpg" alt="Image text"></p>
+<p>贴图生成</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[<span class="meta">MenuItem(<span class="string">&quot;Tools/Texture/CreateCurveTexture&quot;</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateCurveTexture</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Mesh mesh;</span><br><span class="line">    Material material;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        mesh = Selection.activeGameObject.GetComponent&lt;SkinnedMeshRenderer&gt;().sharedMesh;</span><br><span class="line">        material = UnityEngine.Object.Instantiate(Selection.activeGameObject.GetComponent&lt;SkinnedMeshRenderer&gt;().sharedMaterial);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span>(Exception e)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(e);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Texture texture = material.mainTexture;</span><br><span class="line">    RenderTexture renderTexture = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture);</span><br><span class="line">    material.shader = Shader.Find(<span class="string">&quot;SSS/SkinBake&quot;</span>);</span><br><span class="line">    material.SetFloat(<span class="string">&quot;_CurveFactor&quot;</span>, <span class="number">3.2f</span>);</span><br><span class="line">    material.SetPass(<span class="number">0</span>);</span><br><span class="line">    Graphics.DrawMeshNow(mesh, Matrix4x4.identity);</span><br><span class="line">    RenderTexture renderTexture1 = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture1);</span><br><span class="line">    Graphics.Blit(renderTexture, material, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    Texture2D texture2D = <span class="keyword">new</span> Texture2D(texture.width, texture.height, TextureFormat.ARGB32, <span class="literal">false</span>);</span><br><span class="line">    texture2D.ReadPixels(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, texture.width, texture.height), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    texture2D.Apply();</span><br><span class="line"></span><br><span class="line">    System.IO.File.WriteAllBytes(<span class="string">&quot;Assets/CreateOutput/curve.png&quot;</span>, texture2D.EncodeToPNG());</span><br><span class="line">    renderTexture.Release();</span><br><span class="line">    renderTexture1.Release();</span><br><span class="line">    AssetDatabase.Refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">MenuItem(<span class="string">&quot;Tools/Texture/CreateLUTTexture&quot;</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateLUT</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Mesh mesh;</span><br><span class="line">    Material material;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        mesh = Selection.activeGameObject.GetComponent&lt;SkinnedMeshRenderer&gt;().sharedMesh;</span><br><span class="line">        material = UnityEngine.Object.Instantiate(Selection.activeGameObject.GetComponent&lt;SkinnedMeshRenderer&gt;().sharedMaterial);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception e)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(e);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Texture texture = material.mainTexture;</span><br><span class="line">    RenderTexture renderTexture = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture);</span><br><span class="line">    material.shader = Shader.Find(<span class="string">&quot;SSS/LUTSkin&quot;</span>);</span><br><span class="line">    material.SetPass(<span class="number">0</span>);</span><br><span class="line">    Graphics.DrawMeshNow(mesh, Matrix4x4.identity);</span><br><span class="line">    RenderTexture renderTexture1 = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture1);</span><br><span class="line">    Graphics.Blit(renderTexture, material);</span><br><span class="line"></span><br><span class="line">    Texture2D texture2D = <span class="keyword">new</span> Texture2D(texture.width, texture.height, TextureFormat.ARGB32, <span class="literal">false</span>);</span><br><span class="line">    texture2D.ReadPixels(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, texture.width, texture.height), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    texture2D.Apply();</span><br><span class="line"></span><br><span class="line">    System.IO.File.WriteAllBytes(<span class="string">&quot;Assets/CreateOutput/lut.png&quot;</span>, texture2D.EncodeToPNG());</span><br><span class="line">    renderTexture.Release();</span><br><span class="line">    renderTexture1.Release();</span><br><span class="line">    AssetDatabase.Refresh();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">MenuItem(<span class="string">&quot;Tools/Texture/CreateKSTexture&quot;</span>)</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CreateKSTexture</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Mesh mesh;</span><br><span class="line">    Material material;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        mesh = Selection.activeGameObject.GetComponent&lt;MeshFilter&gt;().sharedMesh;</span><br><span class="line">        material = UnityEngine.Object.Instantiate(Selection.activeGameObject.GetComponent&lt;MeshRenderer&gt;().sharedMaterial);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception e)</span><br><span class="line">    &#123;</span><br><span class="line">        Debug.Log(e);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Texture texture = material.mainTexture;</span><br><span class="line">    RenderTexture renderTexture = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture);</span><br><span class="line">    material.shader = Shader.Find(<span class="string">&quot;SSS/KSTextureBake&quot;</span>);</span><br><span class="line">    material.SetPass(<span class="number">0</span>);</span><br><span class="line">    Graphics.DrawMeshNow(mesh, Matrix4x4.identity);</span><br><span class="line">    RenderTexture renderTexture1 = <span class="keyword">new</span> RenderTexture(texture.width, texture.height, <span class="number">0</span>, RenderTextureFormat.ARGB32);</span><br><span class="line">    Graphics.SetRenderTarget(renderTexture1);</span><br><span class="line">    Graphics.Blit(renderTexture, material);</span><br><span class="line"></span><br><span class="line">    Texture2D texture2D = <span class="keyword">new</span> Texture2D(texture.width, texture.height, TextureFormat.ARGB32, <span class="literal">false</span>);</span><br><span class="line">    texture2D.ReadPixels(<span class="keyword">new</span> Rect(<span class="number">0</span>, <span class="number">0</span>, texture.width, texture.height), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    texture2D.Apply();</span><br><span class="line"></span><br><span class="line">    System.IO.File.WriteAllBytes(<span class="string">&quot;Assets/CreateOutput/KsTexture.png&quot;</span>, texture2D.EncodeToPNG());</span><br><span class="line">    renderTexture.Release();</span><br><span class="line">    renderTexture1.Release();</span><br><span class="line">    AssetDatabase.Refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>效果</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(_IsSSS)&#123;</span><br><span class="line">    curve = length(fwidth(N)) / (length(fwidth(lightData.positionWS)) * _CurveFactor);</span><br><span class="line">    curve=saturate(curve);</span><br><span class="line">    sssColor=tex2D(_SSSLUTTex,float2(HL,curve));</span><br><span class="line">    litOrShadowColor=lerp(sssColor*_SSSScale+_ShadowMapColor,<span class="number">1</span>,litOrShadowArea);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="可分离的次表面散射（SSSS-Separable-Subsurface-Scattering）"><a href="#可分离的次表面散射（SSSS-Separable-Subsurface-Scattering）" class="headerlink" title="可分离的次表面散射（SSSS , Separable Subsurface Scattering）"></a>可分离的次表面散射（SSSS , Separable Subsurface Scattering）</h3><p><a target="_blank" rel="noopener" href="https://github.com/LitpoEric/UnityCharacterRender_SeparableSubsurfaceScatter">来源</a><br><img src="/showImg/show68.jpg" alt="Image text"><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/37642422">知乎作者</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/timlly/p/11098212.html#231--separablesssush">link</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/523611327">网易雷火工作室</a></p>
+<p>卷积分离的优化方法，把横向坐标U和纵向坐标V分开卷积，再做合成<br>为了给实时渲染加速，还需要预积分分离的卷积核，利用奇异值分离的方法将其分解成一个行向量和列向量</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br></pre></td><td class="code"><pre><span class="line">两个通道</span><br><span class="line"></span><br><span class="line">shader:</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DistanceToProjectionWindow 5.671281819617709             //1.0 / tan(0.5 * radians(20));</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DPTimes300 1701.384545885313                             //DistanceToProjectionWindow * 300</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SamplerSteps 25</span></span><br><span class="line">uniform sampler2D _CameraDepthTexture;</span><br><span class="line">float4 _CameraDepthTexture_TexelSize;</span><br><span class="line"></span><br><span class="line"><span class="function">float4 <span class="title">SSS</span>(<span class="params">float4 SceneColor, float2 UV, float2 SSSIntencity</span>)</span> &#123;</span><br><span class="line">    <span class="built_in">float</span> SceneDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, UV));                                   </span><br><span class="line">    <span class="built_in">float</span> BlurLength = DistanceToProjectionWindow / SceneDepth;                                   </span><br><span class="line">    float2 UVOffset = SSSIntencity * BlurLength;                      </span><br><span class="line">        float4 BlurSceneColor = SceneColor;</span><br><span class="line">    BlurSceneColor.rgb *=  _Kernel[<span class="number">0</span>].rgb;  </span><br><span class="line"></span><br><span class="line">    [<span class="meta">loop</span>]</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; SamplerSteps; i++) &#123;</span><br><span class="line">        float2 SSSUV = UV +  _Kernel[i].a * UVOffset;</span><br><span class="line">        float4 SSSSceneColor = tex2D(_MainTex, SSSUV);</span><br><span class="line">        <span class="built_in">float</span> SSSDepth = LinearEyeDepth(SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, SSSUV)).r;         </span><br><span class="line">        <span class="built_in">float</span> SSSScale = saturate(DPTimes300 * SSSIntencity * abs(SceneDepth - SSSDepth));</span><br><span class="line">        SSSSceneColor.rgb = lerp(SSSSceneColor.rgb, SceneColor.rgb, SSSScale);</span><br><span class="line">        BlurSceneColor.rgb +=  _Kernel[i].rgb * SSSSceneColor.rgb;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> BlurSceneColor;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">float4 <span class="title">frag</span>(<span class="params">VertexOutput i</span>) : SV_TARGET</span> &#123;</span><br><span class="line">    float4 SceneColor = tex2D(_MainTex, i.uv);</span><br><span class="line">    <span class="built_in">float</span> SSSIntencity = (_SSSScale * _CameraDepthTexture_TexelSize.x);</span><br><span class="line">    float3 XBlur = SSS(SceneColor, i.uv, float2(SSSIntencity, <span class="number">0</span>) ).rgb;</span><br><span class="line">    <span class="keyword">return</span> float4(XBlur, SceneColor.a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">float4 <span class="title">frag</span>(<span class="params">VertexOutput i</span>) : COLOR</span> &#123;</span><br><span class="line">    float4 SceneColor = tex2D(_MainTex, i.uv);</span><br><span class="line">    <span class="built_in">float</span> SSSIntencity = (_SSSScale * _CameraDepthTexture_TexelSize.y);</span><br><span class="line">    float3 YBlur = SSS(SceneColor, i.uv, float2(<span class="number">0</span>, SSSIntencity)).rgb;</span><br><span class="line">    <span class="keyword">return</span> float4(YBlur, SceneColor.a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cs:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">SeparableSSS</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">CalculateKernel</span>(<span class="params">List&lt;Vector4&gt; kernel, <span class="built_in">int</span> nSamples, Vector3 strength, Vector3 falloff</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">float</span> RANGE = nSamples &gt; <span class="number">20</span> ? <span class="number">3.0f</span> : <span class="number">2.0f</span>;</span><br><span class="line">        <span class="built_in">float</span> EXPONENT = <span class="number">2.0f</span>;</span><br><span class="line">        kernel.Clear();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Calculate the SSS_Offset_UV:</span></span><br><span class="line">        <span class="built_in">float</span> step = <span class="number">2.0f</span> * RANGE / (nSamples - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; nSamples; i++)&#123;</span><br><span class="line">            <span class="built_in">float</span> o = -RANGE + i * step;</span><br><span class="line">            <span class="built_in">float</span> sign = o &lt; <span class="number">0.0f</span> ? <span class="number">-1.0f</span> : <span class="number">1.0f</span>;</span><br><span class="line">            <span class="built_in">float</span> w = RANGE * sign *Mathf.Abs(Mathf.Pow(o, EXPONENT)) / Mathf.Pow(RANGE, EXPONENT);</span><br><span class="line">            kernel.Add(<span class="keyword">new</span> Vector4(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, w));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Calculate the SSS_Scale:</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; nSamples; i++)&#123;</span><br><span class="line">            <span class="built_in">float</span> w0 = i &gt; <span class="number">0</span> ? Mathf.Abs(kernel[i].w - kernel[i - <span class="number">1</span>].w) : <span class="number">0.0f</span>;</span><br><span class="line">            <span class="built_in">float</span> w1 = i &lt; nSamples - <span class="number">1</span> ? Mathf.Abs(kernel[i].w - kernel[i + <span class="number">1</span>].w) : <span class="number">0.0f</span>;</span><br><span class="line">            <span class="built_in">float</span> area = (w0 + w1) / <span class="number">2.0f</span>;</span><br><span class="line">            Vector3 temp =  profile(kernel[i].w, falloff);</span><br><span class="line">            Vector4 tt = <span class="keyword">new</span> Vector4(area * temp.x, area * temp.y, area * temp.z, kernel[i].w);</span><br><span class="line">            kernel[i] = tt;</span><br><span class="line">        &#125;</span><br><span class="line">        Vector4 t = kernel[nSamples / <span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = nSamples / <span class="number">2</span>; i &gt; <span class="number">0</span>; i--)</span><br><span class="line">            kernel[i] = kernel[i - <span class="number">1</span>];</span><br><span class="line">            kernel[<span class="number">0</span>] = t;</span><br><span class="line">            Vector4 sum = Vector4.zero;</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; nSamples; i++)&#123;</span><br><span class="line">            sum.x += kernel[i].x;</span><br><span class="line">            sum.y += kernel[i].y;</span><br><span class="line">            sum.z += kernel[i].z;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; nSamples; i++)&#123;</span><br><span class="line">            Vector4 vecx = kernel[i];</span><br><span class="line">            vecx.x /= sum.x;</span><br><span class="line">            vecx.y /= sum.y;</span><br><span class="line">            vecx.z /= sum.z;</span><br><span class="line">            kernel[i] = vecx;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Vector4 vec = kernel[<span class="number">0</span>];</span><br><span class="line">        vec.x = (<span class="number">1.0f</span> - strength.x) * <span class="number">1.0f</span> + strength.x * vec.x;</span><br><span class="line">        vec.y = (<span class="number">1.0f</span> - strength.y) * <span class="number">1.0f</span> + strength.y * vec.y;</span><br><span class="line">        vec.z = (<span class="number">1.0f</span> - strength.z) * <span class="number">1.0f</span> + strength.z * vec.z;</span><br><span class="line">        kernel[<span class="number">0</span>] = vec;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; nSamples; i++)&#123;</span><br><span class="line">            <span class="keyword">var</span> vect = kernel[i];</span><br><span class="line">            vect.x *= strength.x;</span><br><span class="line">            vect.y *= strength.y;</span><br><span class="line">            vect.z *= strength.z;</span><br><span class="line">            kernel[i] = vect;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Vector3 <span class="title">gaussian</span>(<span class="params"><span class="built_in">float</span> variance, <span class="built_in">float</span> r, Vector3 falloff</span>)</span>&#123;</span><br><span class="line">        Vector3 g;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">float</span> rr1 = r / (<span class="number">0.001f</span> + falloff.x);</span><br><span class="line">        g.x = Mathf.Exp((-(rr1 * rr1)) / (<span class="number">2.0f</span> * variance)) / (<span class="number">2.0f</span> * <span class="number">3.14f</span> * variance);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">float</span> rr2 = r / (<span class="number">0.001f</span> + falloff.y);</span><br><span class="line">        g.y = Mathf.Exp((-(rr2 * rr2)) / (<span class="number">2.0f</span> * variance)) / (<span class="number">2.0f</span> * <span class="number">3.14f</span> * variance);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">float</span> rr3 = r / (<span class="number">0.001f</span> + falloff.z);</span><br><span class="line">        g.z = Mathf.Exp((-(rr3 * rr3)) / (<span class="number">2.0f</span> * variance)) / (<span class="number">2.0f</span> * <span class="number">3.14f</span> * variance);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> g;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Vector3 <span class="title">profile</span>(<span class="params"><span class="built_in">float</span> r, Vector3 falloff</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  <span class="number">0.100f</span> * gaussian(<span class="number">0.0484f</span>, r, falloff) +</span><br><span class="line">                <span class="number">0.118f</span> * gaussian(<span class="number">0.187f</span>, r, falloff) +</span><br><span class="line">                <span class="number">0.113f</span> * gaussian(<span class="number">0.567f</span>, r, falloff) +</span><br><span class="line">                <span class="number">0.358f</span> * gaussian(<span class="number">1.99f</span>, r, falloff) +</span><br><span class="line">                <span class="number">0.078f</span> * gaussian(<span class="number">7.41f</span>, r, falloff);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span>SSS Color</span></span><br><span class="line">Vector3 SSSC = Vector3.Normalize(<span class="keyword">new</span> Vector3 (SubsurfaceColor.r, SubsurfaceColor.g, SubsurfaceColor.b));</span><br><span class="line">Vector3 SSSFC = Vector3.Normalize(<span class="keyword">new</span> Vector3 (SubsurfaceFalloff.r, SubsurfaceFalloff.g, SubsurfaceFalloff.b));</span><br><span class="line">SeparableSSS.CalculateKernel(KernelArray, <span class="number">25</span>, SSSC, SSSFC);</span><br><span class="line">SubsurfaceEffects.SetVectorArray (Kernel, KernelArray);</span><br><span class="line">SubsurfaceEffects.SetFloat (SSSScaler, SubsurfaceScaler);</span><br><span class="line"><span class="comment"><span class="doctag">///</span>SSS Buffer</span></span><br><span class="line">SubsurfaceBuffer.Clear();</span><br><span class="line">SubsurfaceBuffer.GetTemporaryRT (SceneColorID, RenderCamera.pixelWidth, RenderCamera.pixelHeight, <span class="number">0</span>, FilterMode.Trilinear, RenderTextureFormat.DefaultHDR);</span><br><span class="line"></span><br><span class="line">SubsurfaceBuffer.BlitStencil(BuiltinRenderTextureType.CameraTarget, SceneColorID, BuiltinRenderTextureType.CameraTarget, SubsurfaceEffects, <span class="number">0</span>);</span><br><span class="line">SubsurfaceBuffer.BlitSRT(SceneColorID, BuiltinRenderTextureType.CameraTarget, SubsurfaceEffects, <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>皮肤渲染过程可以由两个分量组成：镜面反射、次表面散射</p>
+<h2 id="镜面反射"><a href="#镜面反射" class="headerlink" title="镜面反射"></a>镜面反射</h2><p>Kelemen and Szirmay-Kalos specular BRDF在实现和Torrance-Sparrow模型一样的渲染效果时，计算量要小得多</p>
+<h3 id="Torrance-Sparrow"><a href="#Torrance-Sparrow" class="headerlink" title="Torrance-Sparrow"></a>Torrance-Sparrow</h3><h3 id="Kelemem-and-Szirmay-Kalos-specular-BRDF"><a href="#Kelemem-and-Szirmay-Kalos-specular-BRDF" class="headerlink" title="Kelemem and Szirmay-Kalos specular BRDF"></a>Kelemem and Szirmay-Kalos specular BRDF</h3><h3 id="基于物理其他高光模型"><a href="#基于物理其他高光模型" class="headerlink" title="基于物理其他高光模型"></a>基于物理其他高光模型</h3><h2 id="次表面散射部分"><a href="#次表面散射部分" class="headerlink" title="次表面散射部分"></a>次表面散射部分</h2><h3 id="扩散剖面"><a href="#扩散剖面" class="headerlink" title="扩散剖面"></a>扩散剖面</h3><p>扩散剖面（diffusion profile）是描述光线如何在半透明物体中进行扩散和分布的函数。<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/523611327">link</a><br>与扩散剖面常一起出现的三种方法：</p>
+<h3 id="偶极子（Dipole）方法"><a href="#偶极子（Dipole）方法" class="headerlink" title="偶极子（Dipole）方法"></a>偶极子（Dipole）方法</h3><h3 id="多级子（Multipole）方法"><a href="#多级子（Multipole）方法" class="headerlink" title="多级子（Multipole）方法"></a>多级子（Multipole）方法</h3><h3 id="高斯和（Sum-of-Gaussians）方法"><a href="#高斯和（Sum-of-Gaussians）方法" class="headerlink" title="高斯和（Sum-of-Gaussians）方法"></a>高斯和（Sum-of-Gaussians）方法</h3><p>它们都是更好地描述出扩散剖面（Diffusion Profiles）的一些策略。得到扩散剖面（diffusion profile），即光线是如何在半透明物体中进行扩散和分布之后，接下来就可以对附近的像素进行加权求和，以模拟次表面散射的效果。这个求和的过程其实是根据扩散剖面（diffusion profile）的指导，对周围像素进行模糊操作</p>
+<p>按照操作空间划分，常规的思路：<br>· 纹理空间模糊<br>· 屏幕空间模糊 (sssss)</p>
+<h3 id="其他皮肤渲染技术"><a href="#其他皮肤渲染技术" class="headerlink" title="其他皮肤渲染技术"></a>其他皮肤渲染技术</h3><h4 id="半透明阴影贴图-TSMS"><a href="#半透明阴影贴图-TSMS" class="headerlink" title="半透明阴影贴图 (TSMS)"></a>半透明阴影贴图 (TSMS)</h4><h4 id="路径跟踪次表面散射-Path-Traced-Subsurface-Scattering-与光线步进-Ray-Marching"><a href="#路径跟踪次表面散射-Path-Traced-Subsurface-Scattering-与光线步进-Ray-Marching" class="headerlink" title="路径跟踪次表面散射 (Path-Traced Subsurface Scattering) 与光线步进 (Ray Marching)"></a>路径跟踪次表面散射 (Path-Traced Subsurface Scattering) 与光线步进 (Ray Marching)</h4><h4 id="Deferred-Single-Scattering"><a href="#Deferred-Single-Scattering" class="headerlink" title="Deferred Single Scattering"></a>Deferred Single Scattering</h4><h2 id="发展史"><a href="#发展史" class="headerlink" title="发展史"></a>发展史</h2><p>• 次表面光照传输模型（Subsurface Light Transport, SSLT）[2001]<br>• 扩散剖面（Diffusion Profile） [2001]<br>• 偶极子（dipole） [2001]<br>• 纹理空间模糊（Texture Space Blur）[2003]<br>• 多极子（multipole） [2005]<br>• 屏幕空间模糊（Screen Space Blur）或屏幕空间次表面散射（SSSSS,Screen Space SubSurface Scattering）[2009]<br>• 路径追踪次表面散射（Path-Traced Subsurface Scattering）与光线步进（Ray Marching）[2009]<br>• 预积分的皮肤着色（Pre-Integrated Skin Shading）[2010]<br>• 可分离的次表面散射（SSSS,Separable Subsurface Scattering）[2015]<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/42433792">link</a></p>
+<h1 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h1><p><a target="_blank" rel="noopener" href="http://iryoku.com/separable-sss/">推导</a></p>
+
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2022/07/25/Shaders/%E8%8D%89%E5%9C%B0/"
+      title="草地"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        草地
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2022/02/02/UGUI/UGUI%E4%BC%98%E5%8C%96/"
+      title="UGUI优化"
+     >
+
+    <p class="title-text">
+      
+        UGUI优化
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 泥头车<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>
