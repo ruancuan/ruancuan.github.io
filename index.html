@@ -171,7 +171,7 @@
         
             <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
                 实时渲染4
-                <div class="category-count">8</div>
+                <div class="category-count">9</div>
             </a>
         
             <a class="category-link" href="/categories/Egret/">
@@ -297,7 +297,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            314 words 
+            518 words 
           </div>
         </div>
         
@@ -308,19 +308,15 @@
         
           <div class="truncate-text">
             
-              简介
+              来源大地形的一种简化RVT - jackie 偶尔不帅的文章 - 知乎
+简介
 为了渲染一个巨大的地形，可能需要使用一个超大分辨率的纹理。大到装不进GPU的显存。128K*128K的纹理将消耗大概64GB的GPU显存。当GPU上的内存空间有限时，操作系统会使用虚拟内存来进行内存管理，根据需要将数据从驱动程序交换到CPU内存中。虚拟纹理提供相似的功能。
 
 
-应用程序会决定每个mipmap层级中的哪些区域（瓦片tile）应当驻留在GPU显存中。一个tile通常为64kb，其分辨率取决于具体的纹理格式。在理想情况下，所需要的纹素数量应当与正在渲染的最终图像的分辨率成比例，并且与纹理本身分辨率无关。
+地形的采样除了抖动混合其他都需要非常多次的采样albedo和normal然后混合。这已经成为多数项目在GPU方面的最大开销所以有必要缓存他。其次，地形的mesh结构单一性，材质统一性，贴图共用性都导致仅对地形实现RVT是比较方便的.
 
 
-    
-
-
-优点能够把地表贴花预渲染到地形纹理
-缺点高精度代表要分配更多的RT尺寸和内容，占用大量的显存和带宽
-硬件支持虚拟纹理
+应用程序会决定每个mipmap层级中的哪些区域（瓦片tile）应当驻留在GPU显存中。一个tile通常为64kb，其分辨率取决于具体的纹理格式。在理想情况下，所需要的纹素数量应当与正在渲染的最终图像的分辨率成比例，并且与纹理本身分辨率无关。只要求可见的纹素位于物理GPU的显存中即可，其中整个mipmap链会在虚拟内存中被划分为若干个块（虚拟mipmap或者clipmap）。由于物理内存的大小比虚拟...
             
           </div>
         
@@ -1129,7 +1125,7 @@ LoadBuildinManifestOperation
   
   <div id="footer-info" class="inner">
     
-    &copy; 2024 泥头车<br>
+    &copy; 2025 泥头车<br>
     Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
   </div>
 </footer>
