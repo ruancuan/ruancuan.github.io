@@ -20,17 +20,18 @@
   <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
   <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
 
-  <meta name="description" content="简介 记录GAS中各个模块的使用经验  引用【gameplay-ability-system-for-unity】【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎 GameplayTag GameplayTags是一种层级标签，如Parent.Child.GrandChild。替代了原来的Bool，或Enum的结构，可以在玩法设计中更高效 的标记对象的行为或状态。">
+  <meta name="description" content="简介 记录GAS中各个模块的使用经验  引用【gameplay-ability-system-for-unity】【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎UE-GAS架构分析（二）（GameplayAttribute） - 李嘉的文章 - 知乎UE GAS进阶-深入理解GE - 高贵纯合子的文章 - 知乎 GameplayTag GameplayTags是一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gameplay-Ability-System">
 <meta property="og:url" content="http://example.com/2025/05/19/GAS/GAS/index.html">
 <meta property="og:site_name" content="星光咖啡馆">
-<meta property="og:description" content="简介 记录GAS中各个模块的使用经验  引用【gameplay-ability-system-for-unity】【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎 GameplayTag GameplayTags是一种层级标签，如Parent.Child.GrandChild。替代了原来的Bool，或Enum的结构，可以在玩法设计中更高效 的标记对象的行为或状态。">
+<meta property="og:description" content="简介 记录GAS中各个模块的使用经验  引用【gameplay-ability-system-for-unity】【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎UE-GAS架构分析（二）（GameplayAttribute） - 李嘉的文章 - 知乎UE GAS进阶-深入理解GE - 高贵纯合子的文章 - 知乎 GameplayTag GameplayTags是一">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://pica.zhimg.com/v2-753b6cb16cb635af5275888c9911c576_1440w.jpg">
+<meta property="og:image" content="https://github.com/No78Vino/gameplay-ability-system-for-unity/raw/EX-GAS-1.0/Wiki%2FQQ20240315144012.png">
 <meta property="og:image" content="https://pic4.zhimg.com/v2-81e0e75e23fdb539ab90de752a7f13ef_1440w.jpg">
 <meta property="article:published_time" content="2025-05-19T14:51:33.000Z">
-<meta property="article:modified_time" content="2025-05-26T07:08:12.525Z">
+<meta property="article:modified_time" content="2025-05-26T09:47:52.721Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="GAS">
 <meta name="twitter:card" content="summary">
@@ -162,33 +163,13 @@
     <div class="widget">
       <h3 class="widget-title">Categories</h3>
       <div class="category-box">
-            <a class="category-link" href="/categories/C/">
-                C#
-                <div class="category-count">1</div>
-            </a>
-        
-            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
-                博客
-                <div class="category-count">1</div>
-            </a>
-        
-            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
-                嵌入式
-                <div class="category-count">1</div>
-            </a>
-        
-            <a class="category-link" href="/categories/%E6%B8%B2%E6%9F%93/">
-                渲染
-                <div class="category-count">1</div>
-            </a>
-        
             <a class="category-link" href="/categories/%E5%AE%9E%E6%97%B6%E6%B8%B2%E6%9F%934/">
                 实时渲染4
                 <div class="category-count">10</div>
             </a>
         
-            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
-                游戏记录
+            <a class="category-link" href="/categories/C/">
+                C#
                 <div class="category-count">1</div>
             </a>
         
@@ -197,14 +178,29 @@
                 <div class="category-count">1</div>
             </a>
         
+            <a class="category-link" href="/categories/%E6%B8%B2%E6%9F%93/">
+                渲染
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%8D%9A%E5%AE%A2/">
+                博客
+                <div class="category-count">1</div>
+            </a>
+        
             <a class="category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E8%AE%B0%E5%BD%95/">
                 工作记录
                 <div class="category-count">2</div>
             </a>
         
-            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
-                游戏框架
-                <div class="category-count">3</div>
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E8%AE%B0%E5%BD%95/">
+                游戏记录
+                <div class="category-count">1</div>
+            </a>
+        
+            <a class="category-link" href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/">
+                嵌入式
+                <div class="category-count">1</div>
             </a>
         
             <a class="category-link" href="/categories/%E7%8E%A9/">
@@ -212,29 +208,19 @@
                 <div class="category-count">1</div>
             </a>
         
-            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
-                引擎
-                <div class="category-count">5</div>
-            </a>
-        
-            <a class="category-link" href="/categories/GamePlay/">
-                GamePlay
-                <div class="category-count">7</div>
-            </a>
-        
             <a class="category-link" href="/categories/%E7%A9%BA%E9%97%B4%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
                 空间数据结构
                 <div class="category-count">3</div>
             </a>
         
-            <a class="category-link" href="/categories/GameDev/">
-                GameDev
-                <div class="category-count">4</div>
+            <a class="category-link" href="/categories/%E5%BC%95%E6%93%8E/">
+                引擎
+                <div class="category-count">5</div>
             </a>
         
-            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
-                草地编辑器
-                <div class="category-count">4</div>
+            <a class="category-link" href="/categories/%E6%B8%B8%E6%88%8F%E6%A1%86%E6%9E%B6/">
+                游戏框架
+                <div class="category-count">3</div>
             </a>
         
             <a class="category-link" href="/categories/Unity/">
@@ -242,9 +228,24 @@
                 <div class="category-count">16</div>
             </a>
         
-            <a class="category-link" href="/categories/RenderingAcceleration/">
-                RenderingAcceleration
-                <div class="category-count">2</div>
+            <a class="category-link" href="/categories/%E8%8D%89%E5%9C%B0%E7%BC%96%E8%BE%91%E5%99%A8/">
+                草地编辑器
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GamePlay/">
+                GamePlay
+                <div class="category-count">8</div>
+            </a>
+        
+            <a class="category-link" href="/categories/GameDev/">
+                GameDev
+                <div class="category-count">4</div>
+            </a>
+        
+            <a class="category-link" href="/categories/Shader/">
+                Shader
+                <div class="category-count">17</div>
             </a>
         
             <a class="category-link" href="/categories/Math/">
@@ -252,9 +253,9 @@
                 <div class="category-count">4</div>
             </a>
         
-            <a class="category-link" href="/categories/Shader/">
-                Shader
-                <div class="category-count">17</div>
+            <a class="category-link" href="/categories/RenderingAcceleration/">
+                RenderingAcceleration
+                <div class="category-count">2</div>
             </a>
         
             <a class="category-link" href="/categories/Sync/">
@@ -316,7 +317,7 @@
   
           </div>
           <div class="wordcount need-seperator meta-info">
-            4.7k words 
+            8.1k words 
           </div>
         </div>
         
@@ -328,7 +329,7 @@
           <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
 <p>记录GAS中各个模块的使用经验</p>
 </blockquote>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a target="_blank" rel="noopener" href="https://github.com/No78Vino/gameplay-ability-system-for-unity">【gameplay-ability-system-for-unity】</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/486808688">【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎</a></p>
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p><a target="_blank" rel="noopener" href="https://github.com/No78Vino/gameplay-ability-system-for-unity">【gameplay-ability-system-for-unity】</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/486808688">【Unreal】虚幻GAS系统快速入门 - LunarMaxim的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/464303056">UE-GAS架构分析（二）（GameplayAttribute） - 李嘉的文章 - 知乎</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/693239639">UE GAS进阶-深入理解GE - 高贵纯合子的文章 - 知乎</a></p>
 <h2 id="GameplayTag"><a href="#GameplayTag" class="headerlink" title="GameplayTag"></a>GameplayTag</h2><blockquote>
 <p>GameplayTags是一种层级标签，如Parent.Child.GrandChild。替代了原来的Bool，或Enum的结构，可以在玩法设计中更高效 的标记对象的行为或状态。</p>
 </blockquote>
@@ -434,11 +435,22 @@
 <h4 id="AbilityTask"><a href="#AbilityTask" class="headerlink" title="AbilityTask"></a>AbilityTask</h4><blockquote>
 <p>GA 是一帧内完成的，如果想要实现类似的 Wait 的异步逻辑需要使用 Task。EX-GAS 中有Timeline 配置项。</p>
 </blockquote>
+<p><img src="https://github.com/No78Vino/gameplay-ability-system-for-unity/raw/EX-GAS-1.0/Wiki%2FQQ20240315144012.png" alt="Image Text"></p>
 <p><a href="../GAS-GA">实现细节</a></p>
 <h3 id="AttributeSet"><a href="#AttributeSet" class="headerlink" title="AttributeSet"></a>AttributeSet</h3><blockquote>
 <p>AttributeSet 负责定义和持有属性，并且管理属性的变化，包括网络同步。 需要在Actor中被添加为成员变量，并注册到ASC（C++）。<br>一个ASC可以拥有一个或多个(不同的)AttributeSet，因此可以角色共享一个很大的 Attribute Set，也可以每个角色按需添加Attribute Set。<font color=#ffa500>可以在属性变化前（PreAttributeChange）后（PostGameplayEffectExecute）处理相关 逻辑，可以通过委托的方式绑定属性变化。</font></p>
 </blockquote>
+<h4 id="BaseValue跟CurrentValue"><a href="#BaseValue跟CurrentValue" class="headerlink" title="BaseValue跟CurrentValue"></a>BaseValue跟CurrentValue</h4><blockquote>
+<p>AttributeValue 由两个float（BaseValue、CurrentValue）构成，BaseValue是属性的基础值，而CurrentValue是由于某些Buff加成变动后的值。当Buff褪去后，就可以回到BaseValue。所以分了俩个属性。<font color=#ffa500>比如玩家当前HP的值是100，加了一个提升20%血量的Buff。则HP的BaseValue为100，CurrentValue为120。Buff褪去后，CurrentValue变回BaseValue的值：100</font></p>
+</blockquote>
 <p><a href="../GAS-AS">实现细节</a></p>
+<h4 id="分別由哪种类型的GE改变？"><a href="#分別由哪种类型的GE改变？" class="headerlink" title="分別由哪种类型的GE改变？"></a>分別由哪种类型的GE改变？</h4><ul>
+<li><p>BaseValue由Instant(立即)的GE改变.更新会导致 CurrentValue的重新计算（根据 CalculateMode（叠加、最大值、最小值） 计算）。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ApplyModFromInstantGameplayEffect</span>(<span class="params">GameplayEffectSpec spec</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> modifier <span class="keyword">in</span> spec.Modifiers)</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        AttributeSetContainer.Sets[modifier.AttributeSetName]</span><br><span class="line">            .ChangeAttributeBase(modifier.AttributeShortName, baseValue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>CurrentValue由Duration(持续)、Infinite(永恒) 的GE改变。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> it&#x27;s triggered only when the owner&#x27;s gameplay effect is added or removed. </span></span><br><span class="line"><span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RefreshModifierCache</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 注销属性变化监听回调</span></span><br><span class="line">    UnregisterAttributeChangedListen();</span><br><span class="line">    _modifierCache.Clear();</span><br><span class="line">    <span class="keyword">var</span> gameplayEffects = _owner.GameplayEffectContainer.GameplayEffects();</span><br><span class="line">    <span class="keyword">foreach</span> (<span class="keyword">var</span> geSpec <span class="keyword">in</span> gameplayEffects)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (geSpec.IsActive)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">foreach</span> (<span class="keyword">var</span> modifier <span class="keyword">in</span> geSpec.Modifiers)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span> (modifier.AttributeName == _processedAttribute.Name)</span><br><span class="line">                &#123;</span><br><span class="line">                    _modifierCache.Add(<span class="keyword">new</span> Tuple&lt;GameplayEffectSpec, GameplayEffectModifier&gt;(geSpec, modifier));</span><br><span class="line">                    TryRegisterAttributeChangedListen(geSpec, modifier);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    UpdateCurrentValueWhenModifierIsDirty();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
 <h3 id="GameplayEffect"><a href="#GameplayEffect" class="headerlink" title="GameplayEffect"></a>GameplayEffect</h3><blockquote>
 <p>Gameplay Effect(GE)是Ability对自己或他人产生影响的途径。 GE通常可以被理解为我们游戏中的buff。比如增益&#x2F;减益效果（修改属性）。<br>但是GAS中的GE也更加广义，释放技能时候的伤害结算，施加特殊效果的控制、霸体效果（修改GameplayTag）都是通过GE来实现的。<br>GE相当于一个可配置的数据表，不可以添加逻辑。开发者创建一个UGameplayEffect的派生蓝图，就可以根据需求制作想要的效果。</p>
 </blockquote>
@@ -475,6 +487,13 @@
 </blockquote>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line"><span class="keyword">private</span> GameplayEffectAsset _geBulletDamageAsset;</span><br><span class="line"><span class="keyword">private</span> GameplayEffect _geBulletDamage;</span><br><span class="line">_geBulletDamage = <span class="keyword">new</span> GameplayEffect(_geBulletDamageAsset);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(_asc &amp;&amp; other.gameObject.TryGetComponent(<span class="keyword">out</span> AbilitySystemComponent enemy))&#123;</span><br><span class="line">    <span class="keyword">if</span> (enemy.HasTag(GTagLib.Faction_Enemy))</span><br><span class="line">    &#123;</span><br><span class="line">        _asc.ApplyGameplayEffectTo(_geBulletDamage, enemy);</span><br><span class="line">        <span class="comment">//TODO 对象池回收</span></span><br><span class="line">        GameObject.Destroy(gameObject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<h4 id="GameplayEffect的施加（Apply）和-激活（Activate）"><a href="#GameplayEffect的施加（Apply）和-激活（Activate）" class="headerlink" title="GameplayEffect的施加（Apply）和 激活（Activate）"></a>GameplayEffect的施加（Apply）和 激活（Activate）</h4><ul>
+<li>GameplayEffect的施加（Apply）和激活（Activate）是两个概念，施加是指GameplayEffect被添加到目标身上，激活是指GameplayEffect实际生效。<ul>
+<li>为什么做区分？</li>
+<li>举个例子：固有被动技能（Ability）是持续回血，被动技能的逻辑显然是永久激活的状态，而持续回血的效果（GameplayEffect） 来源于被动技能，那如果单位受到了外部的debuff禁止所有的回血效果，那么是不是被动技能被禁止？显然不是，被动技能还是会持续激活的。 那应该是移除回血效果吗？显然也不是，被动技能整个过程是不做任何变化，如果移除回血效果，那debuff一旦消失，谁再把回血效果加回来？ 所以，这里需要区分施加和激活，被动技能的持续回血效果被施加到单位身上，而debuff做的是让回血效果失活，而不是移除回血效果，一旦debuff结束， 回血效果又被激活，而这个激活的操作可以理解为回血效果自己激活的（依赖于Tag系统）。</li>
+</ul>
+</li>
+</ul>
 <p><a href="../GAS-GE">实现细节</a></p>
 <h3 id="GameplayCue"><a href="#GameplayCue" class="headerlink" title="GameplayCue"></a>GameplayCue</h3><blockquote>
 <p>GameplayCues (GC) 执行非游戏性相关的事情，比如音效，粒子特效，震屏等。GameplayCues通常会被复制和预测（除非设置Executed, Added或Removed是本地的）。分为 Instant 和 Duration 两种（GameplayCueInstant、GameplayCueDurational）。</p>
@@ -483,6 +502,51 @@
 <p>一般通过GE配置，也可以在GA里配置</p>
 </blockquote>
 <p><a href="../GAS-GC">实现细节</a></p>
+<h3 id="ModifierMagnitudeCalculation"><a href="#ModifierMagnitudeCalculation" class="headerlink" title="ModifierMagnitudeCalculation"></a>ModifierMagnitudeCalculation</h3><blockquote>
+<p>数值计算公式，唯一的使用场景是在GameplayEffect中。 GAS中，体系内运作的情况下，只有GameplayEffect才能修改Attribute的数值。而GameplayEffect就是通过MMC修改Attribute的数值。</p>
+</blockquote>
+<ul>
+<li><p>ScalableFloatModCalculation：可缩放浮点数计算</p>
+<ul>
+<li>该类型是根据Magnitude计算Modifier模值的，计算公式为：ModifierMagnitude * k + b 实际上就是一个线性函数，k和b为可编辑参数，可以在编辑器中设置。</li>
+</ul>
+</li>
+<li><p>AttributeBasedModCalculation：基于属性的计算</p>
+<ul>
+<li>该类型是根据属性值计算Modifier模值的，计算公式为：AttributeValue * k + b 计算逻辑与ScalableFloatModCalculation一致。</li>
+<li>重点在于属性值的来源，确定属性值来源的参数有3个：<ul>
+<li>attributeFromType：属性值从谁身上取？是从游戏效果的来源（创建者），还是目标（拥有者）。</li>
+<li>attributeName：属性值的名称，比如战斗属性集里的生命值：AS_Fight.Health</li>
+<li>captureType：属性值的捕获类型</li>
+<li>Track: 追踪,在Modifier被执行时，当场去取属性值</li>
+<li>SnapShot: 快照,在游戏效果被创建时会对来源和目标的属性进行快照。在Modifier被执行时，去取快照的属性值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>SetByCallerModCalculation：由调用者设置的计算</p>
+<ul>
+<li><p>不使用任何值计算模值，而是在执行时由调用者给出Modifier模值。</p>
+</li>
+<li><p>通过对GameplayEffectSpec注册数值来实现设置值。</p>
+</li>
+<li><p>设置数值映射有2种：</p>
+<ul>
+<li>自定义键值：通过GameplayEffectSpec的RegisterValue(string key, float value)</li>
+<li>GameplayTag：通过GameplayEffectSpec的RegisterValue(GameplayTag tag, float value)</li>
+</ul>
+  <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[<span class="meta">SerializeField</span>] <span class="keyword">private</span> <span class="built_in">string</span> valueName;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">float</span> <span class="title">CalculateMagnitude</span>(<span class="params">GameplayEffectSpec spec,<span class="built_in">float</span> input</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">value</span> = spec.GetMapValue(valueName);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">value</span> ?? <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="meta">SerializeField</span>]</span><br><span class="line">[<span class="meta">ValueDropdown(<span class="string">&quot;@ValueDropdownHelper.GameplayTagChoices&quot;</span>, HideChildProperties = true)</span>]</span><br><span class="line"><span class="keyword">private</span> GameplayTag _tag;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="built_in">float</span> <span class="title">CalculateMagnitude</span>(<span class="params">GameplayEffectSpec spec, <span class="built_in">float</span> input</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="keyword">value</span> = spec.GetMapValue(_tag);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">value</span> ?? <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>CustomCalculation：自定义计算（必须继承自抽象基类ModifierMagnitudeCalculation）</p>
+<ul>
+<li>上述3种类型显然不够方便且全面的满足游戏开发者的所有需求，所以提供了自定义计算类的功能。</li>
+<li>允许开发者自由发挥给出各种各样的计算逻辑。</li>
+</ul>
+</li>
+</ul>
+<!-- [实现细节](../GAS-MMC) -->
+
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>ASC管理GA、GE、Attribute。</li>
 <li>GE可以用来给予ASC一个GA，也可以修改Attribute。（甚至还能Apply其他的GE，图中没有提到）</li>
